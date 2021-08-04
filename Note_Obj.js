@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Note_Obj
 // @namespace    https://greasyfork.org/zh-CN/users/193133-pana
-// @homepage     https://www.sailboatweb.com
-// @version      5.0.1
+// @homepage     https://greasyfork.org/zh-CN/users/193133-pana
+// @version      5.1.0
 // @description  NOTE_OBJ
 // @author       pana
 // @license      GNU General Public License v3.0 or later
@@ -11,8 +11,8 @@
 typeof Vue !== 'function' && alert('The Vue.js file does not exist and script code does not work properly!!!');
 const NOTE_LANG = {
   INFO: {
-    version: '5.0.1',
-    updated: '2020-09-30',
+    version: '5.1.0',
+    updated: '2021-08-04',
   },
   EN: {
     addPlaceholder: 'Please enter a new note, press Enter to save',
@@ -168,6 +168,7 @@ const NOTE_LANG = {
     groupValueText: 'Group name',
     groupPrimaryColorText: 'Primary color',
     groupSecondaryColorText: 'Secondary color',
+    groupWeightText: 'Weight',
     selectGroupHeaderText: 'Select group',
   },
   ZH: {
@@ -317,6 +318,7 @@ const NOTE_LANG = {
     groupValueText: '分组名',
     groupPrimaryColorText: '主要颜色',
     groupSecondaryColorText: '次要颜色',
+    groupWeightText: '权重',
     selectGroupHeaderText: '选择分组',
   },
   ZH_TW: {
@@ -466,6 +468,7 @@ const NOTE_LANG = {
     groupValueText: '分組名',
     groupPrimaryColorText: '主要顏色',
     groupSecondaryColorText: '次要顏色',
+    groupWeightText: '權數',
     selectGroupHeaderText: '選擇分組',
   },
   JA: {
@@ -619,6 +622,7 @@ const NOTE_LANG = {
     groupValueText: 'グループ名',
     groupPrimaryColorText: '主な色',
     groupSecondaryColorText: '二次的な色',
+    groupWeightText: '重み',
     selectGroupHeaderText: 'グループを選択',
   },
   KO: {
@@ -771,6 +775,7 @@ const NOTE_LANG = {
     groupValueText: '그룹 이름',
     groupPrimaryColorText: '메인 컬러',
     groupSecondaryColorText: '보조 색상',
+    groupWeightText: '가중치',
     selectGroupHeaderText: '그룹 선택',
   },
   FR: {
@@ -927,6 +932,7 @@ const NOTE_LANG = {
     groupValueText: 'Nom de groupe',
     groupPrimaryColorText: 'Couleur principale',
     groupSecondaryColorText: 'Couleur secondaire',
+    groupWeightText: 'Poids',
     selectGroupHeaderText: 'Sélectionnez un groupe',
   },
 };
@@ -964,1460 +970,1467 @@ const NOTE_ICON = {
 };
 const NOTE_STYLE = `
     .note-obj-vue-module {
-        position: absolute;
-        left: 0;
-        top: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
     }
     .note-obj-popver-frame-dialog {
-        position: absolute;
-        max-width: 300px;
-        min-width: 200px;
-        top: 0px;
-        left: 0px;
-        display: block;
-        background-clip: padding-box;
-        border: 1px solid rgba(0, 0, 0, .1);
-        border-radius: 6px;
-        box-shadow: -5px 5px 10px rgba(0, 0, 0, .2);
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        padding: 1px;
-        z-index: 9999;
+      position: absolute;
+      max-width: 300px;
+      min-width: 200px;
+      top: 0px;
+      left: 0px;
+      display: block;
+      background-clip: padding-box;
+      border: 1px solid rgba(0, 0, 0, .1);
+      border-radius: 6px;
+      box-shadow: -5px 5px 10px rgba(0, 0, 0, .2);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding: 1px;
+      z-index: 9999;
     }
     .note-obj-interface-dark .note-obj-popver-frame-dialog {
-        background-color: #38526d;
-        color: #fff;
+      background-color: #38526d;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-popver-frame-dialog {
-        background-color: #fff;
-        color: #000;
+      background-color: #fff;
+      color: #000;
     }
     .note-obj-popover-frame-header {
-        text-align: center;
-        padding: 5px 10px;
-        font-weight: bold;
-        border-radius: 5px 5px 0px 0px;
-        margin: 0px;
+      text-align: center;
+      padding: 5px 10px;
+      font-weight: bold;
+      border-radius: 5px 5px 0px 0px;
+      margin: 0px;
     }
     .note-obj-interface-dark .note-obj-popover-frame-header {
-        background-color: rgba(0, 0, 0, .2);
-        border-bottom: 1px solid rgba(0, 0, 0, .5);
+      background-color: rgba(0, 0, 0, .2);
+      border-bottom: 1px solid rgba(0, 0, 0, .5);
     }
     .note-obj-interface-bright .note-obj-popover-frame-header {
-        background-color: #efefef;
-        border-bottom: 1px solid #dbdbdb;
+      background-color: #efefef;
+      border-bottom: 1px solid #dbdbdb;
     }
     .note-obj-popover-frame-content {
-        padding: 0px 1px;
-        max-height: 405px;
-        overflow: auto;
-        text-align: left;
+      padding: 0px 1px;
+      max-height: 405px;
+      overflow: auto;
+      text-align: left;
     }
     .note-obj-popover-frame-item,
     .note-obj-popover-frame-item-deepen {
-        height: 25px;
-        cursor: pointer;
-        padding: 2px 5px;
-        font-size: 14px;
-        line-height: 150%;
-        margin: 0px;
-        display: block;
-        text-decoration: none;
+      height: 25px;
+      cursor: pointer;
+      padding: 2px 5px;
+      font-size: 14px;
+      line-height: 150%;
+      margin: 0px;
+      display: block;
+      text-decoration: none;
     }
     .note-obj-interface-dark .note-obj-popover-frame-item {
-        background-color: rgba(0, 0, 0, .2);
-        color: #549be2;
+      background-color: rgba(0, 0, 0, .2);
+      color: #549be2;
     }
     .note-obj-interface-bright .note-obj-popover-frame-item {
-        background-color: #fafafa;
-        color: #336699;
+      background-color: #fafafa;
+      color: #336699;
     }
     .note-obj-interface-dark .note-obj-popover-frame-item-deepen {
-        background-color: rgba(0, 0, 0, .3);
-        color: #549be2;
+      background-color: rgba(0, 0, 0, .3);
+      color: #549be2;
     }
     .note-obj-interface-bright .note-obj-popover-frame-item-deepen {
-        background-color: #f3f3f3;
-        color: #336699;
+      background-color: #f3f3f3;
+      color: #336699;
     }
     .note-obj-popover-frame-arrow
     {
-        border-color: transparent;
-        border-left-width: 0px;
-        border-right-color: rgba(0, 0, 0, .25);
-        left: -20px;
-        border-width: 10px;
-        position: absolute;
-        display: block;
-        width: 0px;
-        height: 0px;
-        border-style: solid;
-        box-sizing: border-box;
-        top: 30px;
+      border-color: transparent;
+      border-left-width: 0px;
+      border-right-color: rgba(0, 0, 0, .25);
+      left: -20px;
+      border-width: 10px;
+      position: absolute;
+      display: block;
+      width: 0px;
+      height: 0px;
+      border-style: solid;
+      box-sizing: border-box;
+      top: 30px;
     }
     .note-obj-popover-frame-arrow::after {
-        content: "";
-        left: 1px;
-        border-width: 9px;
-        border-color: transparent;
-        border-left-width: 0px;
-        margin-top: -9px;
-        display: block;
-        width: 0px;
-        height: 0px;
-        border-style: solid;
-        position: absolute;
-        box-sizing: border-box;
+      content: "";
+      left: 1px;
+      border-width: 9px;
+      border-color: transparent;
+      border-left-width: 0px;
+      margin-top: -9px;
+      display: block;
+      width: 0px;
+      height: 0px;
+      border-style: solid;
+      position: absolute;
+      box-sizing: border-box;
     }
     .note-obj-interface-dark .note-obj-popover-frame-arrow::after {
-        border-right-color: #38526d;
+      border-right-color: #38526d;
     }
     .note-obj-interface-bright .note-obj-popover-frame-arrow::after {
-        border-right-color: #fff;
+      border-right-color: #fff;
     }
     .note-obj-left-expand-box {
-        bottom: 0px;
-        left: 0px;
-        height: 100%;
-        width: 100px;
-        position: fixed;
-        display: flex;
-        flex-flow: column;
-        justify-content: center;
-        flex-wrap: wrap;
-        z-index: 99998;
+      bottom: 0px;
+      left: 0px;
+      height: 100%;
+      width: 100px;
+      position: fixed;
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 99998;
     }
     .note-obj-search-expand-box {
-        bottom: 0px;
-        right: 0px;
-        height: 80px;
-        width: 100px;
-        position: fixed;
-        display: block;
-        z-index: 99998;
+      bottom: 0px;
+      right: 0px;
+      height: 80px;
+      width: 100px;
+      position: fixed;
+      display: block;
+      z-index: 99998;
     }
     .note-obj-settings-expand-span,
     .note-obj-note-management-expand-span,
     .note-obj-group-management-expand-span,
     .note-obj-search-expand-span {
-        border-radius: 99px;
-        color: #FFF;
-        cursor: pointer;
-        display: block;
-        font-size: 13px;
-        height: 38px;
-        width: 38px;
-        line-height: 100%;
-        margin: 5px 0px;
-        opacity: 0.8;
-        text-align: center;
-        z-index: 99999;
-        user-select: none;
-        background-repeat: no-repeat;
-        background-size: 24px auto;
-        background-position: center;
+      border-radius: 99px;
+      color: #FFF;
+      cursor: pointer;
+      display: block;
+      font-size: 13px;
+      height: 38px;
+      width: 38px;
+      line-height: 100%;
+      margin: 5px 0px;
+      opacity: 0.8;
+      text-align: center;
+      z-index: 99999;
+      user-select: none;
+      background-repeat: no-repeat;
+      background-size: 24px auto;
+      background-position: center;
     }
     .note-obj-settings-expand-span:hover,
     .note-obj-note-management-expand-span:hover,
     .note-obj-group-management-expand-span:hover,
     .note-obj-search-expand-span:hover {
-        box-shadow: 0 0 5px 1px green;
+      box-shadow: 0 0 5px 1px green;
     }
     .note-obj-settings-expand-span {
-        position: relative;
-        left: -30px;
-        border: 1px solid #336699;
-        background-image: ${NOTE_ICON.SETTINGS_BLUE};
-        transition: all .5s;
+      position: relative;
+      left: -30px;
+      border: 1px solid #336699;
+      background-image: ${NOTE_ICON.SETTINGS_BLUE};
+      transition: all .5s;
     }
     .note-obj-note-management-expand-span {
-        position: relative;
-        left: -30px;
-        border: 1px solid #003366;
-        background-image: ${NOTE_ICON.TABLE_BLUE};
-        transition: all .75s;
+      position: relative;
+      left: -30px;
+      border: 1px solid #003366;
+      background-image: ${NOTE_ICON.TABLE_BLUE};
+      transition: all .75s;
     }
     .note-obj-group-management-expand-span {
-        position: relative;
-        left: -30px;
-        border: 1px solid #333333;
-        background-image: ${NOTE_ICON.BOARD_GRAY};
-        transition: all 1s;
+      position: relative;
+      left: -30px;
+      border: 1px solid #333333;
+      background-image: ${NOTE_ICON.BOARD_GRAY};
+      transition: all 1s;
     }
     .note-obj-search-expand-span {
-        position: absolute;
-        bottom: 15px;
-        right: -30px;
-        border: 1px solid #00A1D6;
-        background-image: ${NOTE_ICON.SEARCH_BLUE};
-        transition: all .5s;
+      position: absolute;
+      bottom: 15px;
+      right: -30px;
+      border: 1px solid #00A1D6;
+      background-image: ${NOTE_ICON.SEARCH_BLUE};
+      transition: all .5s;
     }
     .note-obj-search-expand-box:hover .note-obj-search-expand-span {
-        right: 25px;
-        opacity: 1;
+      right: 25px;
+      opacity: 1;
     }
     .note-obj-left-expand-box:hover .note-obj-settings-expand-span,
     .note-obj-left-expand-box:hover .note-obj-note-management-expand-span,
     .note-obj-left-expand-box:hover .note-obj-group-management-expand-span {
-        left: 25px;
-        opacity: 1;
+      left: 25px;
+      opacity: 1;
     }
     .note-obj-search-frame-presentation {
-        display: flex;
-        position: fixed;
-        background-color: rgba(0, 0, 0, .5);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100000;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .5);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100000;
+      align-items: center;
+      justify-content: center;
     }
     .note-obj-search-frame-dialog {
-        position: relative;
-        bottom: 25%;
+      position: relative;
+      bottom: 25%;
     }
     .note-obj-search-frame-input {
-        width: 350px;
-        height: 40px;
-        border-radius: 40px;
-        padding: 0px 20px;
-        position: relative;
-        outline: none;
-        box-sizing: content-box;
+      width: 350px;
+      height: 40px;
+      border-radius: 40px;
+      padding: 0px 20px;
+      position: relative;
+      outline: none;
+      box-sizing: content-box;
     }
     .note-obj-interface-dark .note-obj-search-frame-input {
-        background-color: rgb(37, 51, 65);
-        color: #fff;
-        border: 2px solid #000;
+      background-color: rgb(37, 51, 65);
+      color: #fff;
+      border: 2px solid #000;
     }
     .note-obj-interface-bright .note-obj-search-frame-input {
-        background-color: #f7f7f7;
-        color: #000;
-        border: 2px solid #787878;
+      background-color: #f7f7f7;
+      color: #000;
+      border: 2px solid #787878;
     }
     .note-obj-search-frame-close-btn {
-        position: absolute;
-        right: 2px;
-        top: 10px;
-        z-index: 100000;
-        background-image: ${NOTE_ICON.CLOSE_GRAY};
-        background-repeat: no-repeat;
-        background-size: 24px auto;
-        background-position: center;
-        height: 24px;
-        width: 24px;
-        display: block;
-        cursor: pointer;
+      position: absolute;
+      right: 2px;
+      top: 10px;
+      z-index: 100000;
+      background-image: ${NOTE_ICON.CLOSE_GRAY};
+      background-repeat: no-repeat;
+      background-size: 24px auto;
+      background-position: center;
+      height: 24px;
+      width: 24px;
+      display: block;
+      cursor: pointer;
     }
     .note-obj-search-frame-index-trapezoid {
-        display: block;
-        position: absolute;
-        z-index: 100000;
-        left: 20px;
-        top: -25px;
-        height: 0px;
-        width: 350px;
-        background: transparent;
-        border-top: 0px solid transparent;
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        padding: 0px;
-        margin: 0px;
-        text-align: center;
-        box-sizing: border-box;
+      display: block;
+      position: absolute;
+      z-index: 100000;
+      left: 20px;
+      top: -25px;
+      height: 0px;
+      width: 350px;
+      background: transparent;
+      border-top: 0px solid transparent;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      padding: 0px;
+      margin: 0px;
+      text-align: center;
+      box-sizing: border-box;
     }
     .note-obj-interface-dark .note-obj-search-frame-index-trapezoid {
-        border-bottom: 25px solid rgb(37, 51, 65);
+      border-bottom: 25px solid rgb(37, 51, 65);
     }
     .note-obj-interface-bright .note-obj-search-frame-index-trapezoid {
-        border-bottom: 25px solid #f7f7f7;
+      border-bottom: 25px solid #f7f7f7;
     }
     .note-obj-search-frame-index-value {
-        height: 25px;
-        line-height: 25px;
+      height: 25px;
+      line-height: 25px;
     }
     .note-obj-interface-dark .note-obj-search-frame-index-value {
-        color: #fff;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-search-frame-index-value {
-        color: #000;
+      color: #000;
     }
     .note-obj-search-frame-tags-list {
-        top: 44px;
-        left: 20px;
-        width: 350px;
-        max-height: 250px;
-        overflow-y: scroll;
-        text-align: left;
-        display: block;
-        margin: 0px;
-        padding: 0px;
-        position: absolute;
-        z-index: 100000;
-        border: 1px solid rgba(29, 161, 242, .1);
-        list-style: none;
+      top: 44px;
+      left: 20px;
+      width: 350px;
+      max-height: 250px;
+      overflow-y: scroll;
+      text-align: left;
+      display: block;
+      margin: 0px;
+      padding: 0px;
+      position: absolute;
+      z-index: 100000;
+      border: 1px solid rgba(29, 161, 242, .1);
+      list-style: none;
     }
     .note-obj-interface-dark .note-obj-search-frame-tags-list {
-        background-color: rgb(37, 51, 65);
+      background-color: rgb(37, 51, 65);
     }
     .note-obj-interface-bright .note-obj-search-frame-tags-list {
-        background-color: #f7f7f7;
+      background-color: #f7f7f7;
     }
     .note-obj-search-frame-tags-list li, 
     .note-obj-search-frame-tags-list a,
     .note-obj-search-frame-tags-list a:visited {
-        cursor: pointer;
-        padding-left: 5px;
-        height: 25px;
-        line-height: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: block;
-        text-decoration: none;
+      cursor: pointer;
+      padding-left: 5px;
+      height: 25px;
+      line-height: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      text-decoration: none;
     }
     .note-obj-search-frame-tags-item-text {
-        display: inline-block;
-        cursor: pointer;
-        height: 25px;
-        line-height: 25px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-        user-select: none;
+      display: inline-block;
+      cursor: pointer;
+      height: 25px;
+      line-height: 25px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      user-select: none;
     }
     .note-obj-interface-dark .note-obj-search-frame-tags-item-text {
-        color: #fff;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-search-frame-tags-item-text {
-        color: #000;
+      color: #000;
     }
     .note-obj-search-frame-tags-item-text-has-btn {
-        width: calc(100% - 68px) !important;
+      width: calc(100% - 68px) !important;
     }
     .note-obj-search-frame-tags-item-btn {
-        float: right;
-        margin: 0px 5px;
-        height: 24px;
-        width: 24px;
-        border-radius: 24px;
-        background-repeat: no-repeat;
-        background-size: 24px auto;
-        background-position: center;
-        cursor: pointer;
-        display: none;
+      float: right;
+      margin: 0px 5px;
+      height: 24px;
+      width: 24px;
+      border-radius: 24px;
+      background-repeat: no-repeat;
+      background-size: 24px auto;
+      background-position: center;
+      cursor: pointer;
+      display: none;
     }
     .note-obj-search-frame-tags-item-btn:hover {
-        box-shadow: 0 0 15px #000;
+      box-shadow: 0 0 15px #000;
     }
     .note-obj-search-frame-tags-item-edit {
-        background-image: ${NOTE_ICON.EDIT_BLACK};
+      background-image: ${NOTE_ICON.EDIT_BLACK};
     }
     .note-obj-search-frame-tags-item-delete {
-        background-image: ${NOTE_ICON.DELETE_BLACK};
+      background-image: ${NOTE_ICON.DELETE_BLACK};
     }
     .note-obj-search-frame-tags-list a:hover .note-obj-search-frame-tags-item-btn,
     .note-obj-search-frame-tags-list li:hover .note-obj-search-frame-tags-item-btn {
-        display: inline-block;
+      display: inline-block;
     }
     .note-obj-search-frame-tags-list-item-highlight {
-        background-color: #6699cc;
+      background-color: #6699cc;
     }
     .note-obj-add-frame-presentation {
-        display: flex;
-        position: fixed;
-        background-color: rgba(0, 0, 0, .5);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100001;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .5);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100001;
+      align-items: center;
+      justify-content: center;
     }
     .note-obj-add-frame-dialog {
-        position: relative;
-        width: 400px;
-        border-radius: 12px;
-        display: flex;
-        flex-direction: column;
-        border: 0px solid #000;
-        box-shadow: 0 1px 10px rgba(0, 0, 0, .8);
+      position: relative;
+      width: 400px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      border: 0px solid #000;
+      box-shadow: 0 1px 10px rgba(0, 0, 0, .8);
     }
     .note-obj-interface-dark .note-obj-add-frame-dialog {
-        background-color: rgb(21, 32, 43);
+      background-color: rgb(21, 32, 43);
     }
     .note-obj-interface-bright .note-obj-add-frame-dialog {
-        background-color: #fff;
+      background-color: #fff;
     }
     .note-obj-add-frame-user-info {
-        min-height: 48px;
-        text-align: center;
-        color: #1da1f2;
-        font-weight: bold;
-        background-color: rgba(0, 0, 0, 0);
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-        white-space: normal;
-        cursor: text;
-        user-select: text;
-        line-height: 24px;
-        overflow: hidden;
-        word-wrap: break-word;
-        text-overflow: ellipsis;
+      min-height: 48px;
+      text-align: center;
+      color: #1da1f2;
+      font-weight: bold;
+      background-color: rgba(0, 0, 0, 0);
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      white-space: normal;
+      cursor: text;
+      user-select: text;
+      line-height: 24px;
+      overflow: hidden;
+      word-wrap: break-word;
+      text-overflow: ellipsis;
     }
     .note-obj-interface-dark .note-obj-add-frame-user-info {
-        border: 1px solid rgba(0, 0, 0, .5);
+      border: 1px solid rgba(0, 0, 0, .5);
     }
     .note-obj-interface-bright .note-obj-add-frame-user-info {
-        border: 1px solid #efefef;
+      border: 1px solid #efefef;
     }
     .note-obj-add-frame-user-id, 
     .note-obj-add-frame-user-name {
-        margin: 5px;
-        display: block;
+      margin: 5px;
+      display: block;
     }
     .note-obj-add-frame-input {
-        min-height: 32px;
-        margin: 5px;
-        border: 1px solid rgba(29, 161, 242, .1);
-        padding-left: 5px;
+      min-height: 32px;
+      margin: 5px;
+      border: 1px solid rgba(29, 161, 242, .1);
+      padding-left: 5px;
     }
     .note-obj-interface-dark .note-obj-add-frame-input {
-        background-color: #253341;
-        color: #fff;
+      background-color: #253341;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-add-frame-input {
-        background-color: #e8e8e8;
-        color: #000;
+      background-color: #e8e8e8;
+      color: #000;
     }
     .note-obj-add-frame-dialog button {
-        min-height: 48px;
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, 0);
+      min-height: 48px;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0);
     }
     .note-obj-interface-dark .note-obj-add-frame-dialog button {
-        color: #fff;
-        border: 1px solid rgba(0, 0, 0, .5);
+      color: #fff;
+      border: 1px solid rgba(0, 0, 0, .5);
     }
     .note-obj-interface-bright .note-obj-add-frame-dialog button {
-        color: #000;
-        border: 1px solid #efefef;
+      color: #000;
+      border: 1px solid #efefef;
     }
     .note-obj-add-frame-dialog button:hover {
-        color: #1da1f2;
+      color: #1da1f2;
     }
     .note-obj-add-frame-button-bottom {
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
     }
     .note-obj-management-frame-presentation,
     .note-obj-group-frame-presentation {
-        display: flex;
-        position: fixed;
-        background-color: rgba(0, 0, 0, .5);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .5);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      align-items: center;
+      justify-content: center;
     }
     .note-obj-management-frame-presentation {
-        z-index: 100002;
+      z-index: 100002;
     }
     .note-obj-group-frame-presentation {
-        z-index: 100003;
+      z-index: 100003;
     }
     .note-obj-management-frame-dialog,
     .note-obj-group-frame-dialog {
-        position: relative;
-        min-height: 580px;
-        max-height: 600px;
-        border-radius: 12px;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 1px 10px rgba(0, 0, 0, .8);
+      position: relative;
+      min-height: 580px;
+      max-height: 600px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 10px rgba(0, 0, 0, .8);
     }
     .note-obj-management-frame-dialog {
-        width: 800px;
+      width: 800px;
     }
     .note-obj-group-frame-dialog {
-        width: 650px;
+      width: 750px;
     }
     .note-obj-interface-dark .note-obj-management-frame-dialog,
     .note-obj-interface-dark .note-obj-group-frame-dialog  {
-        background-color: rgb(21, 32, 43);
-        border: 1px solid #000;
-        color: #fff;
+      background-color: rgb(21, 32, 43);
+      border: 1px solid #000;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-management-frame-dialog,
     .note-obj-interface-bright .note-obj-group-frame-dialog  {
-        background-color: #f5f5f5;
-        border: 1px solid #e8e8e8;
-        color: #000;
+      background-color: #f5f5f5;
+      border: 1px solid #e8e8e8;
+      color: #000;
     }
     .note-obj-management-frame-header,
     .note-obj-group-frame-header {
-        margin: 20px 15px;
+      margin: 20px 15px;
     }
     .note-obj-management-frame-header input[type="text"],
     .note-obj-group-frame-header input[type="text"] {
-        color: #000;
-        width: 25%;
-        padding-left: 5px;
-        margin: 0px 5px;
+      color: #000;
+      width: 25%;
+      padding-left: 5px;
+      margin: 0px 5px;
     }
     .note-obj-management-frame-header select,
     .note-obj-group-frame-header select {
-        cursor: pointer;
-        color: #000;
+      cursor: pointer;
+      color: #000;
     }
     .note-obj-management-frame-header select option,
     .note-obj-group-frame-header select option {
-        color: #000;
+      color: #000;
     }
     .note-obj-management-frame-header select + label {
-        margin-left: 5px;
+      margin-left: 5px;
     }
     .note-obj-management-frame-show-number,
     .note-obj-group-frame-show-number {
-        margin: 0px 5px;
-        float: right;
+      margin: 0px 5px;
+      float: right;
     }
     .note-obj-management-frame-content,
     .note-obj-group-frame-content {
-        margin: 0px 10px;
-        min-height: 420px;
+      margin: 0px 10px;
+      min-height: 420px;
     }
     .note-obj-management-frame-content table,
     .note-obj-group-frame-content table {
-        border: 1px solid #ccc;
-        text-align: center;
-        table-layout: fixed;
-        border-collapse: collapse;
+      border: 1px solid #ccc;
+      text-align: center;
+      table-layout: fixed;
+      border-collapse: collapse;
     }
     .note-obj-management-frame-content table {
-        width: 760px;
+      width: 760px;
     }
     .note-obj-group-frame-content table {
-        width: 610px;
+      width: 710px;
     }
     .note-obj-management-frame-content table tr td,
     .note-obj-management-frame-content table tr th,
     .note-obj-group-frame-content table tr td,
     .note-obj-group-frame-content table tr th {
-        border: 1px solid #ccc;
-        height: 25px;
-        line-height: 25px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding: 0px;
-        margin: 0px;
-        text-align: center;
+      border: 1px solid #ccc;
+      height: 25px;
+      line-height: 25px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0px;
+      margin: 0px;
+      text-align: center;
     }
     .note-obj-management-frame-content table tr th,
     .note-obj-group-frame-content table tr th {
-        font-weight: bold;
+      font-weight: bold;
     }
     .note-obj-management-frame-content table tr th:nth-of-type(1),
     .note-obj-management-frame-content table tr td:nth-of-type(1) {
-        width: 5%;
+      width: 5%;
     }
     .note-obj-management-frame-content table tr th:nth-of-type(2),
     .note-obj-management-frame-content table tr td:nth-of-type(2) {
-        width: 15%;
+      width: 15%;
     }
     .note-obj-management-frame-content table tr th:nth-of-type(3),
     .note-obj-management-frame-content table tr td:nth-of-type(3) {
-        width: 20%;
+      width: 20%;
     }
     .note-obj-management-frame-content table tr th:nth-of-type(4),
     .note-obj-management-frame-content table tr td:nth-of-type(4) {
-        width: 26;
+      width: 26;
     }
     .note-obj-management-frame-content table tr th:nth-of-type(5),
     .note-obj-management-frame-content table tr td:nth-of-type(5) {
-        width: 20%;
+      width: 20%;
     }
     .note-obj-management-frame-content table tr th:nth-of-type(6),
     .note-obj-management-frame-content table tr td:nth-of-type(6) {
-        width: 7%;
+      width: 7%;
     }
     .note-obj-management-frame-content table tr th:nth-of-type(7),
     .note-obj-management-frame-content table tr td:nth-of-type(7) {
-        width: 7%;
+      width: 7%;
     }
     .note-obj-group-frame-content table tr th:nth-of-type(1),
     .note-obj-group-frame-content table tr td:nth-of-type(1) {
-        width: 5%;
+      width: 5%;
     }
     .note-obj-group-frame-content table tr th:nth-of-type(2),
     .note-obj-group-frame-content table tr td:nth-of-type(2) {
-        width: 41%;
+      width: 31%;
     }
     .note-obj-group-frame-content table tr th:nth-of-type(3),
     .note-obj-group-frame-content table tr td:nth-of-type(3) {
-        width: 20%;
+      width: 20%;
     }
     .note-obj-group-frame-content table tr th:nth-of-type(4),
     .note-obj-group-frame-content table tr td:nth-of-type(4) {
-        width: 20%;
+      width: 20%;
     }
     .note-obj-group-frame-content table tr th:nth-of-type(5),
     .note-obj-group-frame-content table tr td:nth-of-type(5) {
-        width: 7%;
+      width: 10%;
     }
     .note-obj-group-frame-content table tr th:nth-of-type(6),
     .note-obj-group-frame-content table tr td:nth-of-type(6) {
-        width: 7%;
+      width: 7%;
+    }
+    .note-obj-group-frame-content table tr th:nth-of-type(7),
+    .note-obj-group-frame-content table tr td:nth-of-type(7) {
+      width: 7%;
     }
     .note-obj-management-frame-content th input[type="checkbox"],
     .note-obj-management-frame-content td input[type="checkbox"],
     .note-obj-group-frame-content th input[type="checkbox"],
     .note-obj-group-frame-content td input[type="checkbox"],
     .note-obj-group-frame-content td input[type="color"] {
-        cursor: pointer;
+      cursor: pointer;
     }
     .note-obj-group-frame-content td input[type="color"] {
-        height: 20px;
+      height: 20px;
+    }
+    .note-obj-group-frame-content td input[type="number"] {
+      width: 80%;
+      height: 80%;
     }
     .note-obj-management-frame-item-a,
     .note-obj-management-frame-item-a:visited {
-        color: #4e8ac5;
-        text-decoration: none;
-        cursor: pointer;
+      color: #4e8ac5;
+      text-decoration: none;
+      cursor: pointer;
     }
     .note-obj-management-frame-tbody,
     .note-obj-group-frame-tbody {
-        max-height: 391px;
-        overflow: auto;
+      max-height: 391px;
+      overflow: auto;
     }
     .note-obj-management-frame-group-item {
-        display: block;
-        text-align: center;
-        cursor: pointer;
-        border-radius: 0px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        padding: 0px 5px;
+      display: block;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 0px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding: 0px 5px;
     }
     .note-obj-management-frame-item-input-tag,
     .note-obj-group-frame-item-input-value {
-        width: calc(100%);
-        height: calc(100%);
-        border: 0px;
-        text-align: center;
-        margin: 0px;
-        padding: 0px;
+      width: calc(100%);
+      height: calc(100%);
+      border: 0px;
+      text-align: center;
+      margin: 0px;
+      padding: 0px;
     }
     .note-obj-interface-dark .note-obj-management-frame-item-input-tag,
     .note-obj-interface-dark .note-obj-group-frame-item-input-value {
-        background-color: rgb(21, 32, 43);
-        color: #fff;
+      background-color: rgb(21, 32, 43);
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-management-frame-item-input-tag,
     .note-obj-interface-bright .note-obj-group-frame-item-input-value {
-        background-color: #f5f5f5;
-        color: #000;
+      background-color: #f5f5f5;
+      color: #000;
     }
     .note-obj-management-frame-item-input-edit {
-        caret-color: #339933;
+      caret-color: #339933;
     }
     .note-obj-interface-dark .note-obj-management-frame-item-input-edit {
-        color: #FF3;
+      color: #FF3;
     }
     .note-obj-interface-bright .note-obj-management-frame-item-input-edit {
-        color: #e86c07;
+      color: #e86c07;
     }
     .note-obj-management-frame-item-btn,
     .note-obj-group-frame-item-btn {
-        display: inline;
-        height: 24px;
-        width: 24px;
-        background-repeat: no-repeat;
-        background-size: 20px auto;
-        background-position: center;
-        cursor: pointer;
-        padding: 0px 20px;
+      display: inline;
+      height: 24px;
+      width: 24px;
+      background-repeat: no-repeat;
+      background-size: 20px auto;
+      background-position: center;
+      cursor: pointer;
+      padding: 0px 20px;
     }
     .note-obj-interface-dark .note-obj-management-frame-item-edit,
     .note-obj-interface-dark .note-obj-group-frame-item-edit {
-        background-image: ${NOTE_ICON.EDIT_YELLOW};
+      background-image: ${NOTE_ICON.EDIT_YELLOW};
     }
     .note-obj-interface-bright .note-obj-management-frame-item-edit,
     .note-obj-interface-bright .note-obj-group-frame-item-edit {
-        background-image: ${NOTE_ICON.EDIT_BLUE};
+      background-image: ${NOTE_ICON.EDIT_BLUE};
     }
     .note-obj-interface-dark .note-obj-management-frame-item-delete,
     .note-obj-interface-dark .note-obj-group-frame-item-delete {
-        background-image: ${NOTE_ICON.DELETE_YELLOW};
+      background-image: ${NOTE_ICON.DELETE_YELLOW};
     }
     .note-obj-interface-bright .note-obj-management-frame-item-delete,
     .note-obj-interface-bright .note-obj-group-frame-item-delete {
-        background-image: ${NOTE_ICON.DELETE_BLUE};
+      background-image: ${NOTE_ICON.DELETE_BLUE};
     }
     .note-obj-interface-dark .note-obj-management-frame-item-ok,
     .note-obj-interface-dark .note-obj-group-frame-item-ok {
-        background-image: ${NOTE_ICON.OK_YELLOW} !important;
+      background-image: ${NOTE_ICON.OK_YELLOW} !important;
     }
     .note-obj-interface-bright .note-obj-management-frame-item-ok,
     .note-obj-interface-bright .note-obj-group-frame-item-ok {
-        background-image: ${NOTE_ICON.OK_BLUE} !important;
+      background-image: ${NOTE_ICON.OK_BLUE} !important;
     }
     .note-obj-management-frame-tool,
     .note-obj-group-frame-tool {
-        display: inline-block;
-        margin: 15px 15px 0px 15px;
+      display: inline-block;
+      margin: 15px 15px 0px 15px;
     }
     .note-obj-management-frame-tool button,
     .note-obj-group-frame-tool button {
-        display: inline-block;
-        min-width: 50px;
-        max-width: 140px;
-        cursor: pointer;
-        margin-right: 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        background-color: #FFF;
-        padding: 0px 5px;
-        color: #000;
+      display: inline-block;
+      min-width: 50px;
+      max-width: 140px;
+      cursor: pointer;
+      margin-right: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      background-color: #FFF;
+      padding: 0px 5px;
+      color: #000;
     }
     .note-obj-management-frame-tool button:hover,
     .note-obj-group-frame-tool button:hover {
-        background-color: #DDD;
+      background-color: #DDD;
     }
     .note-obj-management-frame-tool button[disabled],
     .note-obj-group-frame-tool button[disabled] {
-        pointer-events: none;
-        cursor: not-allowed;
-        filter: alpha(opacity=65);
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        opacity: .65;   
+      pointer-events: none;
+      cursor: not-allowed;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      opacity: .65;   
     }
     .note-obj-management-frame-footer,
     .note-obj-group-frame-footer {
-        display: inline-block;
-        margin: 15px 15px;
+      display: inline-block;
+      margin: 15px 15px;
     }
     .note-obj-management-frame-restore-content,
     .note-obj-group-frame-restore-content {
-        display: inline;
-        text-decoration: underline !important;
-        opacity: 0.25;
-        cursor: not-allowed;
-        user-select: none;
+      display: inline;
+      text-decoration: underline !important;
+      opacity: 0.25;
+      cursor: not-allowed;
+      user-select: none;
     }
     .note-obj-interface-dark .note-obj-management-frame-restore-content,
     .note-obj-interface-dark .note-obj-group-frame-restore-content {
-        color: #8686e0 !important;
+      color: #8686e0 !important;
     }
     .note-obj-interface-bright .note-obj-management-frame-restore-content,
     .note-obj-interface-bright .note-obj-group-frame-restore-content {
-        color: #00376b !important;
+      color: #00376b !important;
     }
     .note-obj-management-frame-restore-content-enabled,
     .note-obj-group-frame-restore-content-enabled {
-        opacity: 1 !important;
-        cursor: pointer;
+      opacity: 1 !important;
+      cursor: pointer;
     }
     .note-obj-management-frame-show-modify-text,
     .note-obj-group-frame-show-modify-text,
     .note-obj-management-frame-show-wait-text,
     .note-obj-group-frame-show-wait-text {
-        margin-left: 20px;
+      margin-left: 20px;
     }
     .note-obj-management-frame-cancel-content,
     .note-obj-group-frame-cancel-content {
-        border-radius: 5px;
-        display: inline-block;
-        text-align: center;
-        cursor: pointer;
-        padding: 5px 10px;
-        float: right;
-        user-select: none;
+      border-radius: 5px;
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      padding: 5px 10px;
+      float: right;
+      user-select: none;
     }
     .note-obj-interface-dark .note-obj-management-frame-cancel-content,
     .note-obj-interface-dark .note-obj-group-frame-cancel-content {
-        background-color: #333;
+      background-color: #333;
     }
     .note-obj-interface-bright .note-obj-management-frame-cancel-content,
     .note-obj-interface-bright .note-obj-group-frame-cancel-content {
-        background-color: #dbdbdb;
+      background-color: #dbdbdb;
     }
     .note-obj-interface-dark .note-obj-management-frame-cancel-content:hover,
     .note-obj-interface-dark .note-obj-group-frame-cancel-content:hover {
-        background-color: #444;
+      background-color: #444;
     }
     .note-obj-interface-bright .note-obj-management-frame-cancel-content:hover,
     .note-obj-interface-bright .note-obj-group-frame-cancel-content:hover {
-        background-color: #aaa;
+      background-color: #aaa;
     }
     .note-obj-management-frame-save-content,
     .note-obj-group-frame-save-content {
-        border-radius: 5px;
-        display: inline-block;
-        margin-left: 20px;
-        text-align: center;
-        cursor: pointer;
-        background-color: #336699;
-        color: #fff;
-        padding: 5px 10px;
-        float: right;
-        user-select: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin-left: 20px;
+      text-align: center;
+      cursor: pointer;
+      background-color: #336699;
+      color: #fff;
+      padding: 5px 10px;
+      float: right;
+      user-select: none;
     }
     .note-obj-management-frame-save-content:hover,
     .note-obj-group-frame-save-content:hover {
-        background-color: #4477AA;
+      background-color: #4477AA;
     }
     .note-obj-select-group-frame-presentation {
-        display: flex;
-        position: fixed;
-        background-color: rgba(0, 0, 0, .7);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100004;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .7);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100004;
+      align-items: center;
+      justify-content: center;
     }
     .note-obj-select-group-frame-dialog {
-        position: relative;
-        width: 350px;
-        border: 3px solid #614343;
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
+      position: relative;
+      width: 350px;
+      border: 3px solid #614343;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
     }
     .note-obj-interface-dark .note-obj-select-group-frame-dialog {
-        background-color: #191e23;
+      background-color: #191e23;
     }
     .note-obj-interface-bright .note-obj-select-group-frame-dialog {
-        background-color: #fff;
+      background-color: #fff;
     }
     .note-obj-select-group-frame-header {
-        margin-top: 10px;
-        align-items: center;
-        text-align: center;
+      margin-top: 10px;
+      align-items: center;
+      text-align: center;
     }
     .note-obj-select-group-frame-header-text {
-        font-weight: bold;
+      font-weight: bold;
     }
     .note-obj-interface-dark .note-obj-select-group-frame-header-text {
-        color: #fff;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-select-group-frame-header-text {
-        color: #000;
+      color: #000;
     }
     .note-obj-select-group-frame-content {
-        display: block;
-        text-align: center;
-        margin: 25px 20px;
-        white-space: pre-wrap;
-        max-height: 400px;
-        overflow: auto;
+      display: block;
+      text-align: center;
+      margin: 25px 20px;
+      white-space: pre-wrap;
+      max-height: 400px;
+      overflow: auto;
     }
     .note-obj-interface-dark .note-obj-select-group-frame-content {
-        color: #fff;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-select-group-frame-content {
-        color: #000;
+      color: #000;
     }
     .note-obj-select-group-frame-footer {
-        color: #fff;
-        display: inline-block;
-        text-align: center;
-        margin-bottom: 20px;
+      color: #fff;
+      display: inline-block;
+      text-align: center;
+      margin-bottom: 20px;
     }
     .note-obj-select-group-frame-footer span {
-        cursor: pointer;
-        margin: 0px 25px;
-        border: 1px solid #666;
-        border-radius: 5px;
-        padding: 5px 10px;
-        background-color: #333;
-        user-select: none;
+      cursor: pointer;
+      margin: 0px 25px;
+      border: 1px solid #666;
+      border-radius: 5px;
+      padding: 5px 10px;
+      background-color: #333;
+      user-select: none;
     }
     .note-obj-select-group-frame-footer span:hover {
-        box-shadow: 0 0 10px #339933;
+      box-shadow: 0 0 10px #339933;
     }
     .note-obj-select-group-frame-group-item {
-        border-radius: 99px;
-        cursor: pointer;
-        margin: 2px 0px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowarp;
-        display: block;
-        padding: 2px 10px;
+      border-radius: 99px;
+      cursor: pointer;
+      margin: 2px 0px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowarp;
+      display: block;
+      padding: 2px 10px;
     }
     .note-obj-new-group-frame-presentation {
-        display: flex;
-        position: fixed;
-        background-color: rgba(0, 0, 0, .8);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100005;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .8);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100005;
+      align-items: center;
+      justify-content: center;
     }
     .note-obj-new-group-frame-dialog {
-        position: relative;
-        width: 400px;
-        border-radius: 12px;
-        display: flex;
-        flex-direction: column;
-        border: 3px solid #614343;
-        box-shadow: 0 1px 10px rgba(0, 0, 0, .8);
+      position: relative;
+      width: 400px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      border: 3px solid #614343;
+      box-shadow: 0 1px 10px rgba(0, 0, 0, .8);
     }
     .note-obj-interface-dark .note-obj-new-group-frame-dialog {
-        background-color: rgb(21, 32, 43);
+      background-color: rgb(21, 32, 43);
     }
     .note-obj-interface-bright .note-obj-new-group-frame-dialog {
-        background-color: #fff;
+      background-color: #fff;
     }
     .note-obj-new-group-frame-header {
-        min-height: 48px;
-        text-align: center;
-        color: #1da1f2;
-        font-weight: bold;
-        background-color: rgba(0, 0, 0, 0);
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-        white-space: normal;
-        cursor: text;
-        user-select: text;
-        line-height: 24px;
-        overflow: hidden;
-        word-wrap: break-word;
-        text-overflow: ellipsis;
+      min-height: 48px;
+      text-align: center;
+      color: #1da1f2;
+      font-weight: bold;
+      background-color: rgba(0, 0, 0, 0);
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      white-space: normal;
+      cursor: text;
+      user-select: text;
+      line-height: 24px;
+      overflow: hidden;
+      word-wrap: break-word;
+      text-overflow: ellipsis;
     }
     .note-obj-interface-dark .note-obj-new-group-frame-header {
-        border: 1px solid rgba(0, 0, 0, .5);
+      border: 1px solid rgba(0, 0, 0, .5);
     }
     .note-obj-interface-bright .note-obj-new-group-frame-header {
-        border: 1px solid #efefef;
+      border: 1px solid #efefef;
     }
     .note-obj-new-group-frame-title-text {
-        margin: 5px;
-        display: block;
+      margin: 5px;
+      display: block;
     }
     .note-obj-new-group-frame-input {
-        min-height: 32px;
-        margin: 5px;
-        border: 1px solid rgba(29, 161, 242, .1);
-        padding-left: 5px;
+      min-height: 32px;
+      margin: 5px;
+      border: 1px solid rgba(29, 161, 242, .1);
+      padding-left: 5px;
     }
     .note-obj-interface-dark .note-obj-new-group-frame-input {
-        background-color: #253341;
-        color: #fff;
+      background-color: #253341;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-new-group-frame-input {
-        background-color: #e8e8e8;
-        color: #000;
+      background-color: #e8e8e8;
+      color: #000;
     }
     .note-obj-new-group-frame-color-label, 
     .note-obj-new-group-frame-dialog button {
-        min-height: 48px;
-        background-color: rgba(0, 0, 0, 0);
+      min-height: 48px;
+      background-color: rgba(0, 0, 0, 0);
     }
     .note-obj-interface-dark .note-obj-new-group-frame-color-label,
     .note-obj-interface-dark .note-obj-new-group-frame-dialog button {
-        color: #fff;
-        border: 1px solid rgba(0, 0, 0, .5);
+      color: #fff;
+      border: 1px solid rgba(0, 0, 0, .5);
     }
     .note-obj-interface-bright .note-obj-new-group-frame-color-label,
     .note-obj-interface-bright .note-obj-new-group-frame-dialog button {
-        color: #000;
-        border: 1px solid #efefef;
+      color: #000;
+      border: 1px solid #efefef;
     }
     .note-obj-new-group-frame-color-label {
-        text-align: center;
-        align-items: center;
-        line-height: 48px;
-        display: block;
+      text-align: center;
+      align-items: center;
+      line-height: 48px;
+      display: block;
     }
     .note-obj-new-group-frame-color-label input[type="color"] {
-        cursor: pointer;
-        margin-left: 10px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .note-obj-new-group-frame-color-label input[type="number"] {
+      margin-left: 10px;
     }
     .note-obj-new-group-frame-dialog button {
-        cursor: pointer;
+      cursor: pointer;
     }
     .note-obj-new-group-frame-dialog button:hover {
-        color: #1da1f2;
+      color: #1da1f2;
     }
     .note-obj-new-group-frame-button-bottom {
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
     }
     .note-obj-settings-frame-presentation {
-        display: flex;
-        position: fixed;
-        background-color: rgba(0, 0, 0, .8);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100006;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .8);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100006;
+      align-items: center;
+      justify-content: center;
     }
     .note-obj-settings-frame-card-enter-active, 
     .note-obj-settings-frame-card-leave-active {
-        transition: all .5s ease;
+      transition: all .5s ease;
     }
     .note-obj-settings-frame-card-enter, 
     .note-obj-settings-frame-card-leave-to {
-        transform: translateX(-100%);
-        opacity: 0;
+      transform: translateX(-100%);
+      opacity: 0;
     }
     .note-obj-settings-frame-card {
-        display: flex;
-        flex-direction: column;
-        width: 450px;
-        max-width: 100%;
-        max-height: 100%;
-        margin: 0px;
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        bottom: 0px;
-        border: 0px;
-        border-radius: 0px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+      display: flex;
+      flex-direction: column;
+      width: 450px;
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0px;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      bottom: 0px;
+      border: 0px;
+      border-radius: 0px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
     }
     .note-obj-interface-dark .note-obj-settings-frame-card {
-        background-color: rgb(21, 32, 43);
-        color: #fff;
+      background-color: rgb(21, 32, 43);
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-settings-frame-card {
-        background-color: #fff;
-        color: #000;
+      background-color: #fff;
+      color: #000;
     }
     .note-obj-settings-frame-header {
-        padding: 16px;
-        display: block;
+      padding: 16px;
+      display: block;
     }
     .note-obj-interface-dark .note-obj-settings-frame-header {
-        border-bottom: 2px solid #000;
+      border-bottom: 2px solid #000;
     }
     .note-obj-interface-bright .note-obj-settings-frame-header {
-        border-bottom: 2px solid #CCC;
+      border-bottom: 2px solid #CCC;
     }
     .note-obj-settings-frame-headline {
-        font-size: 16px;
-        font-weight: bold;
-        float: left;
-        line-height: 100%;
+      font-size: 16px;
+      font-weight: bold;
+      float: left;
+      line-height: 100%;
     }
     .note-obj-settings-frame-close-btn {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-        background-image: ${NOTE_ICON.CLOSE_GRAY};
-        background-size: 24px auto;
-        background-repeat: no-repeat;
-        background-position: center;
-        float: right;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      background-image: ${NOTE_ICON.CLOSE_GRAY};
+      background-size: 24px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      float: right;
     }
     .note-obj-settings-frame-body {
-        overflow: auto;
-        display: block;
-        padding: 20px;
-        flex-grow: 1;
-        flex-shrink: 1;
+      overflow: auto;
+      display: block;
+      padding: 20px;
+      flex-grow: 1;
+      flex-shrink: 1;
     }
     .note-obj-settings-frame-body label, 
     .note-obj-settings-frame-body input[type="checkbox"], 
     .note-obj-settings-frame-body input[type="radio"] {
-        cursor: pointer;
+      cursor: pointer;
     }
     .note-obj-settings-frame-header-icon {
-        width: 16px;
-        height: 16px;
-        background-size: 16px auto;
-        background-repeat: no-repeat;
-        background-position: center;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        transition: transform .5s;
+      width: 16px;
+      height: 16px;
+      background-size: 16px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      transition: transform .5s;
     }
     .note-obj-interface-dark .note-obj-settings-frame-header-icon {
-        background-image: ${NOTE_ICON.CHEVRON_RIGHT_WHITE};
+      background-image: ${NOTE_ICON.CHEVRON_RIGHT_WHITE};
     }
     .note-obj-interface-bright .note-obj-settings-frame-header-icon {
-        background-image: ${NOTE_ICON.CHEVRON_RIGHT_BLACK};
+      background-image: ${NOTE_ICON.CHEVRON_RIGHT_BLACK};
     }
     .note-obj-settings-frame-content {
-        border: 1px solid #333;
-        margin: 10px;
+      border: 1px solid #333;
+      margin: 10px;
     }
     .note-obj-settings-frame-header-icon-romote {
-        transform: rotate(90deg);
+      transform: rotate(90deg);
     }
     .note-obj-settings-frame-flod {
-        border: 1px solid #666;
+      border: 1px solid #666;
     }
     .note-obj-settings-frame-flod > header {
-        cursor: pointer;
-        min-height: 40px;
-        display: flex;
-        box-shadow: 0px 1px 4px rgba(0, 0, 0, .2);
+      cursor: pointer;
+      min-height: 40px;
+      display: flex;
+      box-shadow: 0px 1px 4px rgba(0, 0, 0, .2);
     }
     .note-obj-interface-dark .note-obj-settings-frame-flod > header {
-        background-color: #363636;
-        position: relative;
+      background-color: #363636;
+      position: relative;
     }
     .note-obj-interface-bright .note-obj-settings-frame-flod > header {
-        background-color: #DDD;
-        position: relative;
+      background-color: #DDD;
+      position: relative;
     }
     .note-obj-settings-frame-flod > header > span {
-        font-weight: 500;
-        padding: 10px;
-        margin: 0;
-        border: 0;
-        width: 100%;
+      font-weight: 500;
+      padding: 10px;
+      margin: 0;
+      border: 0;
+      width: 100%;
     }
     .note-obj-settings-frame-content-section {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin: 8px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 8px;
     }
     .note-obj-settings-frame-content-section input[type="text"] {
-        margin: 0px 10px;
-        width: 100%;
-        color: #000;
+      margin: 0px 10px;
+      width: 100%;
+      color: #000;
     }
     .note-obj-settings-frame-content-section a,
     .note-obj-settings-frame-content-section a:visited {
-        color: #4e8ac5;
-        margin-left: 10px;
-        text-decoration: none;
+      color: #4e8ac5;
+      margin-left: 10px;
+      text-decoration: none;
     }
     .note-obj-settings-frame-content-section p {
-        margin: 0px 0px 0px 10px;
+      margin: 0px 0px 0px 10px;
     }
     .note-obj-settings-frame-content-section input[type="checkbox"] {
-        clip: rect(0, 0, 0, 0);
-        position: absolute;
+      clip: rect(0, 0, 0, 0);
+      position: absolute;
     }
     .note-obj-settings-frame-content-section input[type="checkbox"] + label {
-        padding-left: 50px;
-        position: relative;
+      padding-left: 50px;
+      position: relative;
     }
     .note-obj-settings-frame-content-section input[type="checkbox"] + label::before {
-        content: "";
-        position: absolute;
-        left: 0px;
-        margin-top: -2px;
-        border: 1px solid #ddd;
-        border-radius: 100px;
-        cursor: pointer;
-        display: inline-block;
-        width: 40px;
-        height: 18px;
-        transition: border .4s, box-shadow .4s;
-        background-color: #fff;
-        border-color: #e9e9e9;
-        box-shadow: 0px 0px 0px 0px inset #e9e9e9;
-        box-sizing: content-box;
+      content: "";
+      position: absolute;
+      left: 0px;
+      margin-top: -2px;
+      border: 1px solid #ddd;
+      border-radius: 100px;
+      cursor: pointer;
+      display: inline-block;
+      width: 40px;
+      height: 18px;
+      transition: border .4s, box-shadow .4s;
+      background-color: #fff;
+      border-color: #e9e9e9;
+      box-shadow: 0px 0px 0px 0px inset #e9e9e9;
+      box-sizing: content-box;
     }
     .note-obj-settings-frame-content-section input[type="checkbox"] + label::after {
-        content: "";
-        cursor: pointer;
-        position: absolute;
-        top: -1px;
-        left: 0px;
-        width: 18px;
-        height: 18px;
-        transition: background-color .4s, left .2s;
-        border-radius: 100px;
-        background-color: #fff;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+      content: "";
+      cursor: pointer;
+      position: absolute;
+      top: -1px;
+      left: 0px;
+      width: 18px;
+      height: 18px;
+      transition: background-color .4s, left .2s;
+      border-radius: 100px;
+      background-color: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
     }
     .note-obj-settings-frame-content-section input[type="checkbox"]:checked + label::before {
-        content: "";
-        position: absolute;
-        left: 0px;
-        margin-top: -2px;
-        border: 1px solid #ddd;
-        border-radius: 100px;
-        cursor: pointer;
-        display: inline-block;
-        width: 40px;
-        height: 18px;
-        transition: border .4s, box-shadow .4s, background-color 1.2s;
-        background-color: #3c81df;
-        border-color: #3c81df;
-        box-shadow: 0px 0px 0px 12px inset #3c81df;
-        box-sizing: content-box;
+      content: "";
+      position: absolute;
+      left: 0px;
+      margin-top: -2px;
+      border: 1px solid #ddd;
+      border-radius: 100px;
+      cursor: pointer;
+      display: inline-block;
+      width: 40px;
+      height: 18px;
+      transition: border .4s, box-shadow .4s, background-color 1.2s;
+      background-color: #3c81df;
+      border-color: #3c81df;
+      box-shadow: 0px 0px 0px 12px inset #3c81df;
+      box-sizing: content-box;
     }
     .note-obj-settings-frame-content-section input[type="checkbox"]:checked + label::after {
-        content: "";
-        cursor: pointer;
-        position: absolute;
-        top: -1px;
-        left: 23px;
-        width: 18px;
-        height: 18px;
-        transition: background-color .4s, left .2s;
-        border-radius: 100px;
-        background-color: #fff;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+      content: "";
+      cursor: pointer;
+      position: absolute;
+      top: -1px;
+      left: 23px;
+      width: 18px;
+      height: 18px;
+      transition: background-color .4s, left .2s;
+      border-radius: 100px;
+      background-color: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
     }
     .note-obj-settings-frame-content-section input[type="radio"] {
-        clip: rect(0, 0, 0, 0);
-        position: absolute;
+      clip: rect(0, 0, 0, 0);
+      position: absolute;
     }
     .note-obj-settings-frame-content-section input[type="radio"] + label {
-        user-select: none;
-        white-space: nowrap;
-        padding: 3px 5px;
-        color: #fff;
-        background-color: #333;
+      user-select: none;
+      white-space: nowrap;
+      padding: 3px 5px;
+      color: #fff;
+      background-color: #333;
     }
     .note-obj-settings-frame-content-section input[type="radio"]:checked + label {
-        user-select: none;
-        white-space: nowrap;
-        padding: 3px 5px;
-        color: #fff;
-        background-color: #3c81df;
+      user-select: none;
+      white-space: nowrap;
+      padding: 3px 5px;
+      color: #fff;
+      background-color: #3c81df;
     }
     .note-obj-settings-frame-content-section button {
-        padding: 1px 6px;
-        margin: 2px 10px;
-        cursor: pointer;
-        background-color: #fff;
-        color: #000;
+      padding: 1px 6px;
+      margin: 2px 10px;
+      cursor: pointer;
+      background-color: #fff;
+      color: #000;
     }
     .note-obj-setttings-frame-before-input-text {
-        white-space: nowrap;
+      white-space: nowrap;
     }
     .note-obj-settings-frame-radio-config-text,
     .note-obj-settings-frame-before-select-text {
-        margin-right: 10px;
+      margin-right: 10px;
     }
     .note-obj-settings-frame-footer {
-        padding: 16px;
-        display: block;
-        position: relative;
+      padding: 16px;
+      display: block;
+      position: relative;
     }
     .note-obj-settings-frame-component-package,
     .note-obj-settings-frame-component-package-input-text,
     .note-obj-settings-frame-content-child-section {
-        display: flex;
-        flex-flow: row;
+      display: flex;
+      flex-flow: row;
     }
     .note-obj-settings-frame-component-package {
-        max-width: 350px;
+      max-width: 350px;
     }
     .note-obj-settings-frame-component-package-input-text {
-        max-width: 250px;
+      max-width: 250px;
     }
     .note-obj-settings-frame-component-package select {
-        cursor: pointer;
-        color: #000;
+      cursor: pointer;
+      color: #000;
     }
     .note-obj-settings-frame-component-package select option {
-        color: #000;
+      color: #000;
     }
     .note-obj-settings-frame-language-help-text {
-        text-decoration: underline;
-        cursor: pointer;
-        color: #4e8ac5;
+      text-decoration: underline;
+      cursor: pointer;
+      color: #4e8ac5;
     }
     .note-obj-settings-frame-language-help-text:hover::after {
-        content: "❤";
-        text-decoration: none;
-        margin-left: 10px;
-        display: inline-block;
+      content: "❤";
+      text-decoration: none;
+      margin-left: 10px;
+      display: inline-block;
     }
     .note-obj-interface-dark .note-obj-settings-frame-footer {
-        border-top: 2px solid #000;
+      border-top: 2px solid #000;
     }
     .note-obj-interface-bright .note-obj-settings-frame-footer {
-        border-top: 2px solid #CCC;
+      border-top: 2px solid #CCC;
     }
     .note-obj-settings-frame-footer button {
-        float: left;
-        padding: 0px 5px;
-        margin: 0px 5px;
-        cursor: pointer;
-        background-color: #FFF;
-        color: #000;
+      float: left;
+      padding: 0px 5px;
+      margin: 0px 5px;
+      cursor: pointer;
+      background-color: #FFF;
+      color: #000;
     }
     .note-obj-settings-frame-footer button:hover {
-        background-color: #DDD;
+      background-color: #DDD;
     }
     .note-obj-settings-frame-footer span {
-        float: right;
-        user-select: none;
-        margin: 0px 5px;
-        padding: 5px 10px;
-        cursor: pointer;
-        text-align: center;
-        border-radius: 5px;
+      float: right;
+      user-select: none;
+      margin: 0px 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      text-align: center;
+      border-radius: 5px;
     }
     .note-obj-settings-frame-footer-save-btn {
-        background-color: #336699;
-        color: #fff;
+      background-color: #336699;
+      color: #fff;
     }
     .note-obj-settings-frame-footer-save-btn:hover {
-        background-color: #4477AA;
+      background-color: #4477AA;
     }
     .note-obj-interface-dark .note-obj-settings-frame-footer-cancel-btn {
-        background-color: #333;
+      background-color: #333;
     }
     .note-obj-interface-bright .note-obj-settings-frame-footer-cancel-btn {
-        background-color: #dbdbdb;
+      background-color: #dbdbdb;
     }
     .note-obj-interface-dark .note-obj-settings-frame-footer-cancel-btn:hover {
-        background-color: #444;
+      background-color: #444;
     }
     .note-obj-interface-bright .note-obj-settings-frame-footer-cancel-btn:hover {
-        background-color: #aaa;
+      background-color: #aaa;
     }
     .note-obj-confirm-frame-presentation {
-        display: flex;
-        position: fixed;
-        background-color: rgba(0, 0, 0, .7);
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100007;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      position: fixed;
+      background-color: rgba(0, 0, 0, .7);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100007;
+      align-items: center;
+      justify-content: center;
     }
     .note-obj-confirm-frame-dialog {
-        position: relative;
-        width: 350px;
-        border: 3px solid #614343;
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
+      position: relative;
+      width: 350px;
+      border: 3px solid #614343;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
     }
     .note-obj-interface-dark .note-obj-confirm-frame-dialog {
-        background-color: #191e23;
+      background-color: #191e23;
     }
     .note-obj-interface-bright .note-obj-confirm-frame-dialog {
-        background-color: #fff;
+      background-color: #fff;
     }
     .note-obj-confirm-frame-content {
-        display: block;
-        text-align: center;
-        margin: 25px 20px;
-        white-space: pre-wrap;
-        max-height: 200px;
-        overflow: auto;
+      display: block;
+      text-align: center;
+      margin: 25px 20px;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow: auto;
     }
     .note-obj-interface-dark .note-obj-confirm-frame-content {
-        color: #fff;
+      color: #fff;
     }
     .note-obj-interface-bright .note-obj-confirm-frame-content {
-        color: #000;
+      color: #000;
     }
     .note-obj-confirm-frame-footer {
-        color: #fff;
-        display: inline-block;
-        text-align: center;
-        margin-bottom: 20px;
+      color: #fff;
+      display: inline-block;
+      text-align: center;
+      margin-bottom: 20px;
     }
     .note-obj-confirm-frame-footer span {
-        cursor: pointer;
-        margin: 0px 25px;
-        border: 1px solid #666;
-        border-radius: 5px;
-        padding: 5px 10px;
+      cursor: pointer;
+      margin: 0px 25px;
+      border: 1px solid #666;
+      border-radius: 5px;
+      padding: 5px 10px;
     }
     .note-obj-confirm-frame-footer span:hover,
     .note-obj-confirm-frame-footer span:focus {
-        box-shadow: 0 0 10px 5px #339933;
+      box-shadow: 0 0 10px 5px #339933;
     }
     .note-obj-confirm-frame-no-btn {
-        background-color: #333;
-        user-select: none;
+      background-color: #333;
+      user-select: none;
     }
     .note-obj-confirm-frame-yes-btn {
-        background-color: #336699;
-        user-select: none;
+      background-color: #336699;
+      user-select: none;
     }
     .note-obj-message-frame-presentation {
-        max-width: 320px;
-        position: fixed;
-        top: 20px;
-        right: 0px;
-        z-index: 100008;
-        pointer-events: none;
+      max-width: 320px;
+      position: fixed;
+      top: 20px;
+      right: 0px;
+      z-index: 100008;
+      pointer-events: none;
     }
     .note-obj-message-frame-notifaction {
-        display: block;
-        box-sizing: inherit;
-        box-shadow: 0 1px 4px rgba(0,0,0,.2);
-        background-color: #333366;
-        color: #fff;
-        margin: 10px;
-        position: relative;
-        min-width: 240px;
-        backface-visibility: hidden;
-        pointer-events: all;
-        border-radius: 3px;
-        padding: 16px 20px;
+      display: block;
+      box-sizing: inherit;
+      box-shadow: 0 1px 4px rgba(0,0,0,.2);
+      background-color: #333366;
+      color: #fff;
+      margin: 10px;
+      position: relative;
+      min-width: 240px;
+      backface-visibility: hidden;
+      pointer-events: all;
+      border-radius: 3px;
+      padding: 16px 20px;
     }
     .note-obj-message-frame-notifaction-enter-active,
     .note-obj-message-frame-notifaction-leave-active {
-        transition: all .5s;
+      transition: all .5s;
     }
     .note-obj-message-frame-notifaction-enter {
-        transform: translateX(100%);
-        opacity: 0;
+      transform: translateX(100%);
+      opacity: 0;
     }
     .note-obj-message-frame-notifaction-leave-to {
-        opacity: 0;
+      opacity: 0;
     }
     .note-obj-message-frame-close-btn {
-        position: absolute;
-        right: 4px;
-        top: 4px;
-        width: 16px;
-        height: 16px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
-        cursor: pointer;
-        background-image: ${NOTE_ICON.CLOSE_GRAY};
-        background-size: 16px auto;
-        background-repeat: no-repeat;
-        background-position: center;
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
+      cursor: pointer;
+      background-image: ${NOTE_ICON.CLOSE_GRAY};
+      background-size: 16px auto;
+      background-repeat: no-repeat;
+      background-position: center;
     }
     .note-obj-message-frame-content {
-        margin-top: 5px;
+      margin-top: 5px;
     }
 `;
 Vue.directive('focus', {
-  update: function (el, binding) {
+  update(el, binding) {
     if (binding.oldValue !== binding.value) {
       if (binding.value) {
         Note_Obj.fn.debounce(() => {
           try {
-            if (binding.value) {
-              el.focus();
-              el.select();
-            }
+            binding.value && el.focus() && el.select();
           } catch (e) {
-            console.error('Error in focus command.');
-            console.error(e);
+            console.error('Error in focus command.', e);
           }
         }, 200);
       }
@@ -2425,8 +2438,8 @@ Vue.directive('focus', {
   },
 });
 Vue.component('note-obj-popover-frame', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -2436,8 +2449,8 @@ Vue.component('note-obj-popover-frame', {
         class: 'note-obj-popver-frame-dialog',
         style: {
           display: this.isShow ? '' : 'none',
-          left: this.x + 20 + 'px',
-          top: this.y - 50 + 'px',
+          left: `${this.x + 20}px`,
+          top: `${this.y - 50}px`,
         },
         on: {
           mouseenter: _event => {
@@ -2477,8 +2490,8 @@ Vue.component('note-obj-popover-frame', {
                   'data-key': key,
                   title:
                     key +
-                    (this.items[key].name && this.items[key].name !== key ? '\n' + this.items[key].name : '') +
-                    (this.items[key].tag ? '\n' + this.items[key].tag : ''),
+                    (this.items[key].name && this.items[key].name !== key ? `\n${this.items[key].name}` : '') +
+                    (this.items[key].tag ? `\n${this.items[key].tag}` : ''),
                 },
                 domProps: {
                   textContent: this.items[key].tag || this.items[key].name || key,
@@ -2486,20 +2499,13 @@ Vue.component('note-obj-popover-frame', {
                 on: {
                   click: event => {
                     event.stopPropagation();
-                    let ev = event || window.event;
-                    let e_ctrl = ev.ctrlKey || ev.metaKey;
-                    let e_shift = ev.shiftKey;
-                    self.$emit('item-click', event.target.dataset.key, e_ctrl, e_shift);
+                    const ev = event || window.event;
+                    self.$emit('item-click', event.target.dataset.key, ev.ctrlKey || ev.metaKey, ev.shiftKey);
                   },
                 },
               });
             } else {
-              let newUrl = '';
-              if (typeof this.itemClick === 'function') {
-                newUrl = this.itemClick(key);
-              } else {
-                newUrl = window.location.origin + '/' + key;
-              }
+              const newUrl = typeof this.itemClick === 'function' ? this.itemClick(key) : `${window.location.origin}/${key}`;
               return createElement('a', {
                 key: key,
                 class: index % 2 === 1 ? 'note-obj-popover-frame-item-deepen' : 'note-obj-popover-frame-item',
@@ -2507,8 +2513,8 @@ Vue.component('note-obj-popover-frame', {
                   'data-key': key,
                   title:
                     key +
-                    (this.items[key].name && this.items[key].name !== key ? '\n' + this.items[key].name : '') +
-                    (this.items[key].tag ? '\n' + this.items[key].tag : ''),
+                    (this.items[key].name && this.items[key].name !== key ? `\n${this.items[key].name}` : '') +
+                    (this.items[key].tag ? `\n${this.items[key].tag}` : ''),
                   href: newUrl,
                   target: this.openInTab ? '_blank' : '_self',
                 },
@@ -2558,27 +2564,27 @@ Vue.component('note-obj-popover-frame', {
       type: Function,
     },
   },
-  data: function () {
+  data() {
     return {
       hasOpenIntTabMethods: Note_Obj.GM.hasOpenIntTabMethods(),
     };
   },
 });
 Vue.component('note-obj-single-float-button', {
-  render: function (createElement) {
+  render(createElement) {
     if (this.isInsert) {
-      let self = this;
+      const self = this;
       return createElement(
         'div',
         {
-          class: this.extraBoxClassName ? this.boxClassName + ' ' + this.extraBoxClassName : this.boxClassName,
+          class: this.extraBoxClassName ? `${this.boxClassName} ${this.extraBoxClassName}` : this.boxClassName,
         },
         [
           createElement('span', {
             attrs: {
               title: this.title,
             },
-            class: this.extraClassName ? this.className + ' ' + this.extraClassName : this.className,
+            class: this.extraClassName ? `${this.className} ${this.extraClassName}` : this.className,
             on: {
               click: event => {
                 event.stopPropagation();
@@ -2618,10 +2624,10 @@ Vue.component('note-obj-single-float-button', {
   },
 });
 Vue.component('note-obj-set-float-button', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     let isInsert = false;
-    for (let key in this.buttonSet) {
+    for (const key in this.buttonSet) {
       if (this.buttonSet[key].isInsert) {
         isInsert = true;
       }
@@ -2630,13 +2636,13 @@ Vue.component('note-obj-set-float-button', {
       return createElement(
         'div',
         {
-          class: this.extraBoxClassName ? this.boxClassName + ' ' + this.extraBoxClassName : this.boxClassName,
+          class: this.extraBoxClassName ? `${this.boxClassName} ${this.extraBoxClassName}` : this.boxClassName,
         },
         Object.keys(this.buttonSet).map(key => {
           if (this.buttonSet[key].isInsert) {
             return createElement('span', {
               class: this.buttonSet[key].extraClassName
-                ? this.buttonSet[key].className + ' ' + this.buttonSet[key].extraClassName
+                ? `${this.buttonSet[key].className} ${this.buttonSet[key].extraClassName}`
                 : this.buttonSet[key].className,
               attrs: {
                 title: this.buttonSet[key].title || '',
@@ -2671,8 +2677,8 @@ Vue.component('note-obj-set-float-button', {
   },
 });
 Vue.component('note-obj-search-frame', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -2706,7 +2712,7 @@ Vue.component('note-obj-search-frame', {
               class: 'note-obj-search-frame-input',
               on: {
                 input: event => {
-                  self.inputValue = event.target.value.replace(/^\s+|\s+$/g, '');
+                  self.inputValue = event.target.value.trim();
                 },
                 keydown: event => {
                   if (event.keyCode === 38 || event.keyCode === 40 || event.keyCode === 33 || event.keyCode === 34) {
@@ -2748,7 +2754,7 @@ Vue.component('note-obj-search-frame', {
                     createElement('span', {
                       class: 'note-obj-search-frame-index-value',
                       domProps: {
-                        textContent: this.currentIndex + '/' + this.totalIndex,
+                        textContent: `${this.currentIndex}/${this.totalIndex}`,
                       },
                     }),
                   ]
@@ -2765,14 +2771,14 @@ Vue.component('note-obj-search-frame', {
               Object.keys(this.items).map(key => {
                 let title =
                   key +
-                  (this.items[key].name && this.items[key].name !== key ? '\n' + this.items[key].name : '') +
-                  (this.items[key].tag ? '\n' + this.items[key].tag : '');
+                  (this.items[key].name && this.items[key].name !== key ? `\n${this.items[key].name}` : '') +
+                  (this.items[key].tag ? `\n${this.items[key].tag}` : '');
                 let text = this.items[key].tag || this.items[key].name || key;
                 if (this.showGroupName) {
-                  let group_key = this.items[key].group;
-                  if (group_key && group_key !== 'default' && this.group[group_key]) {
-                    title += '\n[' + this.group[group_key].value + ']';
-                    text += ' [' + this.group[group_key].value + ']';
+                  const groupKey = this.items[key].group;
+                  if (groupKey && groupKey !== 'default' && this.group[groupKey]) {
+                    title += `\n[${this.group[groupKey].value}]`;
+                    text += ` [${this.group[groupKey].value}]`;
                   }
                 }
                 let domType, attrs, onEvent;
@@ -2789,20 +2795,13 @@ Vue.component('note-obj-search-frame', {
                     },
                     click: event => {
                       event.stopPropagation();
-                      let ev = event || window.event;
-                      let e_ctrl = ev.ctrlKey || ev.metaKey;
-                      let e_shift = ev.shiftKey;
-                      self.$emit('list-item-click', event.target.dataset.key, e_ctrl, e_shift);
+                      const ev = event || window.event;
+                      self.$emit('list-item-click', event.target.dataset.key, ev.ctrlKey || ev.metaKey, ev.shiftKey);
                     },
                   };
                 } else {
                   domType = 'a';
-                  let newUrl = '';
-                  if (typeof this.itemClick === 'function') {
-                    newUrl = this.itemClick(key);
-                  } else {
-                    newUrl = window.location.origin + '/' + key;
-                  }
+                  const newUrl = typeof this.itemClick === 'function' ? this.itemClick(key) : `${window.location.origin}/${key}`;
                   attrs = {
                     'data-key': key,
                     'data-index': this.items[key].index,
@@ -2928,7 +2927,7 @@ Vue.component('note-obj-search-frame', {
       type: Function,
     },
   },
-  data: function () {
+  data() {
     return {
       inputValue: '',
       items: {},
@@ -2938,60 +2937,56 @@ Vue.component('note-obj-search-frame', {
     };
   },
   computed: {
-    totalIndex: function () {
+    totalIndex() {
       let count = 0;
-      for (let key in this.items) {
+      for (const key in this.items) {
         this.items[key].isShow && count++;
       }
       return count;
     },
   },
   watch: {
-    isShow: function (newValue, oldValue) {
+    isShow(newValue, oldValue) {
       if (newValue !== oldValue && newValue) {
         this.restoreContentEvent();
         Note_Obj.fn.debounce(() => {
           try {
             if (newValue) {
-              let ele = document.getElementById(this.id + '_searchFrameInputBox');
-              if (ele) {
-                ele.focus();
-                ele.select();
-              }
+              const ele = document.getElementById(this.id + '_searchFrameInputBox');
+              ele && ele.focus() && ele.select();
             }
           } catch (e) {
-            console.error('Error in focus command.');
-            console.error(e);
+            console.error('Error in focus command.', e);
           }
         }, 200);
       }
     },
-    inputValue: function (newValue, oldValue) {
+    inputValue(newValue, oldValue) {
       if (newValue != oldValue) {
         Note_Obj.fn.debounce(() => {
           this.searchEvent(newValue);
         }, 250);
       }
     },
-    currentIndex: function (newValue, oldValue) {
+    currentIndex(newValue, oldValue) {
       if (newValue != oldValue) {
-        for (let key in this.items) {
+        for (const key in this.items) {
           this.items[key].highlight = this.items[key].index === newValue ? true : false;
         }
         this.setScrollBar(newValue);
       }
     },
-    originalItems: function (_newValue, _oldValue) {
+    originalItems(_newValue, _oldValue) {
       if (this.isShow) {
         this.restoreContentEvent();
       }
     },
   },
   methods: {
-    restoreContentEvent: function () {
+    restoreContentEvent() {
       let index = 1;
       this.items = Object.assign({}, this.originalItems);
-      for (let key in this.items) {
+      for (const key in this.items) {
         this.items[key] = Object.assign({}, this.items[key], {
           isShow: true,
           index: index++,
@@ -2999,12 +2994,12 @@ Vue.component('note-obj-search-frame', {
         });
       }
     },
-    searchEvent: function (value) {
+    searchEvent(value) {
       let index = 1;
       let find = false;
-      let first_key = '';
+      let firstKey = '';
       let currentIndex = 0;
-      for (let key in this.items) {
+      for (const key in this.items) {
         let status = null;
         if (this.items[key].tag) {
           status = this.determineSearchString(value, this.items[key].tag);
@@ -3023,7 +3018,7 @@ Vue.component('note-obj-search-frame', {
             find = true;
           }
           if (index === 1) {
-            first_key = key;
+            firstKey = key;
           }
           index++;
         } else {
@@ -3033,19 +3028,19 @@ Vue.component('note-obj-search-frame', {
         }
       }
       if (!find) {
-        this.highlightKey = first_key;
+        this.highlightKey = firstKey;
         currentIndex = this.totalIndex > 0 ? 1 : 0;
-        if (first_key) {
-          this.items[first_key].highlight = true;
+        if (firstKey) {
+          this.items[firstKey].highlight = true;
         }
       }
       this.$nextTick(() => {
         this.currentIndex = currentIndex;
       });
     },
-    setScrollBar: function (index) {
-      let tagsList = document.getElementById(this.id + '_searchFrameTagsList');
-      let item = document.querySelector('#' + this.id + '_searchFrameTagsList [data-index="' + index + '"]');
+    setScrollBar(index) {
+      const tagsList = document.getElementById(this.id + '_searchFrameTagsList');
+      const item = document.querySelector(`#${this.id}_searchFrameTagsList [data-index="${index}"]`);
       if (tagsList && item) {
         if (item.offsetTop - tagsList.scrollTop > 225) {
           tagsList.scrollTop = item.offsetTop - 225;
@@ -3054,19 +3049,17 @@ Vue.component('note-obj-search-frame', {
         }
       }
     },
-    getSearchFrameKey: function (index) {
-      let getterValue = '';
+    getSearchFrameKey(index) {
       if (index !== 0) {
-        for (let key in this.items) {
+        for (const key in this.items) {
           if (this.items[key].index === index) {
-            getterValue = key;
-            break;
+            return key;
           }
         }
       }
-      return getterValue;
+      return '';
     },
-    keyDownEvent: function (event) {
+    keyDownEvent(event) {
       Note_Obj.fn.throttle(() => {
         if (event.keyCode === 38) {
           if (this.totalIndex === 0) {
@@ -3111,37 +3104,33 @@ Vue.component('note-obj-search-frame', {
         this.highlightKey = this.getSearchFrameKey(this.currentIndex);
       }, 250);
     },
-    keyUpEvent: function (event) {
+    keyUpEvent(event) {
       if (event.keyCode === 13) {
-        let highlightEle = document.querySelector('#' + this.id + '_searchFrameTagsList .note-obj-search-frame-tags-list-item-highlight');
+        const highlightEle = document.querySelector(`#${this.id}_searchFrameTagsList .note-obj-search-frame-tags-list-item-highlight`);
         if (highlightEle) {
-          let ev = event || window.event;
-          let e_ctrl = ev.ctrlKey || ev.metaKey;
-          let e_shift = ev.shiftKey;
+          const ev = event || window.event;
+          const eCtrl = ev.ctrlKey || ev.metaKey;
+          const eShift = ev.shiftKey;
           if (this.hasOpenIntTabMethods) {
-            this.$emit('list-item-click', highlightEle.dataset.key, e_ctrl, e_shift);
+            this.$emit('list-item-click', highlightEle.dataset.key, eCtrl, eShift);
           } else {
-            Note_Obj.fn.openHyperlink(highlightEle, e_ctrl, e_shift);
+            Note_Obj.fn.openHyperlink(highlightEle, eCtrl, eShift);
           }
         }
       }
       if (event.keyCode === 113) {
-        let highlightEle = document.querySelector('#' + this.id + '_searchFrameTagsList .note-obj-search-frame-tags-list-item-highlight');
-        if (highlightEle) {
-          this.$emit('list-item-edit', highlightEle.dataset.key);
-        }
+        const highlightEle = document.querySelector(`#${this.id}_searchFrameTagsList .note-obj-search-frame-tags-list-item-highlight`);
+        highlightEle && this.$emit('list-item-edit', highlightEle.dataset.key);
       }
       if (event.keyCode === 46) {
-        let highlightEle = document.querySelector('#' + this.id + '_searchFrameTagsList .note-obj-search-frame-tags-list-item-highlight');
-        if (highlightEle) {
-          this.$emit('list-item-delete', highlightEle.dataset.key);
-        }
+        const highlightEle = document.querySelector(`#${this.id}_searchFrameTagsList .note-obj-search-frame-tags-list-item-highlight`);
+        highlightEle && this.$emit('list-item-delete', highlightEle.dataset.key);
       }
       if (event.keyCode === 27) {
         this.$emit('close-click');
       }
     },
-    listItemMouseEnterEvent: function (event) {
+    listItemMouseEnterEvent(event) {
       if (this.currentIndex != event.target.dataset.index) {
         this.currentIndex = Number(event.target.dataset.index);
         this.highlightKey = event.target.dataset.key;
@@ -3150,8 +3139,8 @@ Vue.component('note-obj-search-frame', {
   },
 });
 Vue.component('note-obj-add-frame', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -3191,7 +3180,7 @@ Vue.component('note-obj-add-frame', {
                   },
                   class: 'note-obj-add-frame-user-id',
                   domProps: {
-                    textContent: (this.type === 'user' ? this.lang.userIdText + ': ' : this.lang.scriptIdText + ': ') + this.userId,
+                    textContent: `${this.type === 'user' ? this.lang.userIdText : this.lang.scriptIdText}: ${this.userId}`,
                   },
                 }),
                 this.userName
@@ -3201,8 +3190,7 @@ Vue.component('note-obj-add-frame', {
                       },
                       class: 'note-obj-add-frame-user-name',
                       domProps: {
-                        textContent:
-                          (this.type === 'user' ? this.lang.userNameText + ': ' : this.lang.scriptNameText + ': ') + this.userName,
+                        textContent: `${this.type === 'user' ? this.lang.userNameText : this.lang.scriptNameText}: ${this.userName}`,
                       },
                     })
                   : null,
@@ -3220,7 +3208,7 @@ Vue.component('note-obj-add-frame', {
               },
               on: {
                 change: event => {
-                  self.inputValue = event.target.value.replace(/^\s+|\s+$/g, '');
+                  self.inputValue = event.target.value.trim();
                 },
                 keyup: event => {
                   if (event.keyCode === 13 || event.keyCode === 27) {
@@ -3336,19 +3324,19 @@ Vue.component('note-obj-add-frame', {
     type: {
       type: String,
       required: true,
-      validator: function (value) {
+      validator(value) {
         return ['user', 'script'].indexOf(value) !== -1;
       },
     },
   },
-  data: function () {
+  data() {
     return {
       inputValue: this.value,
       currentGroupKey: this.groupKey,
     };
   },
   computed: {
-    currentGroupName: function () {
+    currentGroupName() {
       if (!this.currentGroupKey || this.currentGroupKey === 'default' || !this.group[this.currentGroupKey]) {
         return this.lang.defaultGroupText;
       } else {
@@ -3357,34 +3345,30 @@ Vue.component('note-obj-add-frame', {
     },
   },
   watch: {
-    isShow: function (newValue, oldValue) {
+    isShow(newValue, oldValue) {
       if (newValue !== oldValue && newValue) {
         this.inputValue = this.value;
         this.currentGroupKey = this.groupKey;
         Note_Obj.fn.debounce(() => {
           try {
             if (newValue) {
-              let ele = document.getElementById(this.id + '_addFrameInputBox');
-              if (ele) {
-                ele.focus();
-                ele.select();
-              }
+              const ele = document.getElementById(this.id + '_addFrameInputBox');
+              ele && ele.focus() && ele.select();
             }
           } catch (e) {
-            console.error('Error in focus command.');
-            console.error(e);
+            console.error('Error in focus command.', e);
           }
         }, 200);
       }
     },
-    groupKey: function (newValue, oldValue) {
+    groupKey(newValue, oldValue) {
       if (newValue != oldValue) {
         this.currentGroupKey = this.groupKey;
       }
     },
   },
   methods: {
-    keyUpEvent: function (event) {
+    keyUpEvent(event) {
       if (event.keyCode === 13) {
         this.$emit('save-event', this.userId, this.userName, this.inputValue, this.currentGroupKey);
       }
@@ -3392,15 +3376,15 @@ Vue.component('note-obj-add-frame', {
         this.$emit('quit-frame');
       }
     },
-    buttonClickEvent: function (event) {
+    buttonClickEvent(event) {
       this.$emit('button-click', this.userId, this.userName, this.inputValue, this.currentGroupKey, event.target.dataset.key);
     },
   },
 });
 Vue.component('note-obj-management-frame', {
-  render: function (createElement) {
+  render(createElement) {
     if (this.isInsert) {
-      let self = this;
+      const self = this;
       return createElement(
         'div',
         {
@@ -3440,7 +3424,7 @@ Vue.component('note-obj-management-frame', {
                       class: 'note-obj-management-frame-search-input',
                       on: {
                         input: event => {
-                          self.inputValue = event.target.value.replace(/^\s+|\s+$/g, '');
+                          self.inputValue = event.target.value.trim();
                         },
                         keydown: event => {
                           if (event.keyCode === 13) {
@@ -3557,7 +3541,7 @@ Vue.component('note-obj-management-frame', {
                       },
                       class: 'note-obj-management-frame-show-number',
                       domProps: {
-                        textContent: this.selectedNumber + '/' + this.totalNumber,
+                        textContent: `${this.selectedNumber}/${this.totalNumber}`,
                       },
                     }),
                   ]),
@@ -3662,12 +3646,7 @@ Vue.component('note-obj-management-frame', {
                             },
                           },
                           Object.keys(this.items).map(key => {
-                            let newUrl = '';
-                            if (typeof this.itemClick === 'function') {
-                              newUrl = this.itemClick(key);
-                            } else {
-                              newUrl = window.location.origin + '/' + key;
-                            }
+                            const newUrl = typeof this.itemClick === 'function' ? this.itemClick(key) : `${window.location.origin}/${key}`;
                             return createElement(
                               'tr',
                               {
@@ -3735,7 +3714,7 @@ Vue.component('note-obj-management-frame', {
                                       dataKey: key,
                                     },
                                     on: {
-                                      'click-event': function (keyValue) {
+                                      'click-event'(keyValue) {
                                         self.selectGroupFrameAddHandleId(resKey => {
                                           self.items[keyValue].group = resKey;
                                           self.isModify = true;
@@ -3756,7 +3735,7 @@ Vue.component('note-obj-management-frame', {
                                       'note-obj-management-frame-item-ok': this.items[key].isContentEditAble,
                                     },
                                     on: {
-                                      click: function (event) {
+                                      click(event) {
                                         event.stopPropagation();
                                         self.listItemEditEvent(event.target.dataset.key);
                                       },
@@ -4053,7 +4032,7 @@ Vue.component('note-obj-management-frame', {
     type: {
       type: String,
       required: true,
-      validator: function (value) {
+      validator(value) {
         return ['user', 'script'].indexOf(value) !== -1;
       },
     },
@@ -4062,7 +4041,7 @@ Vue.component('note-obj-management-frame', {
       requreid: true,
     },
   },
-  data: function () {
+  data() {
     return {
       inputValue: '',
       isModify: false,
@@ -4073,31 +4052,31 @@ Vue.component('note-obj-management-frame', {
     };
   },
   computed: {
-    totalNumber: function () {
+    totalNumber() {
       let count = 0;
-      for (let key in this.items) {
+      for (const key in this.items) {
         this.items[key].isExists && count++;
       }
       return count;
     },
-    selectedNumber: function () {
+    selectedNumber() {
       let count = 0;
-      for (let key in this.items) {
+      for (const key in this.items) {
         this.items[key].isExists && this.items[key].isShow && this.items[key].isSelected && count++;
       }
       return count;
     },
     selectAllChecked: {
-      get: function () {
-        for (let key in this.items) {
+      get() {
+        for (const key in this.items) {
           if (this.items[key].isExists && this.items[key].isShow && !this.items[key].isSelected) {
             return false;
           }
         }
         return true;
       },
-      set: function (value) {
-        for (let key in this.items) {
+      set(value) {
+        for (const key in this.items) {
           if (this.items[key].isExists && this.items[key].isShow) {
             if (value && !this.items[key].isSelected) {
               this.items[key].isSelected = true;
@@ -4110,24 +4089,24 @@ Vue.component('note-obj-management-frame', {
     },
   },
   watch: {
-    inputValue: function (newValue, oldValue) {
+    inputValue(newValue, oldValue) {
       if (newValue != oldValue) {
         Note_Obj.fn.debounce(() => {
           this.searchEvent(newValue);
         }, 250);
       }
     },
-    rangeSelectValue: function (newValue, oldValue) {
+    rangeSelectValue(newValue, oldValue) {
       if (newValue != oldValue) {
         this.searchEvent(this.inputValue);
       }
     },
-    groupSelectValue: function (newValue, oldValue) {
+    groupSelectValue(newValue, oldValue) {
       if (newValue != oldValue) {
         this.searchEvent(this.inputValue);
       }
     },
-    isInsert: function (newValue, oldValue) {
+    isInsert(newValue, oldValue) {
       if (newValue != oldValue && newValue) {
         if (Object.keys(this.originalItems).length > 50) {
           this.items = {};
@@ -4140,7 +4119,7 @@ Vue.component('note-obj-management-frame', {
         }
       }
     },
-    originalItems: function (_newValue, _oldValue) {
+    originalItems(_newValue, _oldValue) {
       if (this.isInsert) {
         this.isModify = false;
         this.searchEvent(this.inputValue);
@@ -4148,15 +4127,15 @@ Vue.component('note-obj-management-frame', {
     },
   },
   methods: {
-    searchEvent: function (value) {
-      let group_keys_list = Object.keys(this.group);
-      for (let key in this.items) {
+    searchEvent(value) {
+      const groupKeysList = Object.keys(this.group);
+      for (const key in this.items) {
         if (this.items[key].isExists) {
           let showStatus = null;
           if (
             !this.groupSelectValue ||
             this.groupSelectValue === this.items[key].group ||
-            (this.groupSelectValue === 'default' && !group_keys_list.includes(this.items[key].group))
+            (this.groupSelectValue === 'default' && !groupKeysList.includes(this.items[key].group))
           ) {
             if (this.rangeSelectValue === 'all') {
               showStatus =
@@ -4177,14 +4156,14 @@ Vue.component('note-obj-management-frame', {
         }
       }
     },
-    restoreContentEvent: function (_event) {
+    restoreContentEvent(_event) {
       this.inputValue = '';
       this.rangeSelectValue = 'all';
       this.groupSelectValue = '';
       this.isWait = false;
       this.isModify = false;
       this.items = Object.assign({}, this.originalItems);
-      for (let key in this.items) {
+      for (const key in this.items) {
         if (this.items[key].group == null) {
           this.items[key] = Object.assign({}, this.items[key], {
             group: '',
@@ -4203,45 +4182,42 @@ Vue.component('note-obj-management-frame', {
         }
       }
     },
-    itemInputEvent: function (key) {
-      let input_value = document
-        .querySelector('.note-obj-management-frame-item-input-tag[data-key="' + key + '"]')
-        .value.replace(/^\s+|\s+$/g, '');
-      this.items[key].tag = input_value;
+    itemInputEvent(key) {
+      const inputValue = document.querySelector('.note-obj-management-frame-item-input-tag[data-key="' + key + '"]').value.trim();
+      this.items[key].tag = inputValue;
       this.isModify = true;
       this.items[key].isContentEditAble = false;
     },
-    deselectAllEvent: function (_event) {
-      for (let key in this.items) {
+    deselectAllEvent(_event) {
+      for (const key in this.items) {
         if (this.items[key].isExists && this.items[key].isSelected) {
           this.items[key].isSelected = false;
         }
       }
     },
-    listItemEditEvent: function (key) {
+    listItemEditEvent(key) {
       if (this.items[key].isContentEditAble) {
         this.itemInputEvent(key);
       } else {
         this.items[key].isContentEditAble = true;
         Note_Obj.fn.debounce(() => {
           try {
-            let input_dom = document.querySelector('.note-obj-management-frame-item-input-tag[data-key="' + key + '"]');
-            if (input_dom) {
-              input_dom.focus();
-              input_dom.select();
+            const inputDom = document.querySelector('.note-obj-management-frame-item-input-tag[data-key="' + key + '"]');
+            if (inputDom) {
+              inputDom.focus();
+              inputDom.select();
             }
           } catch (e) {
-            console.error('Error in focus command.');
-            console.error(e);
+            console.error('Error in focus command.', e);
           }
         }, 200);
       }
     },
-    listItemDeleteEvent: function (key) {
+    listItemDeleteEvent(key) {
       this.items[key].isExists = false;
       this.isModify = true;
     },
-    listItemKeyUpEvent: function (event) {
+    listItemKeyUpEvent(event) {
       if (this.items[event.target.dataset.key].isContentEditAble) {
         if (event.keyCode === 13) {
           this.itemInputEvent(event.target.dataset.key);
@@ -4254,71 +4230,71 @@ Vue.component('note-obj-management-frame', {
         }
       }
     },
-    deleteSelectedEvent: function (_evnet) {
-      for (let key in this.items) {
+    deleteSelectedEvent(_evnet) {
+      for (const key in this.items) {
         if (this.items[key].isExists && this.items[key].isShow && this.items[key].isSelected) {
           this.items[key].isExists = false;
           this.isModify = true;
         }
       }
     },
-    clearSelectedEvent: function (_event) {
-      for (let key in this.items) {
+    clearSelectedEvent(_event) {
+      for (const key in this.items) {
         if (this.items[key].isExists && this.items[key].isShow && this.items[key].isSelected) {
           this.items[key].tag = '';
           this.isModify = true;
         }
       }
     },
-    moveSelecteEvent: function (_event) {
-      let move_list = [];
-      for (let key in this.items) {
+    moveSelecteEvent(_event) {
+      const moveList = [];
+      for (const key in this.items) {
         if (this.items[key].isExists && this.items[key].isShow && this.items[key].isSelected) {
-          move_list.push(key);
+          moveList.push(key);
         }
       }
-      if (move_list.length > 0) {
+      if (moveList.length > 0) {
         this.selectGroupFrameAddHandleId(resKey => {
-          move_list.forEach(m_key => {
-            this.items[m_key].group = resKey;
+          moveList.forEach(mKey => {
+            this.items[mKey].group = resKey;
           });
           this.isModify = true;
         });
       }
     },
-    exportSelectedEvent: function (_event) {
+    exportSelectedEvent(_event) {
       if (!this.isModify) {
-        let export_obj = {};
-        for (let key in this.items) {
+        const exportObj = {};
+        for (const key in this.items) {
           if (this.items[key].isExists && this.items[key].isShow && this.items[key].isSelected) {
-            export_obj[key] = {
+            exportObj[key] = {
               tag: this.originalItems[key].tag,
               name: this.originalItems[key].name || key,
             };
             if (this.originalItems[key].group && this.originalItems[key].group !== 'default') {
-              export_obj[key].group = this.originalItems[key].group;
+              exportObj[key].group = this.originalItems[key].group;
             }
           }
         }
-        Object.keys(export_obj).length > 0 &&
-          Note_Obj.fn.downloadText(JSON.stringify(export_obj), this.id + '_list_' + Date.now() + '.txt', () => {
-            this.$emit('message-event', this.lang.exportNotifactionText.replace('%s', Object.keys(export_obj).length));
+        Object.keys(exportObj).length > 0 &&
+          Note_Obj.fn.downloadText(JSON.stringify(exportObj), `${this.id}_list_${Date.now()}.txt`, () => {
+            this.$emit('message-event', this.lang.exportNotifactionText.replace('%s', Object.keys(exportObj).length));
           });
       }
     },
-    imoprtContentEvent: function (_event) {
+    imoprtContentEvent(_event) {
       Note_Obj.fn.openFile((res, content) => {
         if (res) {
           if (content) {
             try {
-              let import_obj = JSON.parse(content);
-              if (typeof import_obj === 'object' && import_obj) {
-                for (let key in import_obj) {
-                  if (import_obj[key].tag == null) {
-                    delete import_obj[key];
+              const importObj = JSON.parse(content);
+              if (typeof importObj === 'object' && importObj) {
+                for (const key in importObj) {
+                  if (importObj[key].tag == null) {
+                    delete importObj[key];
                   } else {
-                    if (!import_obj[key].name && import_obj[key].group == null) {
-                      import_obj[key] = Object.assign({}, import_obj[key], {
+                    if (!importObj[key].name && importObj[key].group == null) {
+                      importObj[key] = Object.assign({}, importObj[key], {
                         name: key,
                         group: '',
                         isExists: true,
@@ -4326,16 +4302,16 @@ Vue.component('note-obj-management-frame', {
                         isSelected: false,
                         isContentEditAble: false,
                       });
-                    } else if (!import_obj[key].name) {
-                      import_obj[key] = Object.assign({}, import_obj[key], {
+                    } else if (!importObj[key].name) {
+                      importObj[key] = Object.assign({}, importObj[key], {
                         name: key,
                         isExists: true,
                         isShow: true,
                         isSelected: false,
                         isContentEditAble: false,
                       });
-                    } else if (import_obj[key].group == null) {
-                      import_obj[key] = Object.assign({}, import_obj[key], {
+                    } else if (importObj[key].group == null) {
+                      importObj[key] = Object.assign({}, importObj[key], {
                         group: '',
                         isExists: true,
                         isShow: true,
@@ -4343,7 +4319,7 @@ Vue.component('note-obj-management-frame', {
                         isContentEditAble: false,
                       });
                     } else {
-                      import_obj[key] = Object.assign({}, import_obj[key], {
+                      importObj[key] = Object.assign({}, importObj[key], {
                         isExists: true,
                         isShow: true,
                         isSelected: false,
@@ -4352,19 +4328,18 @@ Vue.component('note-obj-management-frame', {
                     }
                   }
                 }
-                if (Object.keys(import_obj).length > 0) {
-                  this.items = Object.assign({}, this.items, import_obj);
+                if (Object.keys(importObj).length > 0) {
+                  this.items = Object.assign({}, this.items, importObj);
                 }
                 this.searchEvent(this.inputValue);
                 this.isModify = true;
-                this.$emit('message-event', this.lang.importNotifactionText.replace('%s', Object.keys(import_obj).length));
+                this.$emit('message-event', this.lang.importNotifactionText.replace('%s', Object.keys(importObj).length));
               } else {
                 console.warn('Content is not an object.');
                 this.$emit('message-event', this.lang.notObjectNotifactionText);
               }
             } catch (e) {
-              console.error('There was an error in the parsing of the object.');
-              console.error(e);
+              console.error('There was an error in the parsing of the object.', e);
               this.$emit('message-event', this.lang.errorImportNotifactionText);
             }
           } else {
@@ -4376,34 +4351,34 @@ Vue.component('note-obj-management-frame', {
         }
       });
     },
-    saveContentEvent: function (_event) {
+    saveContentEvent(_event) {
       if (this.isModify) {
-        let save_obj = {};
-        for (let key in this.items) {
+        const saveObj = {};
+        for (const key in this.items) {
           if (this.items[key].isExists) {
-            save_obj[key] = {
+            saveObj[key] = {
               tag: this.items[key].tag,
               name: this.items[key].name || key,
             };
             if (this.items[key].group && this.items[key].group !== 'default') {
-              save_obj[key].group = this.items[key].group;
+              saveObj[key].group = this.items[key].group;
             }
           }
         }
-        this.$emit('save-event', save_obj);
+        this.$emit('save-event', saveObj);
       } else {
         this.$emit('quit-frame');
       }
     },
-    cancelContentEvent: function (_event) {
+    cancelContentEvent(_event) {
       this.$emit('quit-frame');
     },
   },
 });
 Vue.component('note-obj-group-frame', {
-  render: function (createElement) {
+  render(createElement) {
     if (this.isInsert) {
-      let self = this;
+      const self = this;
       return createElement(
         'div',
         {
@@ -4443,7 +4418,7 @@ Vue.component('note-obj-group-frame', {
                       class: 'note-obj-group-frame-search-input',
                       on: {
                         input: event => {
-                          self.inputValue = event.target.value.replace(/^\s+|\s+$/g, '');
+                          self.inputValue = event.target.value.trim();
                         },
                         keydown: event => {
                           if (event.keyCode === 13) {
@@ -4523,6 +4498,14 @@ Vue.component('note-obj-group-frame', {
                             }),
                             createElement('th', {
                               attrs: {
+                                title: this.lang.groupWeightText,
+                              },
+                              domProps: {
+                                textContent: this.lang.groupWeightText,
+                              },
+                            }),
+                            createElement('th', {
+                              attrs: {
                                 title: this.lang.editText,
                               },
                               domProps: {
@@ -4531,7 +4514,7 @@ Vue.component('note-obj-group-frame', {
                             }),
                             createElement('th', {
                               attrs: {
-                                title: this.lang.groupSecondaryColorText,
+                                title: this.lang.deleteText,
                               },
                               domProps: {
                                 textContent: this.lang.deleteText,
@@ -4622,6 +4605,26 @@ Vue.component('note-obj-group-frame', {
                                     on: {
                                       change: event => {
                                         self.items[event.target.dataset.key].secondaryColor = event.target.value;
+                                        self.isModify = true;
+                                      },
+                                    },
+                                  }),
+                                ]),
+                                createElement('td', [
+                                  createElement('input', {
+                                    attrs: {
+                                      type: 'number',
+                                      'data-key': key,
+                                      step: 1,
+                                      min: -100,
+                                      max: 100,
+                                    },
+                                    domProps: {
+                                      value: this.items[key].weight,
+                                    },
+                                    on: {
+                                      change: event => {
+                                        self.items[event.target.dataset.key].weight = event.target.value;
                                         self.isModify = true;
                                       },
                                     },
@@ -4879,7 +4882,7 @@ Vue.component('note-obj-group-frame', {
       required: true,
     },
   },
-  data: function () {
+  data() {
     return {
       items: {},
       inputValue: '',
@@ -4888,31 +4891,31 @@ Vue.component('note-obj-group-frame', {
     };
   },
   computed: {
-    totalNumber: function () {
+    totalNumber() {
       let count = 0;
-      for (let key in this.items) {
+      for (const key in this.items) {
         this.items[key].isExists && count++;
       }
       return count;
     },
-    selectedNumber: function () {
+    selectedNumber() {
       let count = 0;
-      for (let key in this.items) {
+      for (const key in this.items) {
         this.items[key].isExists && this.items[key].isShow && this.items[key].isSelected && count++;
       }
       return count;
     },
     selectAllChecked: {
-      get: function () {
-        for (let key in this.items) {
+      get() {
+        for (const key in this.items) {
           if (this.items[key].isExists && this.items[key].isShow && !this.items[key].isSelected) {
             return false;
           }
         }
         return true;
       },
-      set: function (value) {
-        for (let key in this.items) {
+      set(value) {
+        for (const key in this.items) {
           if (this.items[key].isExists && this.items[key].isShow) {
             if (value && !this.items[key].isSelected) {
               this.items[key].isSelected = true;
@@ -4925,14 +4928,14 @@ Vue.component('note-obj-group-frame', {
     },
   },
   watch: {
-    inputValue: function (newValue, oldValue) {
+    inputValue(newValue, oldValue) {
       if (newValue != oldValue) {
         Note_Obj.fn.debounce(() => {
           this.searchEvent(newValue);
         }, 250);
       }
     },
-    isInsert: function (newValue, oldValue) {
+    isInsert(newValue, oldValue) {
       if (newValue != oldValue && newValue) {
         if (Object.keys(this.originalItems).length > 50) {
           this.items = {};
@@ -4945,7 +4948,7 @@ Vue.component('note-obj-group-frame', {
         }
       }
     },
-    originalItems: function (_newValue, _oldValue) {
+    originalItems(_newValue, _oldValue) {
       if (this.isInsert) {
         this.isModify = false;
         this.searchEvent(this.inputValue);
@@ -4953,17 +4956,17 @@ Vue.component('note-obj-group-frame', {
     },
   },
   methods: {
-    searchEvent: function (value) {
-      for (let key in this.items) {
+    searchEvent(value) {
+      for (const key in this.items) {
         this.items[key].isShow = this.determineSearchString(value, this.items[key].value);
       }
     },
-    restoreContentEvent: function (_event) {
+    restoreContentEvent(_event) {
       this.inputValue = '';
       this.isWait = false;
       this.isModify = false;
       this.items = Object.assign({}, this.originalItems);
-      for (let key in this.items) {
+      for (const key in this.items) {
         if (key === 'default') {
           this.items[key].value = this.lang.defaultGroupText;
         }
@@ -4973,6 +4976,9 @@ Vue.component('note-obj-group-frame', {
         if (this.items[key].secondaryColor == null) {
           this.items[key].secondaryColor = this.defaultColor.secondaryColor;
         }
+        if (this.items[key].weight == null) {
+          this.items[key].weight = 0;
+        }
         this.items[key] = Object.assign({}, this.items[key], {
           isExists: true,
           isShow: true,
@@ -4981,12 +4987,10 @@ Vue.component('note-obj-group-frame', {
         });
       }
     },
-    itemInputEvent: function (key) {
+    itemInputEvent(key) {
       if (key !== 'default') {
-        let input_value = document
-          .querySelector('.note-obj-group-frame-item-input-value[data-key="' + key + '"]')
-          .value.replace(/^\s+|\s+$/g, '');
-        this.items[key].value = input_value;
+        const inputValue = document.querySelector('.note-obj-group-frame-item-input-value[data-key="' + key + '"]').value.trim();
+        this.items[key].value = inputValue;
         if (!this.items[key].value) {
           this.items[key].isExists = false;
         }
@@ -4994,14 +4998,14 @@ Vue.component('note-obj-group-frame', {
         this.items[key].isContentEditAble = false;
       }
     },
-    deselectAllEvent: function (_event) {
-      for (let key in this.items) {
+    deselectAllEvent(_event) {
+      for (const key in this.items) {
         if (this.items[key].isExists && this.items[key].isSelected) {
           this.items[key].isSelected = false;
         }
       }
     },
-    listItemEditEvent: function (key) {
+    listItemEditEvent(key) {
       if (key !== 'default') {
         if (this.items[key].isContentEditAble) {
           this.itemInputEvent(key);
@@ -5009,26 +5013,25 @@ Vue.component('note-obj-group-frame', {
           this.items[key].isContentEditAble = true;
           Note_Obj.fn.debounce(() => {
             try {
-              let input_dom = document.querySelector('.note-obj-group-frame-item-input-value[data-key="' + key + '"]');
-              if (input_dom) {
-                input_dom.focus();
-                input_dom.select();
+              const inputDom = document.querySelector('.note-obj-group-frame-item-input-value[data-key="' + key + '"]');
+              if (inputDom) {
+                inputDom.focus();
+                inputDom.select();
               }
             } catch (e) {
-              console.error('Error in focus command.');
-              console.error(e);
+              console.error('Error in focus command.', e);
             }
           }, 200);
         }
       }
     },
-    listItemDeleteEvent: function (key) {
+    listItemDeleteEvent(key) {
       if (key !== 'default') {
         this.items[key].isExists = false;
         this.isModify = true;
       }
     },
-    listItemKeyUpEvent: function (event) {
+    listItemKeyUpEvent(event) {
       if (this.items[event.target.dataset.key].isContentEditAble) {
         if (event.keyCode === 13) {
           this.itemInputEvent(event.target.dataset.key);
@@ -5041,87 +5044,67 @@ Vue.component('note-obj-group-frame', {
         }
       }
     },
-    deleteSelectedEvent: function (_evnet) {
-      for (let key in this.items) {
+    deleteSelectedEvent(_evnet) {
+      for (const key in this.items) {
         if (key !== 'default' && this.items[key].isExists && this.items[key].isShow && this.items[key].isSelected) {
           this.items[key].isExists = false;
           this.isModify = true;
         }
       }
     },
-    exportSelectedEvent: function (_event) {
+    exportSelectedEvent(_event) {
       if (!this.isModify) {
-        let export_obj = {};
-        for (let key in this.items) {
+        const exportObj = {};
+        for (const key in this.items) {
           if (this.items[key].isExists && this.items[key].isShow && this.items[key].isSelected) {
-            export_obj[key] = this.originalItems[key];
+            exportObj[key] = this.originalItems[key];
           }
         }
-        Object.keys(export_obj).length > 0 &&
-          Note_Obj.fn.downloadText(JSON.stringify(export_obj), this.id + '_group_' + Date.now() + '.txt', () => {
-            this.$emit('message-event', this.lang.exportNotifactionText.replace('%s', Object.keys(export_obj).length));
+        Object.keys(exportObj).length > 0 &&
+          Note_Obj.fn.downloadText(JSON.stringify(exportObj), `${this.id}_group_${Date.now()}.txt`, () => {
+            this.$emit('message-event', this.lang.exportNotifactionText.replace('%s', Object.keys(exportObj).length));
           });
       }
     },
-    imoprtContentEvent: function (_event) {
+    imoprtContentEvent(_event) {
       Note_Obj.fn.openFile((res, content) => {
         if (res) {
           if (content) {
             try {
-              let import_obj = JSON.parse(content);
-              if (typeof import_obj === 'object' && import_obj) {
-                for (let key in import_obj) {
-                  if (!import_obj[key].value) {
-                    delete import_obj[key];
+              const importObj = JSON.parse(content);
+              if (typeof importObj === 'object' && importObj) {
+                for (const key in importObj) {
+                  if (!importObj[key].value) {
+                    delete importObj[key];
                   } else {
-                    if (import_obj[key].primaryColor == null && import_obj[key].secondaryColor == null) {
-                      import_obj[key] = Object.assign({}, import_obj[key], {
+                    importObj[key] = Object.assign(
+                      {
                         primaryColor: this.defaultColor.primaryColor,
                         secondaryColor: this.defaultColor.secondaryColor,
+                        weight: 0,
+                      },
+                      importObj[key],
+                      {
                         isExists: true,
                         isShow: true,
                         isSelected: false,
                         isContentEditAble: false,
-                      });
-                    } else if (import_obj[key].primaryColor == null) {
-                      import_obj[key] = Object.assign({}, import_obj[key], {
-                        primaryColor: this.defaultColor.primaryColor,
-                        isExists: true,
-                        isShow: true,
-                        isSelected: false,
-                        isContentEditAble: false,
-                      });
-                    } else if (import_obj[key].secondaryColor == null) {
-                      import_obj[key] = Object.assign({}, import_obj[key], {
-                        secondaryColor: this.defaultColor.secondaryColor,
-                        isExists: true,
-                        isShow: true,
-                        isSelected: false,
-                        isContentEditAble: false,
-                      });
-                    } else {
-                      import_obj[key] = Object.assign({}, import_obj[key], {
-                        isExists: true,
-                        isShow: true,
-                        isSelected: false,
-                        isContentEditAble: false,
-                      });
-                    }
+                      }
+                    );
                   }
                 }
-                if (Object.keys(import_obj).length > 0) {
-                  this.items = Object.assign({}, this.items, import_obj);
+                if (Object.keys(importObj).length > 0) {
+                  this.items = Object.assign({}, this.items, importObj);
                 }
                 this.searchEvent(this.inputValue);
                 this.isModify = true;
-                this.$emit('message-event', this.lang.importNotifactionText.replace('%s', Object.keys(import_obj).length));
+                this.$emit('message-event', this.lang.importNotifactionText.replace('%s', Object.keys(importObj).length));
               } else {
                 console.warn('Content is not an object.');
                 this.$emit('message-event', this.lang.notObjectNotifactionText);
               }
             } catch (e) {
-              console.error('There was an error in the parsing of the object.');
-              console.error(e);
+              console.error('There was an error in the parsing of the object.', e);
               this.$emit('message-event', this.lang.errorImportNotifactionText);
             }
           } else {
@@ -5133,31 +5116,33 @@ Vue.component('note-obj-group-frame', {
         }
       });
     },
-    saveContentEvent: function (_event) {
+    saveContentEvent(_event) {
       if (this.isModify) {
-        let save_obj = {};
-        for (let key in this.items) {
+        const saveObj = {};
+        for (const key in this.items) {
           if (this.items[key].isExists) {
-            save_obj[key] = {
+            saveObj[key] = {
               value: this.items[key].value,
               primaryColor: this.items[key].primaryColor || this.defaultColor.primaryColor,
               secondaryColor: this.items[key].secondaryColor || this.defaultColor.secondaryColor,
+              weight: this.items[key].weight || 0,
             };
           }
         }
-        this.$emit('save-event', save_obj);
+        this.$emit('save-event', saveObj);
       } else {
         this.$emit('quit-frame');
       }
     },
-    cancelContentEvent: function (_event) {
+    cancelContentEvent(_event) {
       this.$emit('quit-frame');
     },
-    createValueEvent: function () {
+    createValueEvent() {
       this.$set(this.items, 'g_' + Date.now(), {
         value: this.lang.groupNewValueText,
         primaryColor: this.defaultColor.primaryColor,
         secondaryColor: this.defaultColor.secondaryColor,
+        weight: 0,
         isExists: true,
         isShow: true,
         isSelected: false,
@@ -5165,7 +5150,7 @@ Vue.component('note-obj-group-frame', {
       });
       this.isModify = true;
       this.$nextTick(() => {
-        let tbody = document.querySelector('.note-obj-group-frame-tbody');
+        const tbody = document.querySelector('.note-obj-group-frame-tbody');
         if (tbody) {
           tbody.scrollTop = tbody.scrollHeight;
         }
@@ -5174,8 +5159,8 @@ Vue.component('note-obj-group-frame', {
   },
 });
 Vue.component('note-obj-select-group-frame', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -5219,30 +5204,39 @@ Vue.component('note-obj-select-group-frame', {
               {
                 class: 'note-obj-select-group-frame-content',
               },
-              Object.keys(this.group).map(key => {
-                let text = key === 'default' ? this.lang.defaultGroupText : this.group[key].value;
-                return createElement('div', {
-                  key: key,
-                  class: 'note-obj-select-group-frame-group-item',
-                  attrs: {
-                    'data-key': key,
-                    title: text,
-                  },
-                  domProps: {
-                    textContent: text,
-                  },
-                  style: {
-                    color: this.group[key].secondaryColor,
-                    backgroundColor: this.group[key].primaryColor,
-                  },
-                  on: {
-                    click: event => {
-                      event.stopPropagation();
-                      self.$emit('click-event', event.target.dataset.key);
+              Object.keys(this.group)
+                .sort((a, b) => {
+                  if ((Number(this.group[a].weight) || 0) - (Number(this.group[b].weight) || 0) < 0) {
+                    return 1;
+                  } else if ((Number(this.group[a].weight) || 0) - (Number(this.group[b].weight) || 0) > 0) {
+                    return -1;
+                  }
+                  return 0;
+                })
+                .map(key => {
+                  const text = key === 'default' ? this.lang.defaultGroupText : this.group[key].value;
+                  return createElement('div', {
+                    key: key,
+                    class: 'note-obj-select-group-frame-group-item',
+                    attrs: {
+                      'data-key': key,
+                      title: text,
                     },
-                  },
-                });
-              })
+                    domProps: {
+                      textContent: text,
+                    },
+                    style: {
+                      color: this.group[key].secondaryColor,
+                      backgroundColor: this.group[key].primaryColor,
+                    },
+                    on: {
+                      click: event => {
+                        event.stopPropagation();
+                        self.$emit('click-event', event.target.dataset.key);
+                      },
+                    },
+                  });
+                })
             ),
             createElement(
               'div',
@@ -5289,8 +5283,8 @@ Vue.component('note-obj-select-group-frame', {
   },
 });
 Vue.component('note-obj-input-checkbox', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement('input', {
       attrs: {
         type: 'checkbox',
@@ -5318,9 +5312,9 @@ Vue.component('note-obj-input-checkbox', {
   },
 });
 Vue.component('note-obj-management-input-text', {
-  render: function (createElement) {
-    let self = this;
-    let className = this.className + (this.isContentEditAble ? ' note-obj-management-frame-item-input-edit' : '');
+  render(createElement) {
+    const self = this;
+    const className = this.className + (this.isContentEditAble ? ' note-obj-management-frame-item-input-edit' : '');
     return createElement('input', {
       attrs: {
         'data-key': this.dataKey,
@@ -5373,15 +5367,15 @@ Vue.component('note-obj-management-input-text', {
       default: 'note-obj-management-frame-item-input',
     },
   },
-  data: function () {
+  data() {
     return {
       pause: null,
     };
   },
 });
 Vue.component('note-obj-management-group-item', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     let text = '';
     let color = '';
     let backgroundColor = '';
@@ -5440,8 +5434,8 @@ Vue.component('note-obj-management-group-item', {
   },
 });
 Vue.component('note-obj-new-group-frame', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -5492,7 +5486,7 @@ Vue.component('note-obj-new-group-frame', {
               },
               on: {
                 change: event => {
-                  self.inputValue = event.target.value.replace(/^\s+|\s+$/g, '');
+                  self.inputValue = event.target.value.trim();
                 },
                 keyup: event => {
                   if (event.keyCode === 13 || event.keyCode === 27) {
@@ -5556,6 +5550,36 @@ Vue.component('note-obj-new-group-frame', {
                 }),
               ]
             ),
+            createElement(
+              'div',
+              {
+                class: 'note-obj-new-group-frame-color-label',
+              },
+              [
+                createElement('span', {
+                  class: 'note-obj-new-group-frame-color-label-text',
+                  domProps: {
+                    textContent: this.lang.groupWeightText + ': ',
+                  },
+                }),
+                createElement('input', {
+                  attrs: {
+                    type: 'number',
+                    step: 1,
+                    min: -100,
+                    max: 100,
+                  },
+                  domProps: {
+                    value: this.weight,
+                  },
+                  on: {
+                    change: event => {
+                      self.weight = event.target.value;
+                    },
+                  },
+                }),
+              ]
+            ),
             createElement('button', {
               attrs: {
                 type: 'button',
@@ -5614,40 +5638,38 @@ Vue.component('note-obj-new-group-frame', {
       default: '',
     },
   },
-  data: function () {
+  data() {
     return {
       groupKey: 'g_' + Date.now(),
       inputValue: this.lang.groupNewValueText,
       primaryColor: this.defaultColor.primaryColor,
       secondaryColor: this.defaultColor.secondaryColor,
+      weight: 0,
     };
   },
   watch: {
-    isShow: function (newValue, oldValue) {
+    isShow(newValue, oldValue) {
       if (newValue !== oldValue && newValue) {
         this.groupKey = 'g_' + Date.now();
         this.inputValue = this.lang.groupNewValueText;
         this.primaryColor = this.defaultColor.primaryColor;
         this.secondaryColor = this.defaultColor.secondaryColor;
-        Note_Obj.fn.debounce(() => {
-          try {
-            if (newValue) {
-              let ele = document.getElementById(this.id + '_newGroupFrameInputBox');
-              if (ele) {
-                ele.focus();
-                ele.select();
+        (this.weight = 0),
+          Note_Obj.fn.debounce(() => {
+            try {
+              if (newValue) {
+                const ele = document.getElementById(this.id + '_newGroupFrameInputBox');
+                ele && ele.focus() && ele.select();
               }
+            } catch (e) {
+              console.error('Error in focus command.', e);
             }
-          } catch (e) {
-            console.error('Error in focus command.');
-            console.error(e);
-          }
-        }, 200);
+          }, 200);
       }
     },
   },
   methods: {
-    keyUpEvent: function (event) {
+    keyUpEvent(event) {
       if (event.keyCode === 13) {
         this.saveEvent();
       }
@@ -5655,14 +5677,14 @@ Vue.component('note-obj-new-group-frame', {
         this.$emit('quit-event');
       }
     },
-    saveEvent: function () {
-      this.$emit('save-event', this.groupKey, this.inputValue, this.primaryColor, this.secondaryColor, this.userId);
+    saveEvent() {
+      this.$emit('save-event', this.groupKey, this.inputValue, this.primaryColor, this.secondaryColor, this.weight, this.userId);
     },
   },
 });
 Vue.component('note-obj-settings-frame', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'transition',
       {
@@ -5926,7 +5948,7 @@ Vue.component('note-obj-settings-frame', {
                                   return createElement('note-obj-settings-item', {
                                     key: key,
                                     props: {
-                                      id: this.id + '_settingsFrameAddNoteFix_' + key,
+                                      id: `${this.id}_settingsFrameAddNoteFix_${key}`,
                                       value: this.items.addNote.fix[key].value,
                                       type: 'text',
                                       label: this.lang.settingsAddNoteCommonContentText,
@@ -5935,7 +5957,7 @@ Vue.component('note-obj-settings-frame', {
                                           key: key,
                                           props: {
                                             isChild: true,
-                                            id: this.id + '_settingsFrameAddNotefix_' + key,
+                                            id: `${this.id}_settingsFrameAddNotefix_${key}`,
                                             value: this.items.addNote.fix[key].type,
                                             type: 'radio',
                                             options: {
@@ -6133,7 +6155,7 @@ Vue.component('note-obj-settings-frame', {
                                     return createElement('note-obj-settings-item', {
                                       key: key,
                                       props: {
-                                        id: this.id + '_otherSettings_' + key,
+                                        id: `${this.id}_otherSettings_${key}`,
                                         value: this.items.other[key],
                                         type: this.otherSettingsInfo[key].type,
                                         label: this.otherSettingsInfo[key].label,
@@ -6483,7 +6505,7 @@ Vue.component('note-obj-settings-frame', {
       requried: true,
     },
   },
-  data: function () {
+  data() {
     return {
       headers: {
         searchBox: false,
@@ -6589,19 +6611,15 @@ Vue.component('note-obj-settings-frame', {
     };
   },
   computed: {
-    otherExist: function () {
+    otherExist() {
       return Object.keys(this.items.other).length > 0;
     },
-    storeModificationTimeText: function () {
-      let time = '';
-      if (this.storeModificationTime) {
-        time = new Date(Number(this.storeModificationTime));
-      }
-      return time;
+    storeModificationTimeText() {
+      return this.storeModificationTime ? new Date(Number(this.storeModificationTime)) : '';
     },
   },
   watch: {
-    lang: function (_newValue, _oldValue) {
+    lang(_newValue, _oldValue) {
       this.sections.showIndex.label = this.lang.settingsSearchBoxShowIndexText;
       this.sections.canHideSearchFrame.label = this.lang.settingsSearchBoxCanHideSearchFrameText;
       this.sections.showButton.label = this.lang.settingsSearchBoxShowButtonText;
@@ -6624,8 +6642,8 @@ Vue.component('note-obj-settings-frame', {
   },
 });
 Vue.component('note-obj-settings-frame-flod-header', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'header',
       {
@@ -6663,8 +6681,8 @@ Vue.component('note-obj-settings-frame-flod-header', {
   },
 });
 Vue.component('note-obj-settings-item', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     let childVNode =
       this.type === 'checkbox'
         ? [
@@ -6712,7 +6730,7 @@ Vue.component('note-obj-settings-item', {
             Object.keys(self.options).map(key => {
               return createElement('note-obj-settings-input-radio', {
                 props: {
-                  id: self.id + '_' + key,
+                  id: `${this.id}_${key}`,
                   value: key,
                   checkedValue: self.value === key,
                   label: self.options[key].text,
@@ -6770,7 +6788,7 @@ Vue.component('note-obj-settings-item', {
     type: {
       type: String,
       default: 'checkbox',
-      validator: function (value) {
+      validator(value) {
         return ['checkbox', 'text', 'radio', 'select'].indexOf(value) !== -1;
       },
     },
@@ -6779,7 +6797,7 @@ Vue.component('note-obj-settings-item', {
     },
     options: {
       type: Object,
-      default: function () {
+      default() {
         return {};
       },
     },
@@ -6789,7 +6807,7 @@ Vue.component('note-obj-settings-item', {
     },
     child: {
       type: Array,
-      default: function () {
+      default() {
         return [];
       },
     },
@@ -6798,15 +6816,15 @@ Vue.component('note-obj-settings-item', {
       default: false,
     },
   },
-  data: function () {
+  data() {
     return {
       oldValue: this.value,
     };
   },
 });
 Vue.component('note-obj-settings-input-checkbox', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -6851,8 +6869,8 @@ Vue.component('note-obj-settings-input-checkbox', {
   },
 });
 Vue.component('note-obj-settings-input-text', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -6899,8 +6917,8 @@ Vue.component('note-obj-settings-input-text', {
   },
 });
 Vue.component('note-obj-settings-input-radio', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -6953,8 +6971,8 @@ Vue.component('note-obj-settings-input-radio', {
   },
 });
 Vue.component('note-obj-settings-select', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -7026,7 +7044,7 @@ Vue.component('note-obj-settings-select', {
     },
     options: {
       type: Object,
-      default: function () {
+      default() {
         return {};
       },
     },
@@ -7034,7 +7052,7 @@ Vue.component('note-obj-settings-select', {
 });
 Vue.component('note-obj-settings-frame-script-item', {
   functional: true,
-  render: function (createElement, context) {
+  render(createElement, context) {
     return createElement(
       'div',
       {
@@ -7068,7 +7086,7 @@ Vue.component('note-obj-settings-frame-script-item', {
     type: {
       type: String,
       required: true,
-      validator: function (value) {
+      validator(value) {
         return ['a', 'p'].indexOf(value) !== -1;
       },
     },
@@ -7086,9 +7104,9 @@ Vue.component('note-obj-settings-frame-script-item', {
   },
 });
 Vue.component('note-obj-confirm-frame', {
-  render: function (createElement) {
+  render(createElement) {
     if (this.isInsert) {
-      let self = this;
+      const self = this;
       return createElement(
         'div',
         {
@@ -7189,49 +7207,48 @@ Vue.component('note-obj-confirm-frame', {
     },
   },
   watch: {
-    isInsert: function (newValue, oldValue) {
+    isInsert(newValue, oldValue) {
       if (newValue != oldValue && newValue) {
         Note_Obj.fn.debounce(() => {
           try {
             if (newValue) {
-              let yes = document.querySelector('#' + this.id + '_confirmFrameYesBtn');
+              const yes = document.querySelector(`#${this.id}_confirmFrameYesBtn`);
               yes && yes.focus();
             }
           } catch (e) {
-            console.error('Error in focus command.');
-            console.error(e);
+            console.error('Error in focus command.', e);
           }
         }, 500);
       }
     },
   },
   methods: {
-    yesKeyUpEvent: function (event) {
+    yesKeyUpEvent(event) {
       if (event.keyCode === 13) {
         this.$emit('click-event', true);
       }
       if (event.keyCode === 37) {
-        let no = document.querySelector('#' + this.id + '_confirmFrameNoBtn');
+        const no = document.querySelector(`#${this.id}_confirmFrameNoBtn`);
         no && no.focus();
       }
       if (event.keyCode === 27) {
         this.$emit('click-event', false);
       }
     },
-    noKeyUpEvent: function (event) {
+    noKeyUpEvent(event) {
       if (event.keyCode === 13 || event.keyCode === 27) {
         this.$emit('click-event', false);
       }
       if (event.keyCode === 39) {
-        let yes = document.querySelector('#' + this.id + '_confirmFrameYesBtn');
+        const yes = document.querySelector(`#${this.id}_confirmFrameYesBtn`);
         yes && yes.focus();
       }
     },
   },
 });
 Vue.component('note-obj-message-frame', {
-  render: function (createElement) {
-    let self = this;
+  render(createElement) {
+    const self = this;
     return createElement(
       'div',
       {
@@ -7355,6 +7372,7 @@ class Note_Obj {
         value: 'default',
         primaryColor: '',
         secondaryColor: '',
+        weight: 0,
       },
     };
     this.storeModificationTime = '';
@@ -7369,16 +7387,16 @@ class Note_Obj {
     await this.readValuesFromStorage();
     this.config.interface.language = this.config.interface.language || window.navigator.language || document.documentElement.lang;
     this.setLanguage(this.config.interface.language);
-    let that = this;
+    const that = this;
     this.style = document.createElement('style');
     this.style.innerHTML = NOTE_STYLE;
     document.body.appendChild(this.style);
     if (initialization.style && typeof initialization.style === 'string') {
-      let external_style = document.createElement('style');
-      external_style.innerHTML = initialization.style;
-      document.body.appendChild(external_style);
+      const externalStyle = document.createElement('style');
+      externalStyle.innerHTML = initialization.style;
+      document.body.appendChild(externalStyle);
     }
-    let env_vm = {
+    const envVm = {
       searchBtnClassName: initialization.searchBtnClassName || '',
       searchBtnBoxClassName: initialization.searchBtnBoxClassName || '',
       settingsBtnClassName: initialization.settingsBtnClassName || '',
@@ -7410,18 +7428,18 @@ class Note_Obj {
         {
           author: {
             name: 'pana',
-            homepage: 'https://www.sailboatweb.com/',
+            homepage: 'https://greasyfork.org/zh-CN/users/193133-pana',
           },
-          address: 'https://www.sailboatweb.com/',
+          address: 'https://greasyfork.org/zh-CN/users/193133-pana',
           updated: Note_Obj.fn.getUpdated(),
           core: {
             name: Note_Obj.fn.getVersion() + ' (' + Note_Obj.fn.getUpdated() + ')',
-            url: 'https://greasyfork.org/scripts/408454-note-obj/',
+            url: 'https://greasyfork.org/zh-CN/users/193133-pana',
           },
           library: [
             {
               name: 'Vue.js',
-              version: '2.6.11',
+              version: '2.6.14',
               url: 'https://vuejs.org/',
             },
           ],
@@ -7435,19 +7453,19 @@ class Note_Obj {
       },
       type: ['user', 'script'].includes(initialization.type) ? initialization.type : 'user',
     };
-    let library_keys_list = [];
-    for (let library of env_vm.script.library) {
-      library_keys_list.push(library.name);
+    const libraryKeysList = [];
+    for (const library of envVm.script.library) {
+      libraryKeysList.push(library.name);
     }
-    if (!library_keys_list.includes('Vue.js')) {
-      env_vm.script.library.splice(0, 0, {
+    if (!libraryKeysList.includes('Vue.js')) {
+      envVm.script.library.splice(0, 0, {
         name: 'Vue.js',
-        version: '2.6.11',
+        version: '2.6.14',
         url: 'https://vuejs.org/',
       });
     }
     if (initialization.settings) {
-      for (let key in initialization.settings) {
+      for (const key in initialization.settings) {
         let label = '';
         if (initialization.settings[key].lang && Object.keys(initialization.settings[key].lang).length > 0) {
           switch (this.config.interface.language.toLowerCase()) {
@@ -7484,7 +7502,7 @@ class Note_Obj {
             label = initialization.settings[key].lang[Object.keys(initialization.settings[key].lang)[0]];
           }
         }
-        env_vm.otherSettings[key] = {
+        envVm.otherSettings[key] = {
           type: initialization.settings[key].type || 'checkbox',
           lang: initialization.settings[key].lang,
           label: label || 'Undefined.',
@@ -7492,7 +7510,7 @@ class Note_Obj {
           event: null || initialization.settings[key].event,
         };
         if (this.config.other[key] === undefined) {
-          if (env_vm.otherSettings[key].type === 'checkbox') {
+          if (envVm.otherSettings[key].type === 'checkbox') {
             this.config.other[key] = initialization.settings[key].default || false;
           } else {
             this.config.other[key] = initialization.settings[key].default || '';
@@ -7500,27 +7518,27 @@ class Note_Obj {
         }
       }
     }
-    for (let key in this.group) {
+    for (const key in this.group) {
       if (!this.group[key].primaryColor) {
-        this.group[key].primaryColor = env_vm.defaultColor.primaryColor;
+        this.group[key].primaryColor = envVm.defaultColor.primaryColor;
       }
       if (!this.group[key].secondaryColor) {
-        this.group[key].secondaryColor = env_vm.defaultColor.secondaryColor;
+        this.group[key].secondaryColor = envVm.defaultColor.secondaryColor;
       }
     }
-    let vue_div = document.createElement('div');
-    vue_div.className = 'note-obj-vue-module';
-    vue_div.innerHTML = `
+    const vueDiv = document.createElement('div');
+    vueDiv.className = 'note-obj-vue-module';
+    vueDiv.innerHTML = `
             <div 
                 id="${this.id}_vue" 
                 class="note-obj-vue-div"
                 >
             </div>
         `;
-    document.body.appendChild(vue_div);
-    this.changeEvent = env_vm.changeEvent;
+    document.body.appendChild(vueDiv);
+    this.changeEvent = envVm.changeEvent;
     this.vm = new Vue({
-      el: '#' + this.id + '_vue',
+      el: `#${this.id}_vue`,
       data: {
         id: this.id,
         searchFrame: {
@@ -7533,7 +7551,7 @@ class Note_Obj {
           userName: '',
           value: '',
           groupKey: '',
-          buttonSet: env_vm.addFrmButtonSet,
+          buttonSet: envVm.addFrmButtonSet,
         },
         managementFrame: {
           isInsert: false,
@@ -7580,11 +7598,11 @@ class Note_Obj {
         },
       },
       computed: {
-        interfaceSkinClassName: function () {
+        interfaceSkinClassName() {
           return this.settingsFrame.items.interface.mode === 'dark' ? 'note-obj-interface-dark' : 'note-obj-interface-bright';
         },
       },
-      render: function (createElement) {
+      render(createElement) {
         return createElement(
           'div',
           {
@@ -7618,7 +7636,7 @@ class Note_Obj {
                 x: this.popoverFrame.x,
                 y: this.popoverFrame.y,
                 openInTab: this.settingsFrame.items.addNote.openNoteNewTab,
-                itemClick: env_vm.itemClick,
+                itemClick: envVm.itemClick,
               },
             }),
             createElement('note-obj-single-float-button', {
@@ -7632,8 +7650,8 @@ class Note_Obj {
                 title: this.languageVirualFrame.lang.searchTagTitle,
                 className: 'note-obj-search-expand-span',
                 boxClassName: 'note-obj-search-expand-box',
-                extraClassName: env_vm.searchBtnClassName,
-                extraBoxClassName: env_vm.searchBtnBoxClassName,
+                extraClassName: envVm.searchBtnClassName,
+                extraBoxClassName: envVm.searchBtnBoxClassName,
               },
             }),
             createElement('note-obj-set-float-button', {
@@ -7654,23 +7672,23 @@ class Note_Obj {
                     isInsert: !Note_Obj.GM.hasRegisterMenuCommandMethods() || this.settingsFrame.items.interface.insertSettingsButton,
                     title: this.languageVirualFrame.lang.gmSettingsText,
                     className: 'note-obj-settings-expand-span',
-                    extraClassName: env_vm.settingsBtnClassName,
+                    extraClassName: envVm.settingsBtnClassName,
                   },
                   note: {
                     isInsert: this.settingsFrame.items.interface.insertNoteManagementButton,
                     title: this.languageVirualFrame.lang.gmManagementText,
                     className: 'note-obj-note-management-expand-span',
-                    extraClassName: env_vm.noteManagementBtnClassName,
+                    extraClassName: envVm.noteManagementBtnClassName,
                   },
                   group: {
                     isInsert: this.settingsFrame.items.interface.insertGroupManagementButton,
                     title: this.languageVirualFrame.lang.gmGroupText,
                     className: 'note-obj-group-management-expand-span',
-                    extraClassName: env_vm.groupManagementBtnClassName,
+                    extraClassName: envVm.groupManagementBtnClassName,
                   },
                 },
                 boxClassName: 'note-obj-left-expand-box',
-                extraBoxClassName: env_vm.leftBtnBoxClassName,
+                extraBoxClassName: envVm.leftBtnBoxClassName,
               },
             }),
             createElement('note-obj-search-frame', {
@@ -7699,16 +7717,15 @@ class Note_Obj {
                   this.confirmFrameAddContent(this.languageVirualFrame.lang.deleteConfirmText, r => {
                     if (r && that.writeUser(key, null, null, null)) {
                       this.messageFrameAddNotifaction(this.languageVirualFrame.lang.deleteTagNotifactionText);
-                      typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that, key);
+                      typeof envVm.changeEvent === 'function' && envVm.changeEvent(that, key);
                     }
-                    let el = document.querySelector('#' + this.id + '_searchFrameInputBox');
+                    const el = document.querySelector(`#${this.id}_searchFrameInputBox`);
                     el &&
                       Note_Obj.fn.debounce(() => {
                         try {
                           el.focus();
                         } catch (e) {
-                          console.error('Error in focus command.');
-                          console.error(e);
+                          console.error('Error in focus command.', e);
                         }
                       }, 200);
                   });
@@ -7725,7 +7742,7 @@ class Note_Obj {
                 determineSearchString: this.determineSearchString,
                 group: this.groupFrame.items,
                 openInTab: this.settingsFrame.items.searchBox.openNewTab,
-                itemClick: env_vm.itemClick,
+                itemClick: envVm.itemClick,
               },
             }),
             createElement('note-obj-add-frame', {
@@ -7740,11 +7757,11 @@ class Note_Obj {
                   }
                 },
                 'button-click': (id, name, tag, groupKey, key) => {
-                  let status = this.addFrame.buttonSet[key].event(id, name, tag, groupKey, key);
+                  const status = this.addFrame.buttonSet[key].event(id, name, tag, groupKey, key);
                   if (status) {
                     if (status !== 1) {
                       this.messageFrameAddNotifaction(this.languageVirualFrame.lang.saveCompletedNotifactionText);
-                      typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that, id);
+                      typeof envVm.changeEvent === 'function' && envVm.changeEvent(that, id);
                     }
                     this.addFrame.isShow = false;
                     if (this.searchFrame.isEcho) {
@@ -7763,7 +7780,7 @@ class Note_Obj {
                       this.searchFrame.isShow = true;
                       this.searchFrame.isEcho = false;
                     }
-                    typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that, id);
+                    typeof envVm.changeEvent === 'function' && envVm.changeEvent(that, id);
                   } else {
                     this.messageFrameAddNotifaction(this.languageVirualFrame.lang.saveErrorNotifactionText);
                   }
@@ -7791,7 +7808,7 @@ class Note_Obj {
                 buttonSet: this.addFrame.buttonSet,
                 selectGroupFrameAddHandleId: this.selectGroupFrameAddHandleId,
                 group: this.groupFrame.items,
-                type: env_vm.type,
+                type: envVm.type,
               },
             }),
             createElement('note-obj-management-frame', {
@@ -7801,7 +7818,7 @@ class Note_Obj {
                 },
                 'save-event': saveObj => {
                   if (that.setUsers(saveObj)) {
-                    typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that);
+                    typeof envVm.changeEvent === 'function' && envVm.changeEvent(that);
                     this.messageFrameAddNotifaction(this.languageVirualFrame.lang.saveCompletedNotifactionText);
                   } else {
                     this.messageFrameAddNotifaction(this.languageVirualFrame.lang.saveErrorNotifactionText);
@@ -7828,8 +7845,8 @@ class Note_Obj {
                 determineSearchString: this.determineSearchString,
                 group: this.groupFrame.items,
                 selectGroupFrameAddHandleId: this.selectGroupFrameAddHandleId,
-                type: env_vm.type,
-                itemClick: env_vm.itemClick,
+                type: envVm.type,
+                itemClick: envVm.itemClick,
               },
             }),
             createElement('note-obj-group-frame', {
@@ -7843,7 +7860,7 @@ class Note_Obj {
                 },
                 'save-event': saveObj => {
                   if (that.writeGroup(saveObj)) {
-                    typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that);
+                    typeof envVm.changeEvent === 'function' && envVm.changeEvent(that);
                     if (this.managementFrame.isEcho) {
                       this.groupFrame.isInsert = false;
                       this.managementFrame.isInsert = true;
@@ -7864,7 +7881,7 @@ class Note_Obj {
                 isInsert: this.groupFrame.isInsert,
                 originalItems: this.groupFrame.items,
                 determineSearchString: this.determineSearchString,
-                defaultColor: env_vm.defaultColor,
+                defaultColor: envVm.defaultColor,
               },
             }),
             createElement('note-obj-select-group-frame', {
@@ -7895,13 +7912,14 @@ class Note_Obj {
                 'quit-event': () => {
                   this.newGroupFrame.isShow = false;
                 },
-                'save-event': (groupKey, groupValue, primaryColor, secondaryColor, userId) => {
+                'save-event': (groupKey, groupValue, primaryColor, secondaryColor, weight, userId) => {
                   if (groupValue) {
                     if (
                       that.writeNewGroupValue(groupKey, {
                         value: groupValue,
                         primaryColor: primaryColor,
                         secondaryColor: secondaryColor,
+                        weight: weight,
                       })
                     ) {
                       this.messageFrameAddNotifaction(this.languageVirualFrame.lang.createNewGroupNotifactionText);
@@ -7917,7 +7935,7 @@ class Note_Obj {
                 id: this.id,
                 lang: this.languageVirualFrame.lang,
                 isShow: this.newGroupFrame.isShow,
-                defaultColor: env_vm.defaultColor,
+                defaultColor: envVm.defaultColor,
                 userId: this.newGroupFrame.userId,
               },
             }),
@@ -7927,7 +7945,7 @@ class Note_Obj {
                   this.settingsFrame.isInsert = false;
                 },
                 'export-click': () => {
-                  Note_Obj.fn.downloadText(JSON.stringify(this.settingsFrame.items), this.id + '_config_' + Date.now() + '.txt', () => {
+                  Note_Obj.fn.downloadText(JSON.stringify(this.settingsFrame.items), `${this.id}_config_${Date.now()}.txt`, () => {
                     this.messageFrameAddNotifaction(this.languageVirualFrame.lang.exportConfigNotifactionText);
                   });
                 },
@@ -7936,10 +7954,10 @@ class Note_Obj {
                     if (res) {
                       if (content) {
                         try {
-                          let import_obj = JSON.parse(content);
-                          if (typeof import_obj === 'object' && import_obj) {
-                            if (Object.keys(import_obj).length > 0) {
-                              this.$set(this.settingsFrame, 'items', Object.assign({}, this.settingsFrame.items, import_obj));
+                          const importObj = JSON.parse(content);
+                          if (typeof importObj === 'object' && importObj) {
+                            if (Object.keys(importObj).length > 0) {
+                              this.$set(this.settingsFrame, 'items', Object.assign({}, this.settingsFrame.items, importObj));
                             }
                             this.messageFrameAddNotifaction(this.languageVirualFrame.lang.importConfigNotifactionText);
                           } else {
@@ -7947,8 +7965,7 @@ class Note_Obj {
                             this.messageFrameAddNotifaction(this.languageVirualFrame.lang.notObjectNotifactionText);
                           }
                         } catch (e) {
-                          console.error('There was an error in the parsing of the object.');
-                          console.error(e);
+                          console.error('There was an error in the parsing of the object.', e);
                           this.messageFrameAddNotifaction(this.languageVirualFrame.lang.errorImportNotifactionText);
                         }
                       } else {
@@ -7969,15 +7986,15 @@ class Note_Obj {
                   }
                 },
                 'help-translate-click': () => {
-                  let translate_lang = {};
-                  translate_lang.basic = Object.assign({}, NOTE_LANG);
-                  if (env_vm.otherSettings && Object.keys(env_vm.otherSettings).length > 0) {
-                    translate_lang.extra = {};
-                    for (let key in env_vm.otherSettings) {
-                      translate_lang.extra[key] = Object.assign({}, env_vm.otherSettings[key].lang);
+                  const translateLang = {};
+                  translateLang.basic = Object.assign({}, NOTE_LANG);
+                  if (envVm.otherSettings && Object.keys(envVm.otherSettings).length > 0) {
+                    translateLang.extra = {};
+                    for (const key in envVm.otherSettings) {
+                      translateLang.extra[key] = Object.assign({}, envVm.otherSettings[key].lang);
                     }
                   }
-                  Note_Obj.fn.downloadText(JSON.stringify(translate_lang, null, 4), this.id + '_language_' + Date.now() + '.config', () => {
+                  Note_Obj.fn.downloadText(JSON.stringify(translateLang, null, 4), `${this.id}_language_${Date.now()}.config`, () => {
                     this.messageFrameAddNotifaction(this.languageVirualFrame.lang.exportConfigNotifactionText);
                   });
                 },
@@ -7986,7 +8003,7 @@ class Note_Obj {
                 },
                 'import-store-click': () => {
                   that.gmImport(() => {
-                    typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that);
+                    typeof envVm.changeEvent === 'function' && envVm.changeEvent(that);
                   });
                 },
               },
@@ -7995,8 +8012,8 @@ class Note_Obj {
                 lang: this.languageVirualFrame.lang,
                 isInsert: this.settingsFrame.isInsert,
                 items: this.settingsFrame.items,
-                otherSettingsInfo: env_vm.otherSettings,
-                script: env_vm.script,
+                otherSettingsInfo: envVm.otherSettings,
+                script: envVm.script,
                 storeModificationTime: this.settingsFrame.storeModificationTime,
               },
             }),
@@ -8017,7 +8034,7 @@ class Note_Obj {
             createElement('note-obj-message-frame', {
               on: {
                 'close-event': id => {
-                  for (let i in this.messageFrame.notifactions) {
+                  for (const i in this.messageFrame.notifactions) {
                     this.messageFrame.notifactions[i].id === id && this.messageFrame.notifactions.splice(i, 1);
                   }
                 },
@@ -8030,20 +8047,20 @@ class Note_Obj {
         );
       },
       watch: {
-        'popoverFrame.userId': function (newValue, oldValue) {
+        'popoverFrame.userId'(newValue, oldValue) {
           if (newValue != oldValue) {
-            let userId = newValue;
+            const userId = newValue;
             if (
               userId &&
               this.noteVirualFrame.items[userId] &&
               this.noteVirualFrame.items[userId].group &&
               this.noteVirualFrame.items[userId].group !== 'default'
             ) {
-              let groupKey = this.noteVirualFrame.items[userId].group;
-              let groupKeysList = Object.keys(this.groupFrame.items);
+              const groupKey = this.noteVirualFrame.items[userId].group;
+              const groupKeysList = Object.keys(this.groupFrame.items);
               if (groupKeysList.includes(groupKey)) {
-                let groupSet = {};
-                for (let key in this.noteVirualFrame.items) {
+                const groupSet = {};
+                for (const key in this.noteVirualFrame.items) {
                   if (this.noteVirualFrame.items[key].group === groupKey && key !== userId) {
                     groupSet[key] = Object.assign({}, this.noteVirualFrame.items[key]);
                   }
@@ -8069,46 +8086,46 @@ class Note_Obj {
             }
           }
         },
-        'settingsFrame.items.addNote.fix.fixValue1.value': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue1.value'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue1.type': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue1.type'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue2.value': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue2.value'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue2.type': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue2.type'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue3.value': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue3.value'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue3.type': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue3.type'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue4.value': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue4.value'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue4.type': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue4.type'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue5.value': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue5.value'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.fix.fixValue5.type': function (newValue, oldValue) {
+        'settingsFrame.items.addNote.fix.fixValue5.type'(newValue, oldValue) {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
-        'settingsFrame.items.addNote.showNoteGroupName': function (newValue, oldValue) {
-          newValue != oldValue && typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that);
+        'settingsFrame.items.addNote.showNoteGroupName'(newValue, oldValue) {
+          newValue != oldValue && typeof envVm.changeEvent === 'function' && envVm.changeEvent(that);
         },
-        'settingsFrame.items.addNote.showNoteGroupColor': function (newValue, oldValue) {
-          newValue != oldValue && typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that);
+        'settingsFrame.items.addNote.showNoteGroupColor'(newValue, oldValue) {
+          newValue != oldValue && typeof envVm.changeEvent === 'function' && envVm.changeEvent(that);
         },
-        'settingsFrame.items.addNote.showPopoverFrame': function (newValue, oldValue) {
-          newValue != oldValue && typeof env_vm.changeEvent === 'function' && env_vm.changeEvent(that);
+        'settingsFrame.items.addNote.showPopoverFrame'(newValue, oldValue) {
+          newValue != oldValue && typeof envVm.changeEvent === 'function' && envVm.changeEvent(that);
         },
-        'settingsFrame.items.interface.language': function (newValue, oldValue) {
+        'settingsFrame.items.interface.language'(newValue, oldValue) {
           if (newValue != oldValue) {
             that.setLanguage(newValue);
             this.$set(this.languageVirualFrame, 'lang', that.lang);
@@ -8119,16 +8136,16 @@ class Note_Obj {
             this.addFrame.buttonSet.cancel.text = this.languageVirualFrame.lang.cancelTagText;
             this.addFrame.buttonSet.cancel.title = this.languageVirualFrame.lang.cancelTagTitle;
             this.settingsFrameFixChangeEvent();
-            for (let key in env_vm.otherSettings) {
+            for (const key in envVm.otherSettings) {
               let label = '';
-              if (env_vm.otherSettings[key].lang && Object.keys(env_vm.otherSettings[key].lang).length > 0) {
+              if (envVm.otherSettings[key].lang && Object.keys(envVm.otherSettings[key].lang).length > 0) {
                 switch (newValue) {
                   case 'zh':
                   case 'zh-cn':
                   case 'zh-hans':
                   case 'zh_cn':
                   case 'zh_hans':
-                    label = env_vm.otherSettings[key].lang.zh_cn;
+                    label = envVm.otherSettings[key].lang.zh_cn;
                     break;
                   case 'zh-hk':
                   case 'zh-tw':
@@ -8136,103 +8153,100 @@ class Note_Obj {
                   case 'zh_hk':
                   case 'zh_tw':
                   case 'zh_hant':
-                    label = env_vm.otherSettings[key].lang.zh_tw;
+                    label = envVm.otherSettings[key].lang.zh_tw;
                     break;
                   case 'ja':
-                    label = env_vm.otherSettings[key].lang.ja;
+                    label = envVm.otherSettings[key].lang.ja;
                     break;
                   case 'ko':
-                    label = env_vm.otherSettings[key].lang.ko;
+                    label = envVm.otherSettings[key].lang.ko;
                     break;
                   case 'fr':
-                    label = env_vm.otherSettings[key].lang.fr;
+                    label = envVm.otherSettings[key].lang.fr;
                     break;
                   case 'en':
                   default:
-                    label = env_vm.otherSettings[key].lang.en;
+                    label = envVm.otherSettings[key].lang.en;
                     break;
                 }
               }
               if (!label) {
-                label = env_vm.otherSettings[key].lang[Object.keys(env_vm.otherSettings[key].lang)[0]];
+                label = envVm.otherSettings[key].lang[Object.keys(envVm.otherSettings[key].lang)[0]];
               }
-              env_vm.otherSettings[key].label = label || 'Undefined.';
+              envVm.otherSettings[key].label = label || 'Undefined.';
             }
             that.registerMenuCommand();
           }
         },
-        'settingsFrame.items.interface.autoSync': function (newValue, oldValue) {
+        'settingsFrame.items.interface.autoSync'(newValue, oldValue) {
           newValue != oldValue && that.addValueChangeListener(newValue);
         },
       },
       methods: {
-        settingsFrameFixChangeEvent: function () {
-          let fix_obj = {};
-          for (let key in this.settingsFrame.items.addNote.fix) {
-            if (
-              this.settingsFrame.items.addNote.fix[key].value &&
-              this.settingsFrame.items.addNote.fix[key].value.replace(/^\s+|\s+$/g, '')
-            ) {
-              let value = this.settingsFrame.items.addNote.fix[key].value;
-              let clear_value = value.replace(/^\s+|\s+$/g, '');
-              let type = this.settingsFrame.items.addNote.fix[key].type;
-              fix_obj[key] = {
+        settingsFrameFixChangeEvent() {
+          const fixObj = {};
+          for (const key in this.settingsFrame.items.addNote.fix) {
+            if (this.settingsFrame.items.addNote.fix[key].value && this.settingsFrame.items.addNote.fix[key].value.trim()) {
+              const value = this.settingsFrame.items.addNote.fix[key].value;
+              const clearValue = value.trim();
+              const type = this.settingsFrame.items.addNote.fix[key].type;
+              fixObj[key] = {
                 text:
                   type === 'pre'
-                    ? this.languageVirualFrame.lang.savePrefixText.replace('%s', clear_value)
-                    : this.languageVirualFrame.lang.saveSuffixText.replace('%s', clear_value),
+                    ? this.languageVirualFrame.lang.savePrefixText.replace('%s', clearValue)
+                    : this.languageVirualFrame.lang.saveSuffixText.replace('%s', clearValue),
                 title:
                   type === 'pre'
                     ? this.languageVirualFrame.lang.savePrefixTitle.replace('%s', value.replace(/^\s+/, ''))
                     : this.languageVirualFrame.lang.saveSuffixTitle.replace('%s', value.replace(/\s+$/, '')),
                 event: (id, name, tag, groupKey, key) => {
-                  let fix = this.settingsFrame.items.addNote.fix[key].value;
-                  let fix_tag = tag;
+                  const fix = this.settingsFrame.items.addNote.fix[key].value;
+                  let fixTag = tag;
                   if (!tag.includes(fix)) {
-                    let type = this.settingsFrame.items.addNote.fix[key].type;
-                    if (type === 'pre') {
-                      fix_tag = fix.replace(/^\s+/, '') + tag;
+                    const aType = this.settingsFrame.items.addNote.fix[key].type;
+                    if (aType === 'pre') {
+                      fixTag = fix.replace(/^\s+/, '') + tag;
                     } else {
-                      fix_tag = tag + fix.replace(/\s+$/, '');
+                      fixTag = tag + fix.replace(/\s+$/, '');
                     }
                   }
-                  return that.writeUser(id, name, fix_tag, groupKey);
+                  return that.writeUser(id, name, fixTag, groupKey);
                 },
               };
             }
           }
-          this.$set(this.addFrame, 'buttonSet', Object.assign({}, fix_obj, env_vm.addFrmButtonSet));
+          this.$set(this.addFrame, 'buttonSet', Object.assign({}, fixObj, envVm.addFrmButtonSet));
         },
-        selectGroupFrameAddHandleId: function (callback) {
+        selectGroupFrameAddHandleId(callback) {
           this.selectGroupFrameCallback = callback;
           this.selectGroupFrame.isShow = true;
         },
-        selectGroupFrameCallback: function (key) {
+        selectGroupFrameCallback(key) {
           console.warn('There is no function replacement. The key is ' + key);
         },
-        confirmFrameCallback: function (result) {
+        confirmFrameCallback(result) {
           console.warn('There is no function replacement. The result is ' + result);
         },
-        confirmFrameAddContent: function (content, callback) {
+        confirmFrameAddContent(content, callback) {
           this.confirmFrame.content = content;
           this.confirmFrameCallback = callback;
           this.confirmFrame.isInsert = true;
         },
-        messageFrameAddNotifaction: function (content, id = null, time = 4000) {
-          let ntf_id = id ? id : 'id-' + Date.now().toString() + '_' + this.messageFrame.total.toString();
+        messageFrameAddNotifaction(content, id = null, time = 4000) {
+          const ntfId = id ? id : `id-${Date.now()}_${this.messageFrame.total}`;
           this.messageFrame.total++;
           this.messageFrame.notifactions.splice(0, 0, {
-            id: ntf_id,
+            id: ntfId,
             content: content,
           });
-          let t = typeof time === 'number' && time > 0 ? time : 4000;
+          const t = typeof time === 'number' && time > 0 ? time : 4000;
           window.setTimeout(() => {
-            for (let i in this.messageFrame.notifactions) {
-              this.messageFrame.notifactions[i].id === ntf_id && this.messageFrame.notifactions.splice(i, 1);
+            for (const i in this.messageFrame.notifactions) {
+              this.messageFrame.notifactions[i].id === ntfId && this.messageFrame.notifactions.splice(i, 1);
             }
           }, t);
         },
-        addFrameAddUser: function (userId, userName) {
+        addFrameAddUser(userId, userName) {
           this.addFrame.userId = userId;
           this.addFrame.userName = userName;
           this.addFrame.value = this.noteVirualFrame.items[userId] ? this.noteVirualFrame.items[userId].tag || '' : '';
@@ -8241,7 +8255,7 @@ class Note_Obj {
           }
           this.addFrame.isShow = true;
         },
-        popoverFrameAddUserId: function (userId, x, y) {
+        popoverFrameAddUserId(userId, x, y) {
           if (this.settingsFrame.items.addNote.showPopoverFrame) {
             this.popoverFrame.userId = userId;
             this.popoverFrame.x = x;
@@ -8253,7 +8267,7 @@ class Note_Obj {
             this.popoverFrame.y = 0;
           }
         },
-        popoverFrameHideEvent: function () {
+        popoverFrameHideEvent() {
           if (!this.popoverFrame.isHover) {
             this.popoverFrame.userId = '';
             this.popoverFrame.isShow = false;
@@ -8261,13 +8275,8 @@ class Note_Obj {
             this.popoverFrame.y = 0;
           }
         },
-        openLinkEvent: function (key, ctrlKey, shiftKey, type) {
-          let newUrl = '';
-          if (typeof env_vm.itemClick === 'function') {
-            newUrl = env_vm.itemClick(key);
-          } else {
-            newUrl = window.location.origin + '/' + key;
-          }
+        openLinkEvent(key, ctrlKey, shiftKey, type) {
+          const newUrl = typeof envVm.itemClick === 'function' ? envVm.itemClick(key) : `${window.location.origin}/${key}`;
           if (ctrlKey && shiftKey) {
             newUrl &&
               Note_Obj.GM.openInTab(newUrl, {
@@ -8296,17 +8305,17 @@ class Note_Obj {
             window.location.href = newUrl;
           }
         },
-        determineSearchString: function (search_str, match_value) {
-          if (search_str) {
+        determineSearchString(searchStr, matchValue) {
+          if (searchStr) {
             let r = false;
             let regular = null;
             let s = false;
-            let split_arr = [];
-            let c = this.settingsFrame.items.searchValue.caseSensitive;
+            let splitArr = [];
+            const c = this.settingsFrame.items.searchValue.caseSensitive;
             if (this.settingsFrame.items.searchValue.regular) {
-              if (/^\/.+\/[gim]{0,3}$/.test(search_str)) {
+              if (/^\/.+\/[gim]{0,3}$/.test(searchStr)) {
                 try {
-                  regular = new RegExp(search_str.replace(/^\/|\/[gim]{0,3}$/g, ''), search_str.replace(/^\/.+\/[^gim]*/i, ''));
+                  regular = new RegExp(searchStr.replace(/^\/|\/[gim]{0,3}$/g, ''), searchStr.replace(/^\/.+\/[^gim]*/i, ''));
                   r = true;
                 } catch (_e) {
                   regular = null;
@@ -8315,32 +8324,32 @@ class Note_Obj {
               }
             }
             if (!r && this.settingsFrame.items.searchValue.split) {
-              split_arr = search_str.split(/\s+/);
-              if (split_arr.length > 0) {
+              splitArr = searchStr.split(/\s+/);
+              if (splitArr.length > 0) {
                 s = true;
               }
             }
             let res = true;
             if (r) {
-              res = regular.test(match_value);
+              res = regular.test(matchValue);
             } else {
               if (s) {
-                for (let item of split_arr) {
+                for (const item of splitArr) {
                   if (c) {
-                    if (!match_value.includes(item)) {
+                    if (!matchValue.includes(item)) {
                       res = false;
                     }
                   } else {
-                    if (!match_value.toLocaleLowerCase().includes(item.toLocaleLowerCase())) {
+                    if (!matchValue.toLocaleLowerCase().includes(item.toLocaleLowerCase())) {
                       res = false;
                     }
                   }
                 }
               } else {
                 if (c) {
-                  res = match_value.includes(search_str);
+                  res = matchValue.includes(searchStr);
                 } else {
-                  res = match_value.toLocaleLowerCase().includes(search_str.toLocaleLowerCase());
+                  res = matchValue.toLocaleLowerCase().includes(searchStr.toLocaleLowerCase());
                 }
               }
             }
@@ -8349,14 +8358,14 @@ class Note_Obj {
           return true;
         },
       },
-      created: function () {
+      created() {
         document.onkeydown = e => {
           if (that.getFrameStatus(true)) {
-            let ev = e || window.event;
-            let e_keyCode = ev.keyCode || ev.which || ev.charCode;
-            let e_ctrl = ev.ctrlKey || ev.metaKey;
-            let e_shift = ev.shiftKey;
-            if (e_keyCode === 70 && e_ctrl && e_shift) {
+            const ev = e || window.event;
+            const eKeyCode = ev.keyCode || ev.which || ev.charCode;
+            const eCtrl = ev.ctrlKey || ev.metaKey;
+            const eShift = ev.shiftKey;
+            if (eKeyCode === 70 && eCtrl && eShift) {
               this.searchFrame.isShow = !this.searchFrame.isShow;
             }
           }
@@ -8368,21 +8377,15 @@ class Note_Obj {
     this.addValueChangeListener();
   }
   getConfig() {
-    let config = {};
-    Object.assign(config, this.config);
-    return config;
+    return Object.assign({}, this.config);
   }
   getItemsList() {
-    let itemsList = {};
-    Object.assign(itemsList, this.items);
-    return itemsList;
+    return Object.assign({}, this.items);
   }
   getGroup() {
-    let group = {};
-    Object.assign(group, this.group);
-    return group;
+    return Object.assign({}, this.group);
   }
-  getFrameStatus(mask_search) {
+  getFrameStatus(maskSearch) {
     if (this.vm.settingsFrame.isInsert) {
       return false;
     } else if (this.vm.managementFrame.isInsert) {
@@ -8393,7 +8396,7 @@ class Note_Obj {
       return false;
     } else if (this.vm.addFrame.isShow || this.vm.selectGroupFrame.isShow || this.vm.newGroupFrame.isShow) {
       return false;
-    } else if (!mask_search && this.vm.searchFrame.isShow) {
+    } else if (!maskSearch && this.vm.searchFrame.isShow) {
       return false;
     }
     return true;
@@ -8429,12 +8432,12 @@ class Note_Obj {
     }
   }
   async gmExport() {
-    let keys_list = await Note_Obj.GM.listValues();
-    let export_obj = {};
-    for (let key of keys_list) {
-      export_obj[key] = await Note_Obj.GM.getValue(key, {});
+    const keysList = await Note_Obj.GM.listValues();
+    const exportObj = {};
+    for (const key of keysList) {
+      exportObj[key] = await Note_Obj.GM.getValue(key, {});
     }
-    Note_Obj.fn.downloadText(JSON.stringify(export_obj), this.id + '_data_' + Date.now() + '.txt', () => {
+    Note_Obj.fn.downloadText(JSON.stringify(exportObj), `${this.id}_data_${Date.now()}.txt`, () => {
       this.vm.messageFrameAddNotifaction(this.lang.backUpNotifactionText);
     });
   }
@@ -8443,22 +8446,22 @@ class Note_Obj {
       if (res) {
         if (content) {
           try {
-            let import_obj = JSON.parse(content);
-            if (typeof import_obj === 'object' && import_obj) {
-              let is_old_version_data = true;
-              for (let key in import_obj) {
+            const importObj = JSON.parse(content);
+            if (typeof importObj === 'object' && importObj) {
+              let isOldVersionData = true;
+              for (const key in importObj) {
                 if (key === this.configKeyName) {
-                  this.writeConfig(import_obj[key]);
-                  delete import_obj[key];
+                  this.writeConfig(importObj[key]);
+                  delete importObj[key];
                 } else if (key === this.groupKeyName) {
-                  this.writeGroup(import_obj[key]);
-                  delete import_obj[key];
+                  this.writeGroup(importObj[key]);
+                  delete importObj[key];
                 } else if (key === this.itemsKeyName) {
-                  this.setUsers(import_obj[key]);
-                  is_old_version_data = false;
+                  this.setUsers(importObj[key]);
+                  isOldVersionData = false;
                 }
               }
-              is_old_version_data && this.setUsers(import_obj);
+              isOldVersionData && this.setUsers(importObj);
               this.closeAllFrame();
               typeof this.changeEvent === 'function' && this.changeEvent(this);
               typeof callback === 'function' && callback();
@@ -8468,8 +8471,7 @@ class Note_Obj {
               this.vm.messageFrameAddNotifaction(this.lang.notObjectNotifactionText);
             }
           } catch (e) {
-            console.error('There was an error in the parsing of the object.');
-            console.error(e);
+            console.error('There was an error in the parsing of the object.', e);
             this.vm.messageFrameAddNotifaction(this.lang.errorImportNotifactionText);
           }
         } else {
@@ -8482,7 +8484,7 @@ class Note_Obj {
     });
   }
   async readValuesFromStorage() {
-    let keys_list = await Note_Obj.GM.listValues();
+    const keysList = await Note_Obj.GM.listValues();
     if (!this.configKeyName) {
       this.configKeyName = '$' + this.id + 'Config';
     }
@@ -8495,46 +8497,46 @@ class Note_Obj {
     if (!this.itemsKeyName) {
       this.itemsKeyName = '$' + this.id + 'Items';
     }
-    if (Array.isArray(keys_list)) {
-      let read_old_data_state = false;
-      for (let key of keys_list) {
-        let key_data = await Note_Obj.GM.getValue(key, null);
-        if (key_data) {
+    if (Array.isArray(keysList)) {
+      let readOldDataState = false;
+      for (const key of keysList) {
+        const keyData = await Note_Obj.GM.getValue(key, null);
+        if (keyData) {
           if (key === this.configKeyName) {
-            for (let c_key in this.config) {
-              if (key_data[c_key]) {
-                this.config[c_key] = Object.assign(this.config[c_key], key_data[c_key]);
+            for (const cKey in this.config) {
+              if (keyData[cKey]) {
+                this.config[cKey] = Object.assign(this.config[cKey], keyData[cKey]);
               }
             }
           } else if (key === this.groupKeyName) {
-            Object.assign(this.group, key_data);
+            Object.assign(this.group, keyData);
           } else if (key === this.timeKeyName) {
-            this.storeModificationTime = key_data;
+            this.storeModificationTime = keyData;
           } else if (key === this.itemsKeyName) {
-            this.items = Object.assign(this.items, key_data);
+            this.items = Object.assign(this.items, keyData);
           } else {
-            if (key_data.tag) {
+            if (keyData.tag) {
               if (!this.items[key]) {
-                if (!key_data.name) {
-                  key_data.name = key;
+                if (!keyData.name) {
+                  keyData.name = key;
                 }
-                this.items[key] = key_data;
-                read_old_data_state = true;
+                this.items[key] = keyData;
+                readOldDataState = true;
               }
             }
             Note_Obj.GM.deleteValue(key);
           }
         }
       }
-      read_old_data_state && Note_Obj.GM.setValue(this.itemsKeyName, this.items);
+      readOldDataState && Note_Obj.GM.setValue(this.itemsKeyName, this.items);
     }
   }
-  writeConfig(config_obj = null) {
+  writeConfig(configObj = null) {
     try {
-      let keys_list = Object.keys(this.vm.settingsFrame.items);
-      config_obj && Vue.set(this.vm.settingsFrame, 'items', Object.assign({}, this.config, config_obj));
-      for (let key in this.vm.settingsFrame.items) {
-        if (!keys_list.includes(key)) {
+      const keysList = Object.keys(this.vm.settingsFrame.items);
+      configObj && Vue.set(this.vm.settingsFrame, 'items', Object.assign({}, this.config, configObj));
+      for (const key in this.vm.settingsFrame.items) {
+        if (!keysList.includes(key)) {
           Vue.delete(this.vm.settingsFrame.items, key);
         }
       }
@@ -8543,16 +8545,15 @@ class Note_Obj {
       Note_Obj.GM.setValue(this.timeKeyName, this.vm.settingsFrame.storeModificationTime);
       return true;
     } catch (e) {
-      console.error('Error in storage operation.');
-      console.error(e);
+      console.error('Error in storage operation.', e);
       return false;
     }
   }
-  writeGroup(group_obj) {
+  writeGroup(groupObj) {
     try {
-      if (typeof group_obj === 'object' && group_obj) {
-        this.group = group_obj;
-        for (let key in this.group) {
+      if (typeof groupObj === 'object' && groupObj) {
+        this.group = groupObj;
+        for (const key in this.group) {
           if (key !== 'defalut' && !this.group[key].value) {
             Vue.delete(this.group, key);
           }
@@ -8564,36 +8565,34 @@ class Note_Obj {
       Note_Obj.GM.setValue(this.timeKeyName, this.vm.settingsFrame.storeModificationTime);
       return true;
     } catch (e) {
-      console.error('Error in storage operation.');
-      console.error(e);
+      console.error('Error in storage operation.', e);
       return false;
     }
   }
-  writeNewGroupValue(group_key, new_group) {
+  writeNewGroupValue(groupKey, newGroup) {
     try {
-      Vue.set(this.group, group_key, new_group);
+      Vue.set(this.group, groupKey, newGroup);
       Note_Obj.GM.setValue(this.groupKeyName, this.group);
       this.vm.settingsFrame.storeModificationTime = Date.now();
       Note_Obj.GM.setValue(this.timeKeyName, this.vm.settingsFrame.storeModificationTime);
       return true;
     } catch (e) {
-      console.error('Error in storage operation.');
-      console.error(e);
+      console.error('Error in storage operation.', e);
       return false;
     }
   }
-  writeNewUserName(user_id, user_name) {
+  writeNewUserName(userId, userName) {
     try {
-      if (this.judgeUsers(user_id) && user_name) {
-        let write_status = false;
-        if (this.items[user_id].name == null) {
-          Vue.set(this.items[user_id], 'name', user_name);
-          write_status = true;
-        } else if (this.items[user_id].name !== user_name) {
-          this.items[user_id].name = user_name;
-          write_status = true;
+      if (this.judgeUsers(userId) && userName) {
+        let writeStatus = false;
+        if (this.items[userId].name == null) {
+          Vue.set(this.items[userId], 'name', userName);
+          writeStatus = true;
+        } else if (this.items[userId].name !== userName) {
+          this.items[userId].name = userName;
+          writeStatus = true;
         }
-        if (write_status) {
+        if (writeStatus) {
           Note_Obj.GM.setValue(this.itemsKeyName, this.items);
           this.vm.settingsFrame.storeModificationTime = Date.now();
           Note_Obj.GM.setValue(this.timeKeyName, this.vm.settingsFrame.storeModificationTime);
@@ -8601,57 +8600,56 @@ class Note_Obj {
       }
       return true;
     } catch (e) {
-      console.error('Error in storage operation.');
-      console.error(e);
+      console.error('Error in storage operation.', e);
       return false;
     }
   }
-  writeUser(user_id, name, tag, groupKey) {
+  writeUser(userId, name, tag, groupKey) {
     try {
-      let write_status = false;
-      if (this.judgeUsers(user_id)) {
+      let writeStatus = false;
+      if (this.judgeUsers(userId)) {
         if (tag || groupKey) {
-          if (this.items[user_id].tag != tag) {
-            this.items[user_id].tag = tag || '';
-            write_status = true;
+          if (this.items[userId].tag != tag) {
+            this.items[userId].tag = tag || '';
+            writeStatus = true;
           }
-          if (name && this.items[user_id].name != name) {
-            this.items[user_id].name = name;
-            write_status = true;
+          if (name && this.items[userId].name != name) {
+            this.items[userId].name = name;
+            writeStatus = true;
           }
           if (groupKey && groupKey !== 'dufault') {
-            if (this.items[user_id].group != groupKey) {
-              Vue.set(this.items[user_id], 'group', groupKey);
-              write_status = true;
+            if (this.items[userId].group != groupKey) {
+              Vue.set(this.items[userId], 'group', groupKey);
+              writeStatus = true;
             }
-          } else if (this.items[user_id].group != null) {
-            Vue.delete(this.items[user_id], 'group');
-            write_status = true;
+          } else if (this.items[userId].group != null) {
+            Vue.delete(this.items[userId], 'group');
+            writeStatus = true;
           }
         } else {
-          Vue.delete(this.items, user_id);
-          write_status = true;
+          Vue.delete(this.items, userId);
+          writeStatus = true;
         }
       } else {
         if (tag || groupKey) {
-          let the_name = name || user_id;
+          const theName = name || userId;
           if (groupKey && groupKey !== 'dufault') {
-            Vue.set(this.items, user_id, {
+            Vue.set(this.items, userId, {
               tag: tag,
-              name: the_name,
+              name: theName,
               group: groupKey,
             });
           } else {
-            Vue.set(this.items, user_id, {
+            Vue.set(this.items, userId, {
               tag: tag,
-              name: the_name,
+              name: theName,
             });
           }
-          write_status = true;
+          writeStatus = true;
         }
       }
-      if (write_status) {
-        if (this.judgeUsers(user_id)) {
+      if (writeStatus) {
+        if (this.judgeUsers(userId)) {
           Note_Obj.GM.setValue(this.itemsKeyName, this.items);
         }
         this.vm.settingsFrame.storeModificationTime = Date.now();
@@ -8659,24 +8657,23 @@ class Note_Obj {
       }
       return true;
     } catch (e) {
-      console.error('Error in storage operation.');
-      console.error(e);
+      console.error('Error in storage operation.', e);
       return false;
     }
   }
-  setUsers(user_obj) {
+  setUsers(userObj) {
     try {
-      if (typeof user_obj === 'object' && user_obj) {
-        for (let key in user_obj) {
-          if (typeof user_obj[key] === 'object') {
-            if (!user_obj[key].name) {
-              user_obj[key].name = key;
+      if (typeof userObj === 'object' && userObj) {
+        for (const key in userObj) {
+          if (typeof userObj[key] === 'object') {
+            if (!userObj[key].name) {
+              userObj[key].name = key;
             }
           } else {
-            delete user_obj[key];
+            delete userObj[key];
           }
         }
-        this.items = user_obj;
+        this.items = userObj;
         Vue.set(this.vm.noteVirualFrame, 'items', this.items);
       }
       Note_Obj.GM.setValue(this.itemsKeyName, this.items);
@@ -8684,8 +8681,7 @@ class Note_Obj {
       Note_Obj.GM.setValue(this.timeKeyName, this.vm.settingsFrame.storeModificationTime);
       return true;
     } catch (e) {
-      console.error('Error in storage operation.');
-      console.error(e);
+      console.error('Error in storage operation.', e);
       return false;
     }
   }
@@ -8734,7 +8730,7 @@ class Note_Obj {
     }
   }
   registerMenuCommand() {
-    for (let menu in this.menuCommand) {
+    for (const menu in this.menuCommand) {
       menu && Note_Obj.GM.unregisterMenuCommand(this.menuCommand[menu]);
     }
     this.menuCommand.settings = Note_Obj.GM.registerMenuCommand(this.lang.gmSettingsText, () => this.gmSettings());
@@ -8745,7 +8741,7 @@ class Note_Obj {
     this.menuCommand.import = Note_Obj.GM.registerMenuCommand(this.lang.gmImportText, () => this.gmImport());
   }
   addValueChangeListener(status) {
-    let auto_status = status == null ? this.config.interface.autoSync : status;
+    const autoStatus = status == null ? this.config.interface.autoSync : status;
     if (this.listener.autoSync) {
       Note_Obj.GM.removeValueChangeListener(this.listener.autoSync);
       this.listener.autoSync = null;
@@ -8758,30 +8754,30 @@ class Note_Obj {
       Note_Obj.GM.removeValueChangeListener(this.listener.group);
       this.listener.group = null;
     }
-    if (auto_status) {
-      this.listener.autoSync = Note_Obj.GM.addValueChangeListener(this.itemsKeyName, (_name, _old_value, new_value, remote) => {
+    if (autoStatus) {
+      this.listener.autoSync = Note_Obj.GM.addValueChangeListener(this.itemsKeyName, (_name, _oldValue, newValue, remote) => {
         if (remote) {
-          if (new_value && typeof new_value === 'object') {
-            this.items = new_value;
+          if (newValue && typeof newValue === 'object') {
+            this.items = newValue;
             Vue.set(this.vm.noteVirualFrame, 'items', this.items);
             typeof this.changeEvent === 'function' && this.changeEvent(this);
             this.vm.messageFrameAddNotifaction(this.vm.languageVirualFrame.lang.syncNoteNotifactionText);
           }
         }
       });
-      this.listener.config = Note_Obj.GM.addValueChangeListener(this.configKeyName, (_name, _old_value, new_value, remote) => {
+      this.listener.config = Note_Obj.GM.addValueChangeListener(this.configKeyName, (_name, _oldValue, newValue, remote) => {
         if (remote) {
-          if (new_value) {
-            Vue.set(this.vm.settingsFrame, 'items', Object.assign({}, this.config, new_value));
+          if (newValue) {
+            Vue.set(this.vm.settingsFrame, 'items', Object.assign({}, this.config, newValue));
             this.vm.messageFrameAddNotifaction(this.vm.languageVirualFrame.lang.syncConfigNotifactionText);
           }
         }
       });
-      this.listener.group = Note_Obj.GM.addValueChangeListener(this.groupKeyName, (_name, _olc_value, new_value, remote) => {
+      this.listener.group = Note_Obj.GM.addValueChangeListener(this.groupKeyName, (_name, _oldValue, newValue, remote) => {
         if (remote) {
-          if (new_value && typeof new_value === 'object') {
-            this.group = new_value;
-            for (let key in this.group) {
+          if (newValue && typeof newValue === 'object') {
+            this.group = newValue;
+            for (const key in this.group) {
               if (key !== 'defalut' && !this.group[key].value) {
                 Vue.delete(this.group, key);
               }
@@ -8794,33 +8790,33 @@ class Note_Obj {
       });
     }
   }
-  judgeUsers(user_id) {
-    if (user_id) {
-      let keys_arr = Object.keys(this.items);
-      return keys_arr.includes(user_id);
+  judgeUsers(userId) {
+    if (userId) {
+      const keysArr = Object.keys(this.items);
+      return keysArr.includes(userId);
     }
     return false;
   }
-  getUserTag(user_id, mode = {}, direct = false) {
-    let angle = mode.angle || mode.a ? true : false;
-    let curly = mode.curly || mode.big || mode.b ? true : false;
-    let square = mode.square || mode.medium || mode.m ? true : false;
-    let parentheses = mode.parentheses || mode.small || mode.s ? true : false;
-    let double = mode.double || mode.de || mode.d;
-    let prefix = mode.prefix || mode.p;
-    let mask_group = mode.mask;
+  getUserTag(userId, mode = {}, direct = false) {
+    const angle = mode.angle || mode.a ? true : false;
+    const curly = mode.curly || mode.big || mode.b ? true : false;
+    const square = mode.square || mode.medium || mode.m ? true : false;
+    const parentheses = mode.parentheses || mode.small || mode.s ? true : false;
+    const double = mode.double || mode.de || mode.d;
+    const prefix = mode.prefix || mode.p;
+    const maskGroup = mode.mask;
     let tag = '';
-    if (this.judgeUsers(user_id)) {
-      tag = this.items[user_id].tag;
-      if (this.vm.settingsFrame.items.addNote.showNoteGroupName && !mask_group) {
-        let group_name = this.getUserGroupName(user_id);
-        if (group_name) {
+    if (this.judgeUsers(userId)) {
+      tag = this.items[userId].tag;
+      if (this.vm.settingsFrame.items.addNote.showNoteGroupName && !maskGroup) {
+        const groupName = this.getUserGroupName(userId);
+        if (groupName) {
           if (tag) {
-            tag += ' [' + group_name + ']';
+            tag += ' [' + groupName + ']';
           } else if (direct) {
-            tag = user_id + ' [' + group_name + ']';
+            tag = userId + ' [' + groupName + ']';
           } else {
-            tag = group_name;
+            tag = groupName;
           }
         }
       }
@@ -8842,133 +8838,125 @@ class Note_Obj {
     }
     return tag;
   }
-  getUserName(user_id) {
-    if (this.judgeUsers(user_id) && this.items[user_id].name) {
-      return this.items[user_id].name;
+  getUserName(userId) {
+    if (this.judgeUsers(userId) && this.items[userId].name) {
+      return this.items[userId].name;
     }
     return '';
   }
-  getUserGroupKey(user_id) {
-    let group_key = '';
-    if (this.judgeUsers(user_id)) {
-      group_key = this.items[user_id].group || '';
-    }
-    return group_key;
+  getUserGroupKey(userId) {
+    return this.judgeUsers(userId) ? this.items[userId].group || '' : '';
   }
-  getUserGroupName(user_id) {
-    let group_name = '';
-    let group_key = this.getUserGroupKey(user_id);
-    if (group_key && group_key !== 'default' && this.group[group_key]) {
-      group_name = this.group[group_key].value;
+  getUserGroupName(userId) {
+    let groupName = '';
+    const groupKey = this.getUserGroupKey(userId);
+    if (groupKey && groupKey !== 'default' && this.group[groupKey]) {
+      groupName = this.group[groupKey].value;
     }
-    return group_name;
+    return groupName;
   }
-  getPrimaryColor(user_id) {
-    let group_key = this.getUserGroupKey(user_id) || 'default';
-    if (!Object.keys(this.group).includes(group_key)) {
-      group_key = 'default';
+  getPrimaryColor(userId) {
+    let groupKey = this.getUserGroupKey(userId) || 'default';
+    if (!Object.keys(this.group).includes(groupKey)) {
+      groupKey = 'default';
     }
-    return this.group[group_key].primaryColor;
+    return this.group[groupKey].primaryColor;
   }
-  getSecondaryColor(user_id) {
-    let group_key = this.getUserGroupKey(user_id) || 'default';
-    if (!Object.keys(this.group).includes(group_key)) {
-      group_key = 'default';
+  getSecondaryColor(userId) {
+    let groupKey = this.getUserGroupKey(userId) || 'default';
+    if (!Object.keys(this.group).includes(groupKey)) {
+      groupKey = 'default';
     }
-    return this.group[group_key].secondaryColor;
+    return this.group[groupKey].secondaryColor;
   }
   getShowNoteColorConfig() {
     return this.config.addNote.showNoteGroupColor;
   }
-  handler(user_id, ele, path_name = null, mode = {}, user_name = null) {
-    let additional = mode.additional || mode.add;
-    let classname = mode.className || mode.classname || mode.class;
-    let title = mode.title ? true : false;
-    let symbol = mode.symbol ? mode.symbol : {};
-    let restore = mode.restore ? true : false;
-    let primary_color = symbol.primaryColor == null || symbol.primaryColor == true;
-    let offset_width = symbol.offsetWidth || 0;
-    let offset_height = symbol.offsetHeight || 0;
+  handler(userId, ele, pathName = null, mode = {}, userName = null) {
+    const additional = mode.additional || mode.add;
+    let classname = mode.className || mode.classname || mode.class || [];
+    if (classname && typeof classname === 'string') {
+      classname = classname.split(/\s+/);
+    }
+    classname && (classname = classname.filter(v => v));
+    const title = mode.title ? true : false;
+    const symbol = mode.symbol ? mode.symbol : {};
+    const restore = mode.restore ? true : false;
+    const primaryColor = symbol.primaryColor == null || symbol.primaryColor == true;
+    const offsetWidth = symbol.offsetWidth || 0;
+    const offsetHeight = symbol.offsetHeight || 0;
     if (additional) {
-      if (path_name) {
-        let path_ele = ele.querySelector(path_name);
-        if (path_ele) {
-          let tag_ele = path_ele.querySelector('.note-obj-user-tag');
-          tag_ele && tag_ele.remove();
-          !restore &&
-            this.getUserTag(user_id) &&
-            path_ele.appendChild(this.createNoteTag(user_id, symbol, additional, classname, user_name));
+      if (pathName) {
+        const pathEle = ele.querySelector(pathName);
+        if (pathEle) {
+          const tagEle = pathEle.querySelector('.note-obj-user-tag');
+          tagEle && tagEle.remove();
+          !restore && this.getUserTag(userId) && pathEle.appendChild(this.createNoteTag(userId, symbol, additional, classname, userName));
         }
       } else {
-        let tag_ele = ele.querySelector('.note-obj-user-tag');
-        tag_ele && tag_ele.remove();
-        !restore && this.getUserTag(user_id) && ele.appendChild(this.createNoteTag(user_id, symbol, additional, classname, user_name));
+        const tagEle = ele.querySelector('.note-obj-user-tag');
+        tagEle && tagEle.remove();
+        !restore && this.getUserTag(userId) && ele.appendChild(this.createNoteTag(userId, symbol, additional, classname, userName));
       }
     } else {
-      if (path_name) {
-        let source_ele = ele.querySelector(path_name);
-        if (source_ele) {
-          if (!restore && this.getUserTag(user_id)) {
-            source_ele.textContent = this.getUserTag(user_id, symbol, true);
-            if (this.vm.settingsFrame.items.addNote.showNoteGroupColor && primary_color) {
-              source_ele.style.setProperty('color', this.getPrimaryColor(user_id), 'important');
+      if (pathName) {
+        const sourceEle = ele.querySelector(pathName);
+        if (sourceEle) {
+          if (!restore && this.getUserTag(userId)) {
+            sourceEle.textContent = this.getUserTag(userId, symbol, true);
+            if (this.vm.settingsFrame.items.addNote.showNoteGroupColor && primaryColor) {
+              sourceEle.style.setProperty('color', this.getPrimaryColor(userId), 'important');
             } else {
-              source_ele.style.setProperty('color', '');
+              sourceEle.style.setProperty('color', '');
             }
             if (!symbol.maskHover) {
-              source_ele.onmouseenter = event => {
-                let x = Note_Obj.fn.getElementRight(event.target);
-                let y = Note_Obj.fn.getElementBottom(event.target);
+              sourceEle.onmouseenter = event => {
+                const x = Note_Obj.fn.getElementRight(event.target);
+                const y = Note_Obj.fn.getElementBottom(event.target);
                 Note_Obj.fn.debounce(() => {
-                  this.vm.popoverFrameAddUserId(user_id, x + offset_width, y + offset_height);
+                  this.vm.popoverFrameAddUserId(userId, x + offsetWidth, y + offsetHeight);
                 }, 1000);
               };
-              source_ele.onmouseleave = _event => {
+              sourceEle.onmouseleave = _event => {
                 Note_Obj.fn.debounce(() => {
                   this.vm.popoverFrameHideEvent();
                 }, 1000);
               };
             }
             if (title) {
-              source_ele.title = user_id;
+              sourceEle.title = userId;
             }
-            if (classname && typeof classname === 'string') {
-              classname = classname.split(/\s+/);
-            }
-            classname && Array.isArray(classname.filter(v => v)) && source_ele.classList.add(...classname);
-            user_name && this.writeNewUserName(user_id, user_name);
+            classname && Array.isArray(classname) && sourceEle.classList.add(...classname);
+            userName && this.writeNewUserName(userId, userName);
           } else {
-            source_ele.textContent = Note_Obj.fn.getSourceUserId(user_id, symbol);
-            if (this.vm.settingsFrame.items.addNote.showNoteGroupColor && primary_color) {
-              source_ele.style.setProperty('color', '');
+            sourceEle.textContent = Note_Obj.fn.getSourceUserId(userId, symbol);
+            if (this.vm.settingsFrame.items.addNote.showNoteGroupColor && primaryColor) {
+              sourceEle.style.setProperty('color', '');
             }
             if (!symbol.maskHover) {
-              source_ele.onmouseenter = '';
-              source_ele.onmouseleave = '';
+              sourceEle.onmouseenter = '';
+              sourceEle.onmouseleave = '';
             }
             if (title) {
-              source_ele.title = '';
+              sourceEle.title = '';
             }
-            if (classname && typeof classname === 'string') {
-              classname = classname.split(/\s+/);
-            }
-            classname && Array.isArray(classname.filter(v => v)) && source_ele.classList.remove(...classname);
+            classname && Array.isArray(classname) && sourceEle.classList.remove(...classname);
           }
         }
       } else {
-        if (!restore && this.getUserTag(user_id)) {
-          ele.textContent = this.getUserTag(user_id, symbol, true);
-          if (this.vm.settingsFrame.items.addNote.showNoteGroupColor && primary_color) {
-            ele.style.setProperty('color', this.getPrimaryColor(user_id), 'important');
+        if (!restore && this.getUserTag(userId)) {
+          ele.textContent = this.getUserTag(userId, symbol, true);
+          if (this.vm.settingsFrame.items.addNote.showNoteGroupColor && primaryColor) {
+            ele.style.setProperty('color', this.getPrimaryColor(userId), 'important');
           } else {
             ele.style.setProperty('color', '');
           }
           if (!symbol.maskHover) {
             ele.onmouseenter = event => {
-              let x = Note_Obj.fn.getElementRight(event.target);
-              let y = Note_Obj.fn.getElementBottom(event.target);
+              const x = Note_Obj.fn.getElementRight(event.target);
+              const y = Note_Obj.fn.getElementBottom(event.target);
               Note_Obj.fn.debounce(() => {
-                this.vm.popoverFrameAddUserId(user_id, x + offset_width, y + offset_height);
+                this.vm.popoverFrameAddUserId(userId, x + offsetWidth, y + offsetHeight);
               }, 1000);
             };
             ele.onmouseleave = _evnet => {
@@ -8978,16 +8966,13 @@ class Note_Obj {
             };
           }
           if (title) {
-            ele.title = user_id;
+            ele.title = userId;
           }
-          if (classname && typeof classname === 'string') {
-            classname = classname.split(/\s+/);
-          }
-          classname && Array.isArray(classname.filter(v => v)) && ele.classList.add(...classname);
-          user_name && this.writeNewUserName(user_id, user_name);
+          classname && Array.isArray(classname) && ele.classList.add(...classname);
+          userName && this.writeNewUserName(userId, userName);
         } else {
-          ele.textContent = Note_Obj.fn.getSourceUserId(user_id, symbol);
-          if (this.vm.settingsFrame.items.addNote.showNoteGroupColor && primary_color) {
+          ele.textContent = Note_Obj.fn.getSourceUserId(userId, symbol);
+          if (this.vm.settingsFrame.items.addNote.showNoteGroupColor && primaryColor) {
             ele.style.setProperty('color', '');
           }
           if (!symbol.maskHover) {
@@ -8995,87 +8980,84 @@ class Note_Obj {
             ele.onmouseleave = '';
           }
           if (title) {
-            ele.title = user_id;
+            ele.title = userId;
           }
-          if (classname && typeof classname === 'string') {
-            classname = classname.split(/\s+/);
-          }
-          classname && Array.isArray(classname.filter(v => v)) && ele.classList.remove(...classname);
+          classname && Array.isArray(classname) && ele.classList.remove(...classname);
         }
       }
     }
   }
-  createNoteTag(user_id, mode = null, type = 'span', classname = null, user_name = null) {
-    let note_tag = document.createElement(type);
-    note_tag.className = 'note-obj-user-tag';
-    let tag = this.getUserTag(user_id, mode);
-    let primary_color = mode.primaryColor == null || mode.primaryColor == true;
-    let secondary_color = mode.secondaryColor == null || mode.secondaryColor == true;
-    let offset_width = mode.offsetWidth || 0;
-    let offset_height = mode.offsetHeight || 0;
+  createNoteTag(userId, mode = null, type = 'span', classname = null, userName = null) {
+    const noteTag = document.createElement(type);
+    noteTag.className = 'note-obj-user-tag';
+    const tag = this.getUserTag(userId, mode);
+    const primaryColor = mode.primaryColor == null || mode.primaryColor == true;
+    const secondaryColor = mode.secondaryColor == null || mode.secondaryColor == true;
+    const offsetWidth = mode.offsetWidth || 0;
+    const offsetHeight = mode.offsetHeight || 0;
     if (this.vm.settingsFrame.items.addNote.showNoteGroupColor) {
-      if (primary_color && secondary_color) {
-        note_tag.style.setProperty('background-color', this.getPrimaryColor(user_id), 'important');
-        note_tag.style.setProperty('color', this.getSecondaryColor(user_id), 'important');
-      } else if (primary_color) {
-        note_tag.style.setProperty('color', this.getPrimaryColor(user_id), 'important');
-      } else if (secondary_color) {
-        note_tag.style.setProperty('color', this.getSecondaryColor(user_id), 'important');
+      if (primaryColor && secondaryColor) {
+        noteTag.style.setProperty('background-color', this.getPrimaryColor(userId), 'important');
+        noteTag.style.setProperty('color', this.getSecondaryColor(userId), 'important');
+      } else if (primaryColor) {
+        noteTag.style.setProperty('color', this.getPrimaryColor(userId), 'important');
+      } else if (secondaryColor) {
+        noteTag.style.setProperty('color', this.getSecondaryColor(userId), 'important');
       } else {
-        note_tag.style.setProperty('background-color', '');
-        note_tag.style.setProperty('color', '');
+        noteTag.style.setProperty('background-color', '');
+        noteTag.style.setProperty('color', '');
       }
     }
     if (classname && typeof classname === 'string') {
       classname = classname.split(/\s+/);
     }
-    classname && Array.isArray(classname.filter(v => v)) && note_tag.classList.add(...classname);
-    note_tag.textContent = tag;
+    classname && Array.isArray(classname.filter(v => v)) && noteTag.classList.add(...classname);
+    noteTag.textContent = tag;
     if (!mode.maskHover) {
-      note_tag.onmouseenter = event => {
-        let x = Note_Obj.fn.getElementRight(event.target);
-        let y = Note_Obj.fn.getElementBottom(event.target);
+      noteTag.onmouseenter = event => {
+        const x = Note_Obj.fn.getElementRight(event.target);
+        const y = Note_Obj.fn.getElementBottom(event.target);
         Note_Obj.fn.debounce(() => {
-          this.vm.popoverFrameAddUserId(user_id, x + offset_width, y + offset_height);
+          this.vm.popoverFrameAddUserId(userId, x + offsetWidth, y + offsetHeight);
         }, 1000);
       };
-      note_tag.onmouseleave = _evnet => {
+      noteTag.onmouseleave = _evnet => {
         Note_Obj.fn.debounce(() => {
           this.vm.popoverFrameHideEvent();
         }, 1000);
       };
     }
-    user_name && this.writeNewUserName(user_id, user_name);
-    return note_tag;
+    userName && this.writeNewUserName(userId, userName);
+    return noteTag;
   }
-  createNoteBtn(user_id, user_name = null, classname = null, type = 'div') {
-    let note_btn = document.createElement(type);
-    note_btn.className = 'note-obj-add-note-btn';
+  createNoteBtn(userId, userName = null, classname = null, type = 'div') {
+    const noteBtn = document.createElement(type);
+    noteBtn.className = 'note-obj-add-note-btn';
     if (classname && typeof classname === 'string') {
       classname = classname.split(/\s+/);
     }
-    classname && Array.isArray(classname.filter(v => v)) && note_btn.classList.add(...classname);
-    note_btn.title = this.lang.editTitle;
-    note_btn.addEventListener('click', event => {
+    classname && Array.isArray(classname.filter(v => v)) && noteBtn.classList.add(...classname);
+    noteBtn.title = this.lang.editTitle;
+    noteBtn.addEventListener('click', event => {
       event.stopPropagation();
-      this.vm.addFrameAddUser(user_id, user_name);
+      this.vm.addFrameAddUser(userId, userName);
     });
-    return note_btn;
+    return noteBtn;
   }
-  createSearchButton(classname = null, btn_title = null) {
-    let search_btn = document.createElement('div');
-    search_btn.id = this.id + '_searchButton';
-    search_btn.className = 'note-obj-search-button';
+  createSearchButton(classname = null, btnTitle = null) {
+    const searchBtn = document.createElement('div');
+    searchBtn.id = this.id + '_searchButton';
+    searchBtn.className = 'note-obj-search-button';
     if (classname && typeof classname === 'string') {
       classname = classname.split(/\s+/);
     }
-    classname && Array.isArray(classname.filter(v => v)) && search_btn.classList.add(...classname);
-    search_btn.title = btn_title == null ? this.lang.searchTagTitle : btn_title;
-    search_btn.addEventListener('click', e => {
+    classname && Array.isArray(classname.filter(v => v)) && searchBtn.classList.add(...classname);
+    searchBtn.title = btnTitle == null ? this.lang.searchTagTitle : btnTitle;
+    searchBtn.addEventListener('click', e => {
       e.stopPropagation();
       this.vm.searchFrame.isShow = true;
     });
-    return search_btn;
+    return searchBtn;
   }
 }
 Note_Obj.GM = {
@@ -9222,26 +9204,26 @@ Note_Obj.fn = {
   throttleTimer: null,
   throttlePrevious: 0,
   isMobilePage: () => /android|webos|iphone|ipod|blackberry/i.test(navigator.userAgent),
-  getUserIdFromLink: (link, comparison_callback = null, replace_callback = null) => {
-    let user_id = link.replace(window.location.origin + '/', '').replace(/\/$/, '');
-    if (typeof replace_callback === 'function' && replace_callback(user_id)) {
-      user_id = replace_callback(user_id);
+  getUserIdFromLink: (link, comparisonCallback = null, replaceCallback = null) => {
+    let userId = link.replace(window.location.origin + '/', '').replace(/\/$/, '');
+    if (typeof replaceCallback === 'function' && replaceCallback(userId)) {
+      userId = replaceCallback(userId);
     }
-    if (typeof comparison_callback === 'function' && !comparison_callback(user_id)) {
-      user_id = null;
+    if (typeof comparisonCallback === 'function' && !comparisonCallback(userId)) {
+      userId = null;
     }
-    return user_id;
+    return userId;
   },
-  getSourceUserId: (user_id, mode) => {
-    let angle = mode.angle || mode.a ? true : false;
-    let curly = mode.curly || mode.big || mode.b ? true : false;
-    let square = mode.square || mode.medium || mode.m ? true : false;
-    let parentheses = mode.parentheses || mode.small || mode.s ? true : false;
-    let double = mode.double || mode.de || mode.d;
-    let prefix = mode.prefix || mode.p;
+  getSourceUserId: (userId, mode) => {
+    const angle = mode.angle || mode.a ? true : false;
+    const curly = mode.curly || mode.big || mode.b ? true : false;
+    const square = mode.square || mode.medium || mode.m ? true : false;
+    const parentheses = mode.parentheses || mode.small || mode.s ? true : false;
+    const double = mode.double || mode.de || mode.d;
+    const prefix = mode.prefix || mode.p;
     let value = '';
-    if (user_id) {
-      value = user_id;
+    if (userId) {
+      value = userId;
       if (prefix) {
         value = prefix + value;
       }
@@ -9266,12 +9248,12 @@ Note_Obj.fn = {
     } else {
       filename = /\.(?:txt|text|json|config)$/i.test(filename) ? filename : filename + '.txt';
     }
-    let url_object = window.URL || window.webKitURL || window;
-    let export_blob = new Blob([content]);
-    let save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
-    save_link.href = url_object.createObjectURL(export_blob);
-    save_link.download = filename;
-    let ev = new MouseEvent('click', {
+    const urlObject = window.URL || window.webKitURL || window;
+    const exportBlob = new Blob([content]);
+    const saveLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+    saveLink.href = urlObject.createObjectURL(exportBlob);
+    saveLink.download = filename;
+    const ev = new MouseEvent('click', {
       bubbles: true,
       cancelable: false,
       screenX: 0,
@@ -9285,7 +9267,7 @@ Note_Obj.fn = {
       button: 0,
       relatedTarget: null,
     });
-    save_link.dispatchEvent(ev);
+    saveLink.dispatchEvent(ev);
     typeof completed === 'function' && completed();
   },
   openHyperlink: (url, ctrlKey, shiftKey) => {
@@ -9296,7 +9278,7 @@ Note_Obj.fn = {
     } else {
       hyperlink = url;
     }
-    let ev = new MouseEvent('click', {
+    const ev = new MouseEvent('click', {
       bubbles: true,
       cancelable: false,
       screenX: 0,
@@ -9313,66 +9295,66 @@ Note_Obj.fn = {
     hyperlink.dispatchEvent(ev);
   },
   openFile: callback => {
-    let file_input = document.createElementNS('http://www.w3.org/1999/xhtml', 'input');
-    file_input.id = 'noteObjFnOpenFileInput';
-    file_input.type = 'file';
-    file_input.accept = '.txt, .text, .json, .config';
-    file_input.style.display = 'none';
-    file_input.addEventListener('change', () => {
-      if (!file_input.value) {
+    const fileInput = document.createElementNS('http://www.w3.org/1999/xhtml', 'input');
+    fileInput.id = 'noteObjFnOpenFileInput';
+    fileInput.type = 'file';
+    fileInput.accept = '.txt, .text, .json, .config';
+    fileInput.style.display = 'none';
+    fileInput.addEventListener('change', () => {
+      if (!fileInput.value) {
         console.warn('No file selected.');
         return;
       }
-      let file = file_input.files[0];
+      const file = fileInput.files[0];
       if (file.type != 'application/json' && file.type != 'application/xml' && file.type != 'text/plain') {
         console.warn('Not a valid file.');
         callback(false, 'valid');
         return;
       }
-      let reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = function (e) {
-        let data = e.target.result;
+        const data = e.target.result;
         callback(true, data);
         return;
       };
       reader.readAsText(file);
     });
-    file_input.click();
+    fileInput.click();
   },
-  getElementLeft: function (ele) {
+  getElementLeft(ele) {
     return ele.getBoundingClientRect().left + document.documentElement.scrollLeft;
   },
-  getElementRight: function (ele) {
+  getElementRight(ele) {
     return ele.getBoundingClientRect().right + document.documentElement.scrollLeft;
   },
-  getElementTop: function (ele) {
+  getElementTop(ele) {
     return ele.getBoundingClientRect().top + document.documentElement.scrollTop;
   },
-  getElementBottom: function (ele) {
+  getElementBottom(ele) {
     return ele.getBoundingClientRect().bottom + document.documentElement.scrollTop;
   },
   compare(str1, str2, symbol = '.', equal = false) {
-    let arr1 = str1.split(symbol);
-    let arr2 = str2.split(symbol);
-    let compare_status = false;
-    let len = arr1.length < arr2.length ? arr1.length : arr2.length;
+    const arr1 = str1.split(symbol);
+    const arr2 = str2.split(symbol);
+    let compareStatus = false;
+    const len = arr1.length < arr2.length ? arr1.length : arr2.length;
     for (let i = len - 1; i >= 0; i--) {
       if (Number(arr1[i]) > Number(arr2[i])) {
-        compare_status = true;
+        compareStatus = true;
       } else if (equal && Number(arr1[i]) == Number(arr2[i])) {
-        compare_status = true;
+        compareStatus = true;
       } else {
-        compare_status = false;
+        compareStatus = false;
       }
     }
-    return compare_status;
+    return compareStatus;
   },
-  debounce: function (func, delay, immediate = false) {
+  debounce(func, delay, immediate = false) {
     let result;
-    let debounced = function (...args) {
+    const debounced = function (...args) {
       Note_Obj.fn.debounceTimer && clearTimeout(Note_Obj.fn.debounceTimer);
       if (immediate) {
-        let callNow = !Note_Obj.fn.debounceTimer;
+        const callNow = !Note_Obj.fn.debounceTimer;
         Note_Obj.fn.debounceTimer = setTimeout(() => {
           Note_Obj.fn.debounceTimer = null;
         }, delay);
@@ -9392,14 +9374,14 @@ Note_Obj.fn = {
     };
     return debounced();
   },
-  throttle: function (func, delay, options = {}) {
+  throttle(func, delay, options = {}) {
     let that, result;
-    let throttled = function (...args) {
-      let now = Date.now();
+    const throttled = function (...args) {
+      const now = Date.now();
       if (!Note_Obj.fn.throttlePrevious && options.leading === false) {
         Note_Obj.fn.throttlePrevious = now;
       }
-      let remaining = delay - (now - Note_Obj.fn.throttlePrevious);
+      const remaining = delay - (now - Note_Obj.fn.throttlePrevious);
       that = this;
       if (remaining <= 0 || remaining > delay) {
         if (Note_Obj.fn.throttleTimer) {
