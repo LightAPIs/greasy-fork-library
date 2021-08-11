@@ -2,7 +2,7 @@
 // @name         Note_Obj
 // @namespace    https://greasyfork.org/zh-CN/users/193133-pana
 // @homepage     https://greasyfork.org/zh-CN/users/193133-pana
-// @version      5.1.0
+// @version      5.3.0
 // @description  NOTE_OBJ
 // @author       pana
 // @license      GNU General Public License v3.0 or later
@@ -11,8 +11,8 @@
 typeof Vue !== 'function' && alert('The Vue.js file does not exist and script code does not work properly!!!');
 const NOTE_LANG = {
   INFO: {
-    version: '5.1.0',
-    updated: '2021-08-04',
+    version: '5.3.0',
+    updated: '2021-08-11',
   },
   EN: {
     addPlaceholder: 'Please enter a new note, press Enter to save',
@@ -24,9 +24,9 @@ const NOTE_LANG = {
     cancelTagText: 'Cancel',
     cancelTagTitle: 'Quit',
     savePrefixText: 'Save(Prefix: "%s")',
-    savePrefixTitle: 'Automatically add prefix when saving: "%s"',
+    savePrefixTitle: 'Automatically add prefix when saving: "%s", only add while holding Ctrl',
     saveSuffixText: 'Save(Suffix: "%s")',
-    saveSuffixTitle: 'Automatically add suffix when saving: "%s"',
+    saveSuffixTitle: 'Automatically add suffix when saving: "%s", only add while holding Ctrl',
     searchTagTitle: 'Search notes',
     searchTagPlaceholder: 'Search for notes, press Enter to open the result item',
     searchCloseTitle: 'Close the search box',
@@ -90,7 +90,7 @@ const NOTE_LANG = {
     deleteTitle: 'Delete content',
     settingsHeadlineText: 'Settings',
     settingsCloseTitle: 'Close the settings panel',
-    settingsAboutSearchBoxText: 'About the search box',
+    settingsAboutSearchBoxText: 'Search box',
     settingsSearchBoxShowIndexText: 'Display index values at the top',
     settingsSearchBoxCanHideSearchFrameText: 'Hide the search box when you click outside the search box',
     settingsSearchBoxShowButtonText: 'Show edit/delete button in result item',
@@ -99,23 +99,24 @@ const NOTE_LANG = {
     settingsSearchBoxOpenNewTabText:
       'Open result item in a new tab (When not enabled, you can press Ctrl+Enter to open the result in the background tab; press Ctrl+Shift+Enter to open the result in a new tab)',
     settingsSearchBoxEnableShortcutKeysText: 'Allow shortcut keys to open the search box (Ctrl+Shift+F)',
-    settingsAboutSearchValueText: 'About search content',
+    settingsAboutSearchValueText: 'Search content',
     settingsSearchValueCaseSensitiveText: 'Case-sensitive letters',
     settingsSearchValueSplitText: 'Split search method ("ab cd" ==> "ab" && "cd")',
     settingsSearchValueRegularText: 'Support for regular expressions (Format: "/pattern/gim")',
     settingsAddNoteShowNoteGroupNameText:
       'Allow notes on the web page to display its group value (only when it is not the default group; When the note value is empty, it can also be used as a tag)',
+    settingsAddNoteHideNoteText: 'Hide detailed remarks and show only grouping values (Turn on the above options to take effect)',
     settingsAddNoteShowNoteGroupColorText: 'Allow group colors to be applied to notes on webpages',
     settingsAddNoteShowPopoverFrameText:
       'Allow to display other notes under the same group when hovering over the note (only when it is not in the default group)',
     settingsAddNoteOpenNoteNewTabText:
       'Open other notes in a new tab (When not enabled, you can hold down Ctrl and click to open in the background tab; hold down Ctrl+Shift and click to open in a new tab)',
     settingsAddNoteCanHideAddFrameText: 'Hide the add box when you click outside the add box',
-    settingsAboutAddNoteText: 'About notes',
+    settingsAboutAddNoteText: 'Notes',
     settingsAddNoteCommonContentText: 'Common content: ',
     settingsAddNotePrefixText: 'Prefix',
     settingsAddNoteSuffixText: 'Suffix',
-    settingsAboutInterfaceText: 'About the interface',
+    settingsAboutInterfaceText: 'Interface',
     settingsInterfaceInsertSearchButtonText:
       'Move the mouse to the lower right corner of the webpage to display the floating search button',
     settingsInterfaceInsertSettingsButtonText:
@@ -130,7 +131,7 @@ const NOTE_LANG = {
     settingsInterfaceLanguageText: 'Display language: ',
     settingsInterfaceSelectLanguageText: '--Please select language--',
     settingsAboutOtherText: 'Other Settings',
-    settingsAboutStoredDataText: 'About stored data',
+    settingsAboutStoredDataText: 'Stored data',
     settingsFrameInterfaceAutoSyncText: 'Sync data changes from other tabs',
     settingsFrameInterfaceNotSupportOptionText: 'This option is not supported by the current script handler',
     settingsStoredDataLastTimeText: 'Last modified time: ',
@@ -181,9 +182,9 @@ const NOTE_LANG = {
     cancelTagText: '取消',
     cancelTagTitle: '退出',
     savePrefixText: '保存(前缀: "%s")',
-    savePrefixTitle: '保存时自动添加前缀: "%s"',
+    savePrefixTitle: '保存时自动添加前缀: "%s"，按住 Ctrl 时仅添加',
     saveSuffixText: '保存(后缀: "%s")',
-    saveSuffixTitle: '保存时自动添加后缀: "%s"',
+    saveSuffixTitle: '保存时自动添加后缀: "%s"，按住 Ctrl 时仅添加',
     searchTagTitle: '搜索备注',
     searchTagPlaceholder: '搜索备注，按下Enter键打开结果项',
     searchCloseTitle: '关闭搜索框',
@@ -247,7 +248,7 @@ const NOTE_LANG = {
     deleteTitle: '删除内容',
     settingsHeadlineText: '设置',
     settingsCloseTitle: '关闭设置面板',
-    settingsAboutSearchBoxText: '关于搜索框',
+    settingsAboutSearchBoxText: '搜索框',
     settingsSearchBoxShowIndexText: '在顶部显示索引值',
     settingsSearchBoxCanHideSearchFrameText: '点击搜索框外部时隐藏搜索框',
     settingsSearchBoxShowButtonText: '在结果项中显示编辑/删除按钮',
@@ -255,21 +256,22 @@ const NOTE_LANG = {
     settingsSearchBoxOpenNewTabText:
       '在新标签页中打开结果项 (未启用时，可以按下 Ctrl+Enter 在后台标签中打开结果；按下 Ctrl+Shift+Enter 在新标签页中打开结果)',
     settingsSearchBoxEnableShortcutKeysText: '允许使用快捷键打开搜索框 (Ctrl+Shift+F)',
-    settingsAboutSearchValueText: '关于搜索内容',
+    settingsAboutSearchValueText: '搜索内容',
     settingsSearchValueCaseSensitiveText: '区分字母大小写',
     settingsSearchValueSplitText: '拆分式搜索方法 ("ab cd" ==> "ab" && "cd")',
     settingsSearchValueRegularText: '支持使用正则表达式 (格式: "/pattern/gim")',
     settingsAddNoteShowNoteGroupNameText: '允许网页上的备注显示其分组值 (仅非默认分组时；备注值为空时也可以当作标签来使用)',
+    settingsAddNoteHideNoteText: '隐藏详细的备注内容，仅显示分组值 (开启上面的选项才生效)',
     settingsAddNoteShowNoteGroupColorText: '允许将分组颜色应用到网页上的备注',
     settingsAddNoteShowPopoverFrameText: '允许悬停在备注上时显示同分组下的其他备注 (仅非默认分组时)',
     settingsAddNoteOpenNoteNewTabText:
       '在新标签页中打开其他备注 (未启用时，可以按住 Ctrl 并点击在后台标签中打开；按住 Ctrl+Shift 并点击在新标签页中打开)',
     settingsAddNoteCanHideAddFrameText: '点击添加框外部时隐藏添加框',
-    settingsAboutAddNoteText: '关于备注',
+    settingsAboutAddNoteText: '备注',
     settingsAddNoteCommonContentText: '常用内容: ',
     settingsAddNotePrefixText: '前缀',
     settingsAddNoteSuffixText: '后缀',
-    settingsAboutInterfaceText: '关于界面',
+    settingsAboutInterfaceText: '界面',
     settingsInterfaceInsertSearchButtonText: '将鼠标移动至网页的右下角时显示浮动搜索按钮',
     settingsInterfaceInsertSettingsButtonText: '将鼠标移动至网页的左侧时显示浮动设置按钮 (使用 Greasemonkey 4 时始终显示)',
     settingsInterfaceInsertNoteManagementButtonText: '将鼠标移动至网页的左侧时显示浮动备注管理按钮',
@@ -280,7 +282,7 @@ const NOTE_LANG = {
     settingsInterfaceLanguageText: '显示语言: ',
     settingsInterfaceSelectLanguageText: '--请选择语言--',
     settingsAboutOtherText: '其他设置',
-    settingsAboutStoredDataText: '关于存储数据',
+    settingsAboutStoredDataText: '存储数据',
     settingsFrameInterfaceAutoSyncText: '同步来自其他标签页的数据变动',
     settingsFrameInterfaceNotSupportOptionText: '当前脚本管理器不支持此选项',
     settingsStoredDataLastTimeText: '上次修改时间: ',
@@ -331,9 +333,9 @@ const NOTE_LANG = {
     cancelTagText: '取消',
     cancelTagTitle: '退出',
     savePrefixText: '儲存(前缀: "%s")',
-    savePrefixTitle: '保存時自動添加前綴: "%s"',
+    savePrefixTitle: '保存時自動添加前綴: "%s"，按住 Ctrl 時僅添加',
     saveSuffixText: '儲存(后缀: "%s")',
-    saveSuffixTitle: '保存時自動添加後綴: "%s"',
+    saveSuffixTitle: '保存時自動添加後綴: "%s"，按住 Ctrl 時僅添加',
     searchTagTitle: '搜尋備註',
     searchTagPlaceholder: '搜尋備註，按下Enter鍵打開結果項目',
     searchCloseTitle: '關閉搜尋框',
@@ -397,7 +399,7 @@ const NOTE_LANG = {
     deleteTitle: '删除內容',
     settingsHeadlineText: '設置',
     settingsCloseTitle: '關閉設置面板',
-    settingsAboutSearchBoxText: '關於搜尋框',
+    settingsAboutSearchBoxText: '搜尋框',
     settingsSearchBoxShowIndexText: '在頂部顯示索引值',
     settingsSearchBoxCanHideSearchFrameText: '在點擊搜尋框外部時隱藏搜尋框',
     settingsSearchBoxShowButtonText: '在結果項目中顯示編輯/刪除按鈕',
@@ -405,21 +407,22 @@ const NOTE_LANG = {
     settingsSearchBoxOpenNewTabText:
       '在新標籤頁中打開結果項目 (未啟用時，可以按下 Ctrl+Enter 在後臺標籤中打開結果；按下 Ctrl+Shift+Enter 在新標籤頁中打開結果)',
     settingsSearchBoxEnableShortcutKeysText: '允許使用快捷鍵打開搜尋框 (Ctrl+Shift+F)',
-    settingsAboutSearchValueText: '關於搜尋內容',
+    settingsAboutSearchValueText: '搜尋內容',
     settingsSearchValueCaseSensitiveText: '區分大小寫的字母',
     settingsSearchValueSplitText: '拆分式搜尋方法 ("ab cd" ==> "ab" && "cd")',
     settingsSearchValueRegularText: '支持正則表達式 (格式: "/pattern/gim")',
     settingsAddNoteShowNoteGroupNameText: '允許網頁上的備註顯示其分組值 (僅非默認分組時；備註值為空時也可以當作標籤來使用)',
+    settingsAddNoteHideNoteText: '隱藏詳細的備註內容，僅顯示分組值 (開啟上面的選項才生效)',
     settingsAddNoteShowNoteGroupColorText: '允許將分組顏色應用到網頁上的備註',
     settingsAddNoteShowPopoverFrameText: '允許懸停在備註上時顯示同分組下的其他備註 (僅非默認分組時)',
     settingsAddNoteOpenNoteNewTabText:
       '在新標籤頁中打開其他備註 (未啟用時，可以按住 Ctrl 並點擊在後臺標籤中打開；按住 Ctrl+Shift 並點擊在新標籤頁中打開)',
     settingsAddNoteCanHideAddFrameText: '點擊添加框外部時隱藏添加框',
-    settingsAboutAddNoteText: '關於備註',
+    settingsAboutAddNoteText: '備註',
     settingsAddNoteCommonContentText: '常用内容: ',
     settingsAddNotePrefixText: '前綴',
     settingsAddNoteSuffixText: '後綴',
-    settingsAboutInterfaceText: '關於界面',
+    settingsAboutInterfaceText: '界面',
     settingsInterfaceInsertSearchButtonText: '將鼠標移動至網頁的右下角時顯示浮動搜尋按鈕',
     settingsInterfaceInsertSettingsButtonText: '將鼠標移動至網頁的左側時顯示浮動設置按鈕 (使用 Greasemonkey 4 時始終顯示)',
     settingsInterfaceInsertNoteManagementButtonText: '將鼠標移動至網頁的左側時顯示浮動備註管理按鈕',
@@ -430,7 +433,7 @@ const NOTE_LANG = {
     settingsInterfaceLanguageText: '顯示語言: ',
     settingsInterfaceSelectLanguageText: '--請選擇語言--',
     settingsAboutOtherText: '其他設置',
-    settingsAboutStoredDataText: '關於存儲資料',
+    settingsAboutStoredDataText: '存儲資料',
     settingsFrameInterfaceAutoSyncText: '同步來自其他標籤頁的數據變動',
     settingsFrameInterfaceNotSupportOptionText: '當前腳本管理器不支持此選項',
     settingsStoredDataLastTimeText: '上次修改時間: ',
@@ -481,9 +484,9 @@ const NOTE_LANG = {
     cancelTagText: 'キャンセル',
     cancelTagTitle: '退く',
     savePrefixText: '保存(接頭辞: "%s")',
-    savePrefixTitle: '保存時に自動的に接頭辞を追加する: "%s"',
+    savePrefixTitle: '保存時に自動的に接頭辞を追加する: "%s"，Ctrlキーを押しながら追加するだけ',
     saveSuffixText: '保存(接尾辞: "%s")',
-    saveSuffixTitle: '保存時に自動的に接尾辞を付加する: "%s"',
+    saveSuffixTitle: '保存時に自動的に接尾辞を付加する: "%s"，Ctrlキーを押しながら追加するだけ',
     searchTagTitle: '備考を検索する',
     searchTagPlaceholder: '備考を検索して、Enterキーを押して結果項目を開きます',
     searchCloseTitle: '検索ボックスを閉じる',
@@ -547,7 +550,7 @@ const NOTE_LANG = {
     deleteTitle: '内容を削除する',
     settingsHeadlineText: '設ける',
     settingsCloseTitle: '設定パネルをオフにする',
-    settingsAboutSearchBoxText: '検索ボックスについて',
+    settingsAboutSearchBoxText: '検索バー',
     settingsSearchBoxShowIndexText: 'トップにインデックス値を表示する',
     settingsSearchBoxCanHideSearchFrameText: '検索ボックスの外部をクリックすると検索ボックスを隠蔽',
     settingsSearchBoxShowButtonText: '結果項目に編集/削除ボタンが表示されます',
@@ -556,23 +559,25 @@ const NOTE_LANG = {
     settingsSearchBoxOpenNewTabText:
       '結果アイテムを新しいタブで開く (有効になっていない場合、Ctrl+Enter を押して結果をバックグラウンドタブで開くことができます。Ctrl+Shift+Enter を押して結果を新しいタブで開くことができます)',
     settingsSearchBoxEnableShortcutKeysText: 'ショートカットキーで検索ボックスを開くことを許可する (Ctrl+Shift+F)',
-    settingsAboutSearchValueText: '検索内容について',
+    settingsAboutSearchValueText: '検索内容',
     settingsSearchValueCaseSensitiveText: 'アルファベットと小文字を区別する',
     settingsSearchValueSplitText: '分解式探索方法 ("ab cd" ==> "ab" && "cd")',
     settingsSearchValueRegularText: '正規表現の使用をサポート (フォーマット: "/pattern/gim")',
     settingsAddNoteShowNoteGroupNameText:
       'Webページのメモにグループ値の表示を許可します (デフォルトのグループでない場合のみ。備考値が空の場合は、ラベルとしても使用できます)',
+    settingsAddNoteHideNoteText:
+      '詳細なコメントを非表示にし、グループ化の値のみを表示します (上記のオプションをオンにすると、有効になります)',
     settingsAddNoteShowNoteGroupColorText: 'グループページの色をウェブページのメモに適用できるようにする',
     settingsAddNoteShowPopoverFrameText:
       'ノートにカーソルを合わせると、同じグループの下に他のノートを表示できるようになります (デフォルトのグループにない場合のみ)',
     settingsAddNoteOpenNoteNewTabText:
       '新しいタブで他のメモを開く (有効になっていない場合は、Ctrl キーを押しながらクリックしてバックグラウンドタブで開くことができます。Ctrl+ Shift キーを押しながらクリックして新しいタブで開くことができます)',
     settingsAddNoteCanHideAddFrameText: '追加ボックスの外部をクリックすると追加ボックスを隠す',
-    settingsAboutAddNoteText: '備考について',
+    settingsAboutAddNoteText: 'ノート',
     settingsAddNoteCommonContentText: '共通のコンテンツ: ',
     settingsAddNotePrefixText: '接頭辞',
     settingsAddNoteSuffixText: '接尾辞',
-    settingsAboutInterfaceText: 'インタフェースについて',
+    settingsAboutInterfaceText: 'インターフェース',
     settingsInterfaceInsertSearchButtonText: 'マウスをWebページの右下隅に移動して、フローティング検索ボタンを表示します',
     settingsInterfaceInsertSettingsButtonText:
       'マウスをWebページの左側に移動して、フローティング設定ボタンを表示します (Greasemonkey 4 を使用しているときは常に表示されます)',
@@ -584,7 +589,7 @@ const NOTE_LANG = {
     settingsInterfaceLanguageText: '表示言語: ',
     settingsInterfaceSelectLanguageText: '--言語を選択してください--',
     settingsAboutOtherText: 'その他の設定項目',
-    settingsAboutStoredDataText: 'データの保存について',
+    settingsAboutStoredDataText: 'データストレージ',
     settingsFrameInterfaceAutoSyncText: '他のタブからのデータ変更の同期',
     settingsFrameInterfaceNotSupportOptionText: '現在のスクリプトマネージャーはこのオプションをサポートしていません',
     settingsStoredDataLastTimeText: '最終変更時刻: ',
@@ -635,9 +640,9 @@ const NOTE_LANG = {
     cancelTagText: '취소',
     cancelTagTitle: '나가다',
     savePrefixText: '보존(접두사: "%s")',
-    savePrefixTitle: '저장 시 접두어 자동 추가: "%s"',
+    savePrefixTitle: '저장 시 접두어 자동 추가: "%s", Ctrl 키를 누른 상태에서만 추가',
     saveSuffixText: '보존(접미사: "%s")',
-    saveSuffixTitle: '저장 시 자동으로 접미어 추가: "%s"',
+    saveSuffixTitle: '저장 시 자동으로 접미어 추가: "%s", Ctrl 키를 누른 상태에서만 추가',
     searchTagTitle: '설명 검색',
     searchTagPlaceholder: '메모를 검색하고 Enter 키를 눌러 결과 항목을 엽니 다',
     searchCloseTitle: '검색 상자 닫기',
@@ -701,7 +706,7 @@ const NOTE_LANG = {
     deleteTitle: '컨텐트 삭제',
     settingsHeadlineText: '설치',
     settingsCloseTitle: '설정 패널 닫기',
-    settingsAboutSearchBoxText: '검색 상자 정보',
+    settingsAboutSearchBoxText: '검색 창',
     settingsSearchBoxShowIndexText: '맨 위에 인덱스 값 표시',
     settingsSearchBoxCanHideSearchFrameText: '검색 상자 외부를 클릭할 때 검색 상자 숨기기',
     settingsSearchBoxShowButtonText: '결과 항목에 편집/삭제 단추 표시',
@@ -709,23 +714,24 @@ const NOTE_LANG = {
     settingsSearchBoxOpenNewTabText:
       '새 탭에서 결과 항목 열기 (활성화되지 않은 경우 Ctrl+Enter 를 눌러 배경 탭에서 결과를 열 수 있으며 Ctrl+Shift+Enter 를 눌러 새 탭에서 결과를 열 수 있습니다)',
     settingsSearchBoxEnableShortcutKeysText: '바로 가기 키를 사용하여 검색 상자 열기 허용 (Ctrl+Shift+F)',
-    settingsAboutSearchValueText: '컨텐츠 검색 정보',
+    settingsAboutSearchValueText: '검색 정보',
     settingsSearchValueCaseSensitiveText: '대소문자 구분',
     settingsSearchValueSplitText: '분할 검색 방법 ("ab cd" ==> "ab" && "cd")',
     settingsSearchValueRegularText: '정규식 사용 지원 (格式: "/pattern/gim")',
     settingsAddNoteShowNoteGroupNameText:
       '웹 페이지의 메모가 그룹 값을 표시하도록 허용 (기본 그룹이 아닌 경우에만. 비고 값이 비어 있으면 레이블로도 사용할 수 있습니다)',
+    settingsAddNoteHideNoteText: '자세한 설명은 숨기고 그룹화 값만 표시 (적용하려면 위의 옵션을 켜십시오.)',
     settingsAddNoteShowNoteGroupColorText: '웹 페이지의 노트에 그룹 색상을 적용 할 수 있습니다',
     settingsAddNoteShowPopoverFrameText:
       '메모 위로 마우스를 가져갈 때 동일한 그룹 아래에 다른 메모를 표시하도록 허용 (기본 그룹에없는 경우에만 해당)',
     settingsAddNoteOpenNoteNewTabText:
       '새 탭에서 다른 노트 열기 (활성화되지 않은 경우 Ctrl 키를 누른 상태에서 클릭하여 배경 탭에서 열 수 있습니다. Ctrl+Shift 를 누른 상태에서 클릭하여 새 탭에서 열 수 있습니다)',
     settingsAddNoteCanHideAddFrameText: '추가 상자 외부를 클릭할 때 추가 상자 숨기기',
-    settingsAboutAddNoteText: '비고에 대해',
+    settingsAboutAddNoteText: '비고에',
     settingsAddNoteCommonContentText: '공통 컨텐츠: ',
     settingsAddNotePrefixText: '접두사',
     settingsAddNoteSuffixText: '접미사',
-    settingsAboutInterfaceText: '인터페이스 정보',
+    settingsAboutInterfaceText: '피부',
     settingsInterfaceInsertSearchButtonText: '웹 페이지 오른쪽 하단으로 마우스를 이동하면 플로팅 검색 버튼이 표시됩니다',
     settingsInterfaceInsertSettingsButtonText:
       '웹 페이지의 왼쪽으로 마우스를 이동하면 플로팅 설정 버튼이 표시됩니다 (Greasemonkey 4 를 사용할 때 항상 표시됩니다)',
@@ -788,9 +794,9 @@ const NOTE_LANG = {
     cancelTagText: 'Annuler',
     cancelTagTitle: 'quitter',
     savePrefixText: 'Enregistrer(préfixe: "%s")',
-    savePrefixTitle: 'Ajouter automatiquement un préfixe lors de l\'enregistrement: "%s"',
+    savePrefixTitle: 'Ajouter automatiquement un préfixe lors de l\'enregistrement: "%s", n\'ajoutez que tout en maintenant Ctrl',
     saveSuffixText: 'Enregistrer(suffixe: "%s")',
-    saveSuffixTitle: 'Ajouter automatiquement un suffixe lors de l\'enregistrement: "%s"',
+    saveSuffixTitle: 'Ajouter automatiquement un suffixe lors de l\'enregistrement: "%s", n\'ajoutez que tout en maintenant Ctrl',
     searchTagTitle: 'Rechercher des notes',
     searchTagPlaceholder: 'Recherchez des notes, appuyez sur Entrée pour ouvrir',
     searchCloseTitle: 'Fermer le champ de recherche',
@@ -854,7 +860,7 @@ const NOTE_LANG = {
     deleteTitle: 'Supprimer le contenu',
     settingsHeadlineText: 'Mise en place',
     settingsCloseTitle: 'Fermez le panneau des paramètres',
-    settingsAboutSearchBoxText: 'À propos du champ de recherche',
+    settingsAboutSearchBoxText: 'Barre de recherche',
     settingsSearchBoxShowIndexText: "Afficher la valeur d'index en haut",
     settingsSearchBoxCanHideSearchFrameText: 'Masquer le champ de recherche en cliquant en dehors du champ de recherche',
     settingsSearchBoxShowButtonText: "Afficher le bouton Modifier/Supprimer dans l'élément de résultat",
@@ -863,23 +869,25 @@ const NOTE_LANG = {
     settingsSearchBoxOpenNewTabText:
       "Ouvrir l'élément de résultat dans un nouvel onglet (Lorsqu'elle n'est pas activée, vous pouvez appuyer sur Ctrl+Enter pour ouvrir le résultat dans l'onglet d'arrière-plan; appuyez sur Ctrl+Shift+Enter pour ouvrir le résultat dans un nouvel onglet)",
     settingsSearchBoxEnableShortcutKeysText: 'Autoriser les touches de raccourci à ouvrir la zone de recherche (Ctrl+Shift+F)',
-    settingsAboutSearchValueText: 'À propos du contenu de recherche',
+    settingsAboutSearchValueText: 'Chercher',
     settingsSearchValueCaseSensitiveText: 'Sensible aux majuscules et minuscules',
     settingsSearchValueSplitText: 'Méthode de recherche fractionnée ("ab cd" ==> "ab" && "cd")',
     settingsSearchValueRegularText: 'Soutenir l\'utilisation d\'expressions régulières (format: "/pattern/gim")',
     settingsAddNoteShowNoteGroupNameText:
       "Autoriser les notes sur la page Web à afficher leurs valeurs de regroupement (Uniquement lorsqu'il ne s'agit pas du groupe par défaut; lorsque la valeur de la remarque est vide, elle peut également être utilisée comme étiquette)",
+    settingsAddNoteHideNoteText:
+      "Masquer les remarques détaillées, 'afficher que les valeurs de regroupement (Activez les options ci-dessus pour prendre effet)",
     settingsAddNoteShowNoteGroupColorText: "Autoriser l'application des couleurs de groupe aux notes sur les pages Web",
     settingsAddNoteShowPopoverFrameText:
       "Permet d'afficher d'autres notes dans le même groupe lors du survol de la note (Lorsque seul le regroupement n'est pas par défaut)",
     settingsAddNoteOpenNoteNewTabText:
       "Ouvrir d'autres notes dans un nouvel onglet (Lorsqu'elle n'est pas activée, vous pouvez maintenir la touche Ctrl enfoncée et cliquer pour ouvrir dans l'onglet d'arrière-plan; maintenir enfoncée la touche Ctrl + Maj et cliquer pour ouvrir dans un nouvel onglet)",
     settingsAddNoteCanHideAddFrameText: "Masquer la zone d'ajout lorsque vous cliquez en dehors de la zone d'ajout",
-    settingsAboutAddNoteText: 'À propos des remarques',
+    settingsAboutAddNoteText: 'Remarques',
     settingsAddNoteCommonContentText: 'contenu: ',
     settingsAddNotePrefixText: 'Préfixe',
     settingsAddNoteSuffixText: 'suffixe',
-    settingsAboutInterfaceText: "À propos de l'interface",
+    settingsAboutInterfaceText: 'Interface',
     settingsInterfaceInsertSearchButtonText:
       'Déplacez la souris vers le coin inférieur droit de la page Web pour afficher le bouton de recherche flottant',
     settingsInterfaceInsertSettingsButtonText:
@@ -2139,13 +2147,13 @@ const NOTE_STYLE = `
       content: "";
       position: absolute;
       left: 0px;
-      margin-top: -2px;
+      margin-top: 1px;
       border: 1px solid #ddd;
       border-radius: 100px;
       cursor: pointer;
       display: inline-block;
-      width: 40px;
-      height: 18px;
+      width: 2.5em;
+      height: 1em;
       transition: border .4s, box-shadow .4s;
       background-color: #fff;
       border-color: #e9e9e9;
@@ -2156,10 +2164,10 @@ const NOTE_STYLE = `
       content: "";
       cursor: pointer;
       position: absolute;
-      top: -1px;
+      top: 2px;
       left: 0px;
-      width: 18px;
-      height: 18px;
+      width: 1em;
+      height: 1em;
       transition: background-color .4s, left .2s;
       border-radius: 100px;
       background-color: #fff;
@@ -2169,13 +2177,13 @@ const NOTE_STYLE = `
       content: "";
       position: absolute;
       left: 0px;
-      margin-top: -2px;
+      margin-top: 1px;
       border: 1px solid #ddd;
       border-radius: 100px;
       cursor: pointer;
       display: inline-block;
-      width: 40px;
-      height: 18px;
+      width: 2.5em;
+      height: 1em;
       transition: border .4s, box-shadow .4s, background-color 1.2s;
       background-color: #3c81df;
       border-color: #3c81df;
@@ -2186,10 +2194,10 @@ const NOTE_STYLE = `
       content: "";
       cursor: pointer;
       position: absolute;
-      top: -1px;
-      left: 23px;
-      width: 18px;
-      height: 18px;
+      top: 2px;
+      left: 1.5em;
+      width: 1em;
+      height: 1em;
       transition: background-color .4s, left .2s;
       border-radius: 100px;
       background-color: #fff;
@@ -2474,6 +2482,12 @@ Vue.component('note-obj-popover-frame', {
                 textContent: this.groupName,
               },
             }),
+            createElement('div', {
+              class: 'note-obj-popover-frame-title',
+              domProps: {
+                textContent: this.current.tag || this.current.name || '',
+              },
+            }),
           ]
         ),
         createElement(
@@ -2538,6 +2552,10 @@ Vue.component('note-obj-popover-frame', {
     },
     isShow: {
       type: Boolean,
+      required: true,
+    },
+    current: {
+      type: Object,
       required: true,
     },
     items: {
@@ -3377,7 +3395,14 @@ Vue.component('note-obj-add-frame', {
       }
     },
     buttonClickEvent(event) {
-      this.$emit('button-click', this.userId, this.userName, this.inputValue, this.currentGroupKey, event.target.dataset.key);
+      const ev = window.event;
+      const eCtrl = ev.ctrlKey || ev.metaKey;
+      const key = event.target.dataset.key;
+      if (eCtrl && !['save', 'clear', 'cancel'].includes(key)) {
+        this.inputValue = this.buttonSet[key].event(this.userId, this.userName, this.inputValue, this.currentGroupKey, key, true);
+      } else {
+        this.$emit('button-click', this.userId, this.userName, this.inputValue, this.currentGroupKey, key);
+      }
     },
   },
 });
@@ -5893,6 +5918,19 @@ Vue.component('note-obj-settings-frame', {
                                 }),
                                 createElement('note-obj-settings-item', {
                                   props: {
+                                    id: this.sections.hideNoteText.id,
+                                    value: this.items.addNote.hideNoteText,
+                                    type: this.sections.hideNoteText.type,
+                                    label: this.sections.hideNoteText.label,
+                                  },
+                                  on: {
+                                    'value-change': (newValue, _oldValue) => {
+                                      self.items.addNote.hideNoteText = newValue;
+                                    },
+                                  },
+                                }),
+                                createElement('note-obj-settings-item', {
+                                  props: {
                                     id: this.sections.showNoteGroupColor.id,
                                     value: this.items.addNote.showNoteGroupColor,
                                     type: this.sections.showNoteGroupColor.type,
@@ -6567,6 +6605,11 @@ Vue.component('note-obj-settings-frame', {
           label: this.lang.settingsAddNoteShowNoteGroupNameText,
           type: 'checkbox',
         },
+        hideNoteText: {
+          id: this.id + '_settingsFrameAddNoteHideNoteText',
+          label: this.lang.settingsAddNoteHideNoteText,
+          type: 'checkbox',
+        },
         showNoteGroupColor: {
           id: this.id + '_settingsFrameAddNoteShowNoteGroupColor',
           label: this.lang.settingsAddNoteShowNoteGroupColorText,
@@ -6630,6 +6673,7 @@ Vue.component('note-obj-settings-frame', {
       this.sections.split.label = this.lang.settingsSearchValueSplitText;
       this.sections.regular.label = this.lang.settingsSearchValueRegularText;
       this.sections.showNoteGroupName.label = this.lang.settingsAddNoteShowNoteGroupNameText;
+      this.sections.hideNoteText.label = this.lang.settingsAddNoteHideNoteText;
       this.sections.showNoteGroupColor.label = this.lang.settingsAddNoteShowNoteGroupColorText;
       this.sections.showPopoverFrame.label = this.lang.settingsAddNoteShowPopoverFrameText;
       (this.sections.openNoteNewTab.label = this.lang.settingsAddNoteOpenNoteNewTabText),
@@ -7329,6 +7373,7 @@ class Note_Obj {
       },
       addNote: {
         showNoteGroupName: false,
+        hideNoteText: false,
         showNoteGroupColor: false,
         showPopoverFrame: false,
         openNoteNewTab: false,
@@ -7408,17 +7453,17 @@ class Note_Obj {
         save: {
           text: this.lang.saveTagText,
           title: this.lang.saveTagTitle,
-          event: (id, name, tag, groupKey, _key) => this.writeUser(id, name, tag, groupKey),
+          event: (id, name, tag, groupKey, _key, _no) => this.writeUser(id, name, tag, groupKey),
         },
         clear: {
           text: this.lang.clearTagText,
           title: this.lang.clearTagTitle,
-          event: (id, _name, _tag, _groupKey, _key) => this.writeUser(id, null, null, null),
+          event: (id, _name, _tag, _groupKey, _key, _no) => this.writeUser(id, null, null, null),
         },
         cancel: {
           text: this.lang.cancelTagText,
           title: this.lang.cancelTagTitle,
-          event: (_id, _name, _tag, _groupKey, _key) => 1,
+          event: (_id, _name, _tag, _groupKey, _key, _no) => 1,
           isBottom: true,
         },
       },
@@ -7590,6 +7635,7 @@ class Note_Obj {
         popoverFrame: {
           isShow: false,
           userId: '',
+          current: {},
           items: {},
           groupName: '',
           x: 0,
@@ -7631,6 +7677,7 @@ class Note_Obj {
               props: {
                 id: this.id,
                 isShow: this.popoverFrame.isShow,
+                current: this.popoverFrame.current,
                 items: this.popoverFrame.items,
                 groupName: this.popoverFrame.groupName,
                 x: this.popoverFrame.x,
@@ -8067,20 +8114,24 @@ class Note_Obj {
                 }
                 if (Object.keys(groupSet).length > 0) {
                   this.$set(this.popoverFrame, 'items', groupSet);
+                  this.$set(this.popoverFrame, 'current', Object.assign({}, this.noteVirualFrame.items[userId]));
                   this.popoverFrame.groupName = this.groupFrame.items[groupKey].value;
                   this.popoverFrame.isShow = true;
                 } else {
                   this.$set(this.popoverFrame, 'items', {});
+                  this.$set(this.popoverFrame, 'current', {});
                   this.popoverFrame.groupName = '';
                   this.popoverFrame.isShow = false;
                 }
               } else {
                 this.$set(this.popoverFrame, 'items', {});
+                this.$set(this.popoverFrame, 'current', {});
                 this.popoverFrame.groupName = '';
                 this.popoverFrame.isShow = false;
               }
             } else {
               this.$set(this.popoverFrame, 'items', {});
+              this.$set(this.popoverFrame, 'current', {});
               this.popoverFrame.groupName = '';
               this.popoverFrame.isShow = false;
             }
@@ -8117,6 +8168,9 @@ class Note_Obj {
           newValue != oldValue && this.settingsFrameFixChangeEvent();
         },
         'settingsFrame.items.addNote.showNoteGroupName'(newValue, oldValue) {
+          newValue != oldValue && typeof envVm.changeEvent === 'function' && envVm.changeEvent(that);
+        },
+        'settingsFrame.items.addNote.hideNoteText'(newValue, oldValue) {
           newValue != oldValue && typeof envVm.changeEvent === 'function' && envVm.changeEvent(that);
         },
         'settingsFrame.items.addNote.showNoteGroupColor'(newValue, oldValue) {
@@ -8199,7 +8253,7 @@ class Note_Obj {
                   type === 'pre'
                     ? this.languageVirualFrame.lang.savePrefixTitle.replace('%s', value.replace(/^\s+/, ''))
                     : this.languageVirualFrame.lang.saveSuffixTitle.replace('%s', value.replace(/\s+$/, '')),
-                event: (id, name, tag, groupKey, key) => {
+                event: (id, name, tag, groupKey, key, no = false) => {
                   const fix = this.settingsFrame.items.addNote.fix[key].value;
                   let fixTag = tag;
                   if (!tag.includes(fix)) {
@@ -8209,6 +8263,9 @@ class Note_Obj {
                     } else {
                       fixTag = tag + fix.replace(/\s+$/, '');
                     }
+                  }
+                  if (no) {
+                    return fixTag;
                   }
                   return that.writeUser(id, name, fixTag, groupKey);
                 },
@@ -8810,30 +8867,36 @@ class Note_Obj {
       tag = this.items[userId].tag;
       if (this.vm.settingsFrame.items.addNote.showNoteGroupName && !maskGroup) {
         const groupName = this.getUserGroupName(userId);
-        if (groupName) {
-          if (tag) {
-            tag += ' [' + groupName + ']';
-          } else if (direct) {
-            tag = userId + ' [' + groupName + ']';
-          } else {
-            tag = groupName;
+        if (this.vm.settingsFrame.items.addNote.hideNoteText) {
+          tag = groupName;
+        } else {
+          if (groupName) {
+            if (tag) {
+              tag += ' [' + groupName + ']';
+            } else if (direct) {
+              tag = userId + ' [' + groupName + ']';
+            } else {
+              tag = groupName;
+            }
           }
         }
       }
-      if (prefix) {
+      if (tag && prefix) {
         tag = prefix + tag;
       }
-      if (double) {
+      if (tag && double) {
         tag = double + tag + double;
       }
-      if (angle) {
-        tag = '<' + tag + '>';
-      } else if (curly) {
-        tag = '{' + tag + '}';
-      } else if (square) {
-        tag = '[' + tag + ']';
-      } else if (parentheses) {
-        tag = '(' + tag + ')';
+      if (tag) {
+        if (angle) {
+          tag = '<' + tag + '>';
+        } else if (curly) {
+          tag = '{' + tag + '}';
+        } else if (square) {
+          tag = '[' + tag + ']';
+        } else if (parentheses) {
+          tag = '(' + tag + ')';
+        }
       }
     }
     return tag;
