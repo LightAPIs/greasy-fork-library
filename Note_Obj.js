@@ -2,7 +2,7 @@
 // @name         Note_Obj
 // @namespace    https://greasyfork.org/zh-CN/users/193133-pana
 // @homepage     https://greasyfork.org/zh-CN/users/193133-pana
-// @version      5.3.0
+// @version      5.3.1
 // @description  NOTE_OBJ
 // @author       pana
 // @license      GNU General Public License v3.0 or later
@@ -11,8 +11,8 @@
 typeof Vue !== 'function' && alert('The Vue.js file does not exist and script code does not work properly!!!');
 const NOTE_LANG = {
   INFO: {
-    version: '5.3.0',
-    updated: '2021-08-11',
+    version: '5.3.1',
+    updated: '2021-08-13',
   },
   EN: {
     addPlaceholder: 'Please enter a new note, press Enter to save',
@@ -3395,7 +3395,7 @@ Vue.component('note-obj-add-frame', {
       }
     },
     buttonClickEvent(event) {
-      const ev = window.event;
+      const ev = event || window.event;
       const eCtrl = ev.ctrlKey || ev.metaKey;
       const key = event.target.dataset.key;
       if (eCtrl && !['save', 'clear', 'cancel'].includes(key)) {
