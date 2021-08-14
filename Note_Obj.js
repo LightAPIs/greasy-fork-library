@@ -2,7 +2,7 @@
 // @name         Note_Obj
 // @namespace    https://greasyfork.org/zh-CN/users/193133-pana
 // @homepage     https://greasyfork.org/zh-CN/users/193133-pana
-// @version      5.3.1
+// @version      5.4.0
 // @description  NOTE_OBJ
 // @author       pana
 // @license      GNU General Public License v3.0 or later
@@ -11,8 +11,8 @@
 typeof Vue !== 'function' && alert('The Vue.js file does not exist and script code does not work properly!!!');
 const NOTE_LANG = {
   INFO: {
-    version: '5.3.1',
-    updated: '2021-08-13',
+    version: '5.4.0',
+    updated: '2021-08-14',
   },
   EN: {
     addPlaceholder: 'Please enter a new note, press Enter to save',
@@ -789,8 +789,8 @@ const NOTE_LANG = {
     groupPlaceholder: 'Veuillez saisir une nouvelle valeur de groupe',
     saveTagText: 'sauver',
     saveTagTitle: 'Enregistrer le contenu',
-    clearTagText: 'Clair',
-    clearTagTitle: 'Note claire',
+    clearTagText: 'Supprimer',
+    clearTagTitle: 'Note Supprimer',
     cancelTagText: 'Annuler',
     cancelTagTitle: 'quitter',
     savePrefixText: 'Enregistrer(préfixe: "%s")',
@@ -897,8 +897,8 @@ const NOTE_LANG = {
     settingsInterfaceInsertGroupManagementButtonText:
       'Déplacez la souris vers le côté gauche de la page pour afficher le bouton de gestion de groupe flottant',
     settingsInterfaceConfigText: "Mode d'interface: ",
-    settingsInterfaceBrightText: 'Brillant',
-    settingsInterfaceDarkText: 'Diablo',
+    settingsInterfaceBrightText: 'Claire',
+    settingsInterfaceDarkText: 'Sombre',
     settingsInterfaceLanguageText: "Langue d'affichage: ",
     settingsInterfaceSelectLanguageText: '--sélectionner--',
     settingsAboutOtherText: 'autres réglages',
@@ -915,8 +915,8 @@ const NOTE_LANG = {
     settingsScriptCoreText: 'Version de base: ',
     settingsScriptLibraryText: 'Bibliothèque dépendante: ',
     settingsScriptHandlerText: 'Directeur de script: ',
-    settingsScriptLanguageText: 'Traduction linguistique: ',
-    settingsScriptLanguageAuthorText: 'Google Translate',
+    settingsScriptLanguageText: 'Linguistique: ',
+    settingsScriptLanguageAuthorText: 'decembre, Google Translate',
     settingsScriptLanguageHelpText: 'Aider à traduire',
     settingsScriptLanguageHelpTitle: "Aide à traduire la langue d'affichage des scripts",
     settingsExportText: 'Exportation',
@@ -8290,12 +8290,14 @@ class Note_Obj {
           this.confirmFrame.isInsert = true;
         },
         messageFrameAddNotifaction(content, id = null, time = 4000) {
-          const ntfId = id ? id : `id-${Date.now()}_${this.messageFrame.total}`;
+          const date = new Date();
+          const ntfId = id ? id : `id-${date.getTime()}_${this.messageFrame.total}`;
           this.messageFrame.total++;
           this.messageFrame.notifactions.splice(0, 0, {
             id: ntfId,
             content: content,
           });
+          console.info(`[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] >>> ${content}`);
           const t = typeof time === 'number' && time > 0 ? time : 4000;
           window.setTimeout(() => {
             for (const i in this.messageFrame.notifactions) {
