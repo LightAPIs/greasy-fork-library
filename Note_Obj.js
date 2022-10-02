@@ -2,7 +2,7 @@
 // @name         Note_Obj
 // @namespace    https://greasyfork.org/zh-CN/users/193133-pana
 // @homepage     https://greasyfork.org/zh-CN/users/193133-pana
-// @version      5.5.0
+// @version      5.5.1
 // @description  NOTE_OBJ
 // @author       pana
 // @license      GNU General Public License v3.0 or later
@@ -11,7 +11,7 @@
 typeof Vue !== 'function' && alert('The Vue.js file does not exist and script code does not work properly!!!');
 const NOTE_LANG = {
   INFO: {
-    version: '5.5.0',
+    version: '5.5.1',
     updated: '2022-10-02',
   },
   EN: {
@@ -7484,7 +7484,7 @@ class Note_Obj {
           library: [
             {
               name: 'Vue.js',
-              version: '2.6.14',
+              version: '2.7.10',
               url: 'https://vuejs.org/',
             },
           ],
@@ -7505,7 +7505,7 @@ class Note_Obj {
     if (!libraryKeysList.includes('Vue.js')) {
       envVm.script.library.splice(0, 0, {
         name: 'Vue.js',
-        version: '2.6.14',
+        version: '2.7.10',
         url: 'https://vuejs.org/',
       });
     }
