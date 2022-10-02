@@ -2,7 +2,7 @@
 // @name         Note_Obj
 // @namespace    https://greasyfork.org/zh-CN/users/193133-pana
 // @homepage     https://greasyfork.org/zh-CN/users/193133-pana
-// @version      5.4.0
+// @version      5.5.0
 // @description  NOTE_OBJ
 // @author       pana
 // @license      GNU General Public License v3.0 or later
@@ -11,8 +11,8 @@
 typeof Vue !== 'function' && alert('The Vue.js file does not exist and script code does not work properly!!!');
 const NOTE_LANG = {
   INFO: {
-    version: '5.4.0',
-    updated: '2021-08-14',
+    version: '5.5.0',
+    updated: '2022-10-02',
   },
   EN: {
     addPlaceholder: 'Please enter a new note, press Enter to save',
@@ -9306,6 +9306,24 @@ Note_Obj.fn = {
       }
     }
     return value;
+  },
+  query: (ele, selector) => {
+    return ele.querySelector(selector);
+  },
+  queryA: (ele, selector) => {
+    return Note_Obj.fn.query(ele, selector);
+  },
+  qDocAll: selector => {
+    return document.querySelectorAll(selector);
+  },
+  qDocAllA: selector => {
+    return Note_Obj.fn.qDocAll(selector);
+  },
+  qAll: (ele, selector) => {
+    return ele.querySelectorAll(selector);
+  },
+  qAllA: (ele, selector) => {
+    return Note_Obj.fn.qAll(ele, selector);
   },
   downloadText: (content, filename = null, completed = null) => {
     if (!filename) {
