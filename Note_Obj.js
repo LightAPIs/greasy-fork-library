@@ -2,7 +2,7 @@
 // @name         Note_Obj
 // @namespace    https://greasyfork.org/zh-CN/users/193133-pana
 // @homepage     https://greasyfork.org/zh-CN/users/193133-pana
-// @version      5.5.1
+// @version      5.5.2
 // @description  NOTE_OBJ
 // @author       pana
 // @license      GNU General Public License v3.0 or later
@@ -11,8 +11,8 @@
 typeof Vue !== 'function' && alert('The Vue.js file does not exist and script code does not work properly!!!');
 const NOTE_LANG = {
   INFO: {
-    version: '5.5.1',
-    updated: '2022-10-02',
+    version: '5.5.2',
+    updated: '2022-11-24',
   },
   EN: {
     addPlaceholder: 'Please enter a new note, press Enter to save',
@@ -8708,9 +8708,7 @@ class Note_Obj {
         }
       }
       if (writeStatus) {
-        if (this.judgeUsers(userId)) {
-          Note_Obj.GM.setValue(this.itemsKeyName, this.items);
-        }
+        Note_Obj.GM.setValue(this.itemsKeyName, this.items);
         this.vm.settingsFrame.storeModificationTime = Date.now();
         Note_Obj.GM.setValue(this.timeKeyName, this.vm.settingsFrame.storeModificationTime);
       }
