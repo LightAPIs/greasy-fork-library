@@ -2,17 +2,19 @@
 // @name         Note_Obj
 // @namespace    https://greasyfork.org/zh-CN/users/193133-pana
 // @homepage     https://greasyfork.org/zh-CN/users/193133-pana
-// @version      5.5.2
+// @version      5.6.0
 // @description  NOTE_OBJ
 // @author       pana
 // @license      GNU General Public License v3.0 or later
 // ==/UserScript==
 
 typeof Vue !== 'function' && alert('The Vue.js file does not exist and script code does not work properly!!!');
+Vue.config.devtools = false;
+Vue.config.productionTip = false;
 const NOTE_LANG = {
   INFO: {
-    version: '5.5.2',
-    updated: '2022-11-24',
+    version: '5.6.0',
+    updated: '2023-01-11',
   },
   EN: {
     addPlaceholder: 'Please enter a new note, press Enter to save',
@@ -9305,23 +9307,98 @@ Note_Obj.fn = {
     }
     return value;
   },
-  query: (ele, selector) => {
-    return ele.querySelector(selector);
+  _consoleTip: (tipContent, tipType) => {
+    switch (tipType) {
+      case 'error':
+        console.error(tipContent);
+        break;
+      case 'warn':
+        console.error(tipContent);
+        break;
+      case 'info':
+        console.info(tipContent);
+        break;
+      case 'debug':
+        console.debug(tipContent);
+        break;
+      case 'none':
+      default:
+        break;
+    }
   },
-  queryA: (ele, selector) => {
-    return Note_Obj.fn.query(ele, selector);
+  querySelector: (ele, selector) => {
+    const res = ele.querySelector(selector);
+    if (res instanceof HTMLElement) {
+      return res;
+    }
+    return undefined;
   },
-  qDocAll: selector => {
-    return document.querySelectorAll(selector);
-  },
-  qDocAllA: selector => {
-    return Note_Obj.fn.qDocAll(selector);
-  },
-  qAll: (ele, selector) => {
+  querySelectorAll: (ele, selector) => {
     return ele.querySelectorAll(selector);
   },
-  qAllA: (ele, selector) => {
-    return Note_Obj.fn.qAll(ele, selector);
+  query: (ele, selector, tip = 'error') => {
+    const res = ele.querySelector(selector);
+    if (res instanceof HTMLElement) {
+      return res;
+    } else {
+      Note_Obj.fn._consoleTip('Unable to find HTMLElement: ' + selector, tip);
+    }
+    return undefined;
+  },
+  queryA: (ele, selector, tip = 'error') => {
+    const res = ele.querySelector(selector);
+    if (res instanceof HTMLAnchorElement) {
+      return res;
+    } else {
+      Note_Obj.fn._consoleTip('Unable to find HTMLAnchorElement: ' + selector, tip);
+    }
+    return undefined;
+  },
+  qDocAll: (selector, tip = 'error') => {
+    const res = document.querySelectorAll(selector);
+    if (res.length === 0) {
+      Note_Obj.fn._consoleTip("Can't find NodeListOf<HTMLElement> in document: " + selector, tip);
+    }
+    return res;
+  },
+  qDocAllA: (selector, tip = 'error') => {
+    const res = document.querySelectorAll(selector);
+    if (res.length === 0) {
+      Note_Obj.fn._consoleTip("Can't find NodeListOf<HTMLAnchorElement> in document: " + selector, tip);
+    }
+    return res;
+  },
+  qAll: (ele, selector, tip = 'error') => {
+    const res = ele.querySelectorAll(selector);
+    if (res.length === 0) {
+      Note_Obj.fn._consoleTip("Can't find NodeListOf<HTMLElement> in Element: " + selector, tip);
+    }
+    return res;
+  },
+  qAllA: (ele, selector, tip = 'error') => {
+    const res = ele.querySelectorAll(selector);
+    if (res.length === 0) {
+      Note_Obj.fn._consoleTip("Can't find NodeListOf<HTMLAnchorElement> in Element: " + selector, tip);
+    }
+    return res;
+  },
+  getTextContent: (ele, selector, filter = undefined, tip = 'error') => {
+    const item = Note_Obj.fn.query(ele, selector, tip);
+    if (item) {
+      const text = item.textContent || '';
+      if (typeof filter === 'function') {
+        return filter(text);
+      }
+      return text;
+    }
+    return '';
+  },
+  getHrefUserId: (ele, selector, tip = 'error', comparisonCallback = null, replaceCallback = null) => {
+    const item = Note_Obj.fn.queryA(ele, selector, tip);
+    if (item) {
+      return Note_Obj.fn.getUserIdFromLink(item.href, comparisonCallback, replaceCallback);
+    }
+    return '';
   },
   downloadText: (content, filename = null, completed = null) => {
     if (!filename) {
