@@ -19,5 +19,12 @@
     "Instra": "",
     "Content": "问题修复：修复保存新内核的 Web Data 会报错的问题",
     "Other": ""
+  },
+  {
+    "Version": "1.1.3",
+    "Date": "2024-02-02",
+    "Instra": "",
+    "Content": "补充：更新默认搜索引擎列表",
+    "Other": ""
   }
 ]
