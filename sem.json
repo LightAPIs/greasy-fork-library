@@ -61,5 +61,12 @@
     "Instra": "",
     "Content": "新功能：添加支持 Chromium 137 内核版本的 Web Data 文件；\n问题修复：修复关闭文件时句柄未释放的问题；\n功能同步：更新默认搜索引擎列表",
     "Other": ""
+  },
+  {
+    "Version": "1.5.1",
+    "Date": "2025-09-14",
+    "Instra": "",
+    "Content": "功能调整：阻止工具修改 Chromium 137+ 的 Web Data 文件",
+    "Other": ""
   }
 ]
